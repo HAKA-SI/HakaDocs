@@ -1,0 +1,10 @@
+.vscode
+bin
+obj
+*.db
+appsettings.json
+appsettings.Development.json
+# Migrations/
+wwwroot
+requetes.sql
+.DS_Store
