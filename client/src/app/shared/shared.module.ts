@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 
 import { FeatherIconsComponent } from './components/feather-icons/feather-icons.component';
@@ -14,6 +15,7 @@ import { NavService } from './service/nav.service';
 import { WINDOW_PROVIDERS } from './service/windows.service';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { RightSidebarComponent } from './components/right-sidebar/right-sidebar.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -28,9 +30,13 @@ import { RightSidebarComponent } from './components/right-sidebar/right-sidebar.
   ],
   imports: [
     CommonModule,
+    BsDropdownModule.forRoot(),
+    ToastrModule.forRoot({
+      positionClass:'toast-bottom-right'
+    }),
     RouterModule
   ],
   providers: [NavService, WINDOW_PROVIDERS],
-  exports: [FeatherIconsComponent, ToggleFullscreenDirective]
+  exports: [FeatherIconsComponent, ToggleFullscreenDirective,BsDropdownModule,ToastrModule]
 })
 export class SharedModule { }
