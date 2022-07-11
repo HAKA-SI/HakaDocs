@@ -1,9 +1,11 @@
+<!-- <app-register-stepper></app-register-stepper> -->
+
 <div class="page-wrapper">
   <div class="authentication-box">
     <div class="container">
       <div class="row">
-        <div class="col-md-5 p-0 card-left">
-          <div class="card bg-primary">
+        <div class="col-md-5 p-0 card-left animate__animated animate__bounceInDown">
+          <div class="card bg-primary"  >
             <div class="svg-icon">
               <svg
                 version="1.1"
@@ -272,95 +274,49 @@
             </div>
           </div>
         </div>
-        <div class="col-md-7 p-0 card-right">
-          <div class="card tab2-card pt-3">
+        <div class="col-md-7 p-0 card-right" >
+          <div class="card tab2-card pt-3 animate__animated animate__bounceInUp" *ngIf="!showConfirmation">
             <div class="card-title text-center">
-              <h2 class="text-center" >CONNEXION</h2>
+              <h2 class="text-center" >création de compte</h2>
             </div>
             <div class="card-body">
-              <div
-                class="tab-pane fade active show"
-                id="account"
-                role="tabpanel"
-                aria-labelledby="account-tab"
-              >
-                <form
-                  [formGroup]="loginForm"
-                  (ngSubmit)="login()"
-                  class="form-horizontal auth-form"
-                  novalidate=""
-
-                >
+              <div  class="tab-pane fade active show" id="account" role="tabpanel" aria-labelledby="account-tab">
+                <form   [formGroup]="registerForm"class="form-horizontal auth-form" novalidate=""   (ngSubmit)="onSubmit()">
                   <div class="form-group">
-                    <input
-                      required=""
-                      name="login[username]"
-                      type="email"
-                      formControlName="username"
-
-                      class="form-control"
-                      placeholder="identifiant"
-                      id="exampleInputEmail1"
-                    />
+                    <app-text-input formControlName="lastName" [label]="'Nom'"  ></app-text-input>
                   </div>
                   <div class="form-group">
-                    <input
-                      required=""
-                      name="login[password]"
-                      formControlName="password"
-                      type="password"
-                      class="form-control"
-                      placeholder="mot de passe"
-                    />
+                    <app-text-input formControlName="firstName" [label]="'Prenom(s)'"  ></app-text-input>
                   </div>
-                  <div class="form-terms">
-                    <div class="custom-control custom-checkbox mr-sm-2">
-                      <input
-                        type="checkbox"
-                        class="custom-control-input"
-                        id="customControlAutosizing"
-                      />
-                      <label
-                        class="custom-control-label"
-                        for="customControlAutosizing"
-                        >Remember me</label
-                      >
-                      <a
-                        routerLink="/auth/register"
-                        class="btn btn-default forgot-pass"
-                        >creer un nouveau compte</a
-                      >
-                    </div>
-                  </div>
+                  <app-text-input formControlName="email" [label]="'adresse email'" ></app-text-input>
+                  <app-text-input minlength="10" maxlength="10" formControlName="phoneNumber" (keypress)="numberOnly($event)" [label]="'numero de téléphone'" mask='(000) 000-0000' ></app-text-input>
+                  <ul class="text-danger">
+                    <li *ngFor="let error of errors">{{error}}</li>
+                  </ul>
                   <div class="form-button">
-                    <button [disabled]="!loginForm.valid" class="btn btn-primary" (click)="login()" type="submit">Login</button>
+                    <button [disabled]="registerForm.invalid"  class="btn btn-primary btn-block" type="submit">s'inscrire </button>
                   </div>
-                  <!-- <div class="form-footer">
-                    <span>Or Login up with social platforms</span>
-                    <ul class="social">
-                      <li>
-                        <a class="icon-facebook" href="javascript:void(0)"></a>
-                      </li>
-                      <li>
-                        <a class="icon-twitter" href="javascript:void(0)"></a>
-                      </li>
-                      <li>
-                        <a class="icon-instagram" href="javascript:void(0)"></a>
-                      </li>
-                      <li>
-                        <a class="icon-pinterest" href="javascript:void(0)"></a>
-                      </li>
-                    </ul>
-                  </div> -->
+
                 </form>
+
+                <div class="form-terms mt-2">
+                  <div class="custom-control custom-checkbox mr-sm-2">
+                    <a routerLink="/auth/login"  class="btn btn-default forgot-pass" >se connecter</a
+                    >
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
+          <div class="card tab2-card p-3 animate__animated animate__bounceInUp section" style="min-height: 490px;" *ngIf="showConfirmation">
+            Votre inscription a bien été pris en compte. un lien de confirmation vous a été envoyer par email
+          </div>
         </div>
       </div>
-      <a [routerLink]="'/'" class="btn btn-primary back-btn">
+      <a [routerLink]="'/'" class="btn btn-primary back-btn animate__animated animate__bounceInUp">
         <app-feather-icons [icon]="'arrow-left'"></app-feather-icons>
-        back
+        retour à l'acceuil
       </a>
     </div>
   </div>

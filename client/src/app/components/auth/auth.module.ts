@@ -8,17 +8,28 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { SharedModule } from '../../shared/shared.module';
-
+import { RegisterComponent } from './register/register.component';
+import { RegisterStepperComponent } from './register-stepper/register-stepper.component';
+import { ProgressComponent } from './progress/progress.component';
+import { ProgressStepComponent } from './progress/progress-step/progress-step.component';
+import { ProgressStepDirective } from './progress/progress-step.directive';
 
 @NgModule({
-  declarations: [LoginComponent],
+  declarations: [
+    LoginComponent,
+    RegisterComponent,
+    RegisterStepperComponent,
+    ProgressComponent,
+    ProgressStepComponent,
+    ProgressStepDirective
+  ],
   imports: [
     CommonModule,
     AuthRoutingModule,
     ReactiveFormsModule,
     NgbModule,
     CarouselModule,
-    SharedModule
-  ]
+    SharedModule,
+  ],
 })
-export class AuthModule { }
+export class AuthModule {}

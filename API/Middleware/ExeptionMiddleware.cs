@@ -1,10 +1,3 @@
-using System;
-
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using API.Dtos;
-using System.Collections.Generic;
-
 namespace API.Middleware
 {
     public class ExeptionMiddleware
@@ -48,9 +41,9 @@ namespace API.Middleware
                 foreach (var recipient in recipientList)
                 {
                     var mail = new EmailFormDto();
-                    mail.subject = "HakaDocs Error";
+                    mail.Subject = "HakaDocs Error";
                     mail.Content = "<h1>" + ex.Message + "</h1><br><h1>" + ex.InnerException + "</h1><br>" + ex.ToString();
-                    mail.toEmail = recipient;
+                    mail.ToEmail = recipient;
                     await SendEmail(mail);
 
                 }
@@ -60,7 +53,7 @@ namespace API.Middleware
 
         private async Task SendEmail(EmailFormDto mail)
         {
-            await _emailSender.SendEmailAsync(mail.toEmail, mail.subject, mail.Content);
+            await _emailSender.SendEmailAsync(mail.ToEmail, mail.Subject, mail.Content);
         }
     }
 }

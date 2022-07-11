@@ -11,9 +11,9 @@ busyRequestCount=0;
   busy() {
     this.busyRequestCount++;
     this.spinnerService.show(undefined, {
-      type: 'triangle-skew-spin',
+      type: 'timer',
       bdColor:'rgba(0,0,0,0.5)',
-      color:'#f89f20',
+      color:'#f64c67',
       fullScreen:true
     })
   }

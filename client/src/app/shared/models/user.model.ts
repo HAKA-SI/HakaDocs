@@ -4,7 +4,7 @@ export interface User{
   lastName:string;
   firstName:string;
   userTypeId:number;
-  // photoUrl: string;
+  photoUrl: string;
   // knownAs: string;
   // gender: string;
   roles:string[];

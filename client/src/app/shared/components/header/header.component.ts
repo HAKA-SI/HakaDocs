@@ -1,3 +1,7 @@
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../components/auth/auth.service';
+import { User } from 'src/app/shared/models/user.model';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NavService } from '../../service/nav.service';
 
@@ -11,10 +15,14 @@ export class HeaderComponent implements OnInit {
   public open: boolean = false;
   public openNav: boolean = false;
   public isOpenMobile : boolean;
+  connectedUser : User;
 
   @Output() rightSidebarEvent = new EventEmitter<boolean>();
 
-  constructor(public navServices: NavService) { }
+  constructor(public navServices: NavService, private authService: AuthService,
+    toastr: ToastrService) {
+    this.authService.currentUser$.subscribe((user) => this.connectedUser=user);
+  }
 
   collapseSidebar() {
     this.open = !this.open;
@@ -31,5 +39,9 @@ export class HeaderComponent implements OnInit {
 
 
   ngOnInit() {  }
+
+  logout() {
+   this.authService.logout();
+  }
 
 }

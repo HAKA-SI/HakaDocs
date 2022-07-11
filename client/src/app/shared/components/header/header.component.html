@@ -97,7 +97,8 @@
                 <li class="onhover-dropdown">
                     <div class="media align-items-center"><img
                             class="align-self-center pull-right img-50 rounded-circle"
-                            src="assets/images/dashboard/man.png" alt="header-user">
+                            [src]="connectedUser?.photoUrl || 'assets/images/dashboard/user.png'"
+                            alt="header-user">
 
                         <div class="dotted-animation"><span class="animate-circle"></span><span
                                 class="main-circle"></span></div>
@@ -115,8 +116,8 @@
                         <li><a href="javascript:void(0)">
                                 <app-feather-icons [icon]="'settings'"></app-feather-icons>Settings
                             </a></li>
-                        <li><a [routerLink]="'/auth/login'">
-                                <app-feather-icons [icon]="'log-out'"></app-feather-icons>Logout
+                        <li><a  (click)="logout()">
+                                <app-feather-icons [icon]="'log-out'"></app-feather-icons>se déconnecter
                             </a></li>
                     </ul>
                 </li>

@@ -7,6 +7,8 @@ namespace API.Entities
     public class AppUser : IdentityUser<int>
     {
 
+        public string LastName { get; set; }
+        public string FIrstName { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string KnownAs { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;

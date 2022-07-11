@@ -1,0 +1,120 @@
+<app-progress #progress (stateChange)="onStateChange($event)">
+  <app-progress-step>
+    <div class="card p-2 shadow">
+        <div class="card-title">
+          <h1>civilité </h1>
+        </div>
+        <div class="card-body">
+          <form >
+            <div class="form-group">
+              <input name="name" type="text"  class="form-control"  placeholder="Nom" />
+            </div>
+            <div class="form-group">
+              <input name="prenoms" type="text"  class="form-control"  placeholder="Prenom(s)" />
+            </div>
+            <div class="form-group">
+              <input name="name" type="text"  class="form-control"  placeholder="Sexe" />
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-primary" (click)="goNext(progress)">suivant</button>
+        </div>
+
+
+    </div>
+  </app-progress-step>
+  <app-progress-step>
+    <div class="card">
+      <div class="card-title">
+      <h1> Comment vous contactez ?</h1>
+      </div>
+        <div class="card-body">
+          <form >
+            <div class="form-group">
+              <input name="name" type="text"  class="form-control"  placeholder="Email" />
+            </div>
+            <div class="form-group">
+              <input name="prenoms" type="text"  class="form-control"  placeholder="Contact principal" />
+            </div>
+            <div class="form-group">
+              <input name="name" type="text"  class="form-control"  placeholder="second contact" />
+            </div>
+          </form>
+        </div>
+        <div class="card-footer">
+          <button progressStepPrev class="btn btn-check">précédent</button>
+          <button  class="btn btn-primary" progressStepNext>suivant</button>
+        </div>
+    </div>
+
+    <form class="example-form" [formGroup]="testForm">
+      <!-- <mat-form-field class="example-full-width">
+        <mat-label>Favorite food</mat-label>
+        <input
+          formControlName="food"
+          matInput
+          placeholder="Ex. Pizza"
+          value="Sushi"
+        />
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Leave a comment</mat-label>
+        <textarea
+          matInput
+          formControlName="comment"
+          placeholder="Ex. It makes me feel..."
+        ></textarea>
+      </mat-form-field> -->
+
+    </form>
+  </app-progress-step>
+  <app-progress-step>
+    <div class="card">
+      <h1>choisissez votre formule</h1>
+        <div class="card-body row ">
+          <div class="card col-4 shadow" >
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+          <div class="card col-4 shadow" >
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+          <div class="card col-4 shadow" >
+            <div class="card-body">
+              <h5 class="card-title">Special title treatment</h5>
+              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" class="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button progressStepPrev class="btn btn-default">précedent</button>
+          <button progressStepNext class="btn btn-primary">suivant</button>
+        </div>
+    </div>
+    </app-progress-step>
+  <app-progress-step>
+    <div class="card" >
+        <h1 class="card-header">Terminé</h1>
+        <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        </div>
+        <div class="card-footer">
+          <button progressStepPrev class="btn btn-default">précédent</button>
+          <button progressStepNext class="btn btn-success">terminé</button>
+        </div>
+    </div>
+
+
+  </app-progress-step>
+</app-progress>

@@ -1,5 +1,8 @@
+import { ToastrService } from 'ngx-toastr';
+import { AuthService } from '../auth.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +14,9 @@ export class LoginComponent implements OnInit {
   public loginForm: FormGroup;
   public registerForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService,
+    private toastr: ToastrService, private router: Router) {
     this.createLoginForm();
-    this.createRegisterForm();
   }
 
   owlcarousel = [
@@ -38,24 +41,26 @@ export class LoginComponent implements OnInit {
 
   createLoginForm() {
     this.loginForm = this.formBuilder.group({
-      userName: [''],
-      password: [''],
+      username: ['', Validators.required],
+      password: ['', Validators.required],
     })
   }
-  createRegisterForm() {
-    this.registerForm = this.formBuilder.group({
-      userName: [''],
-      password: [''],
-      confirmPassword: [''],
-    })
-  }
+
 
 
   ngOnInit() {
   }
 
-  onSubmit() {
-    
+  login() {
+    console.log(this.loginForm.value);
+    this.authService.login(this.loginForm.value).subscribe(
+      (response) => {
+        this.router.navigateByUrl('/dashboard');
+      },
+      (error) => {
+        this.toastr.error('login ou mot de passe incorrect');
+      }
+    );
   }
 
 }

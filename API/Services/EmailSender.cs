@@ -30,7 +30,7 @@ namespace API.Services
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("no-reply@educnotes.com", "HAKADOCS"),
+                From = new EmailAddress("no-reply@hakadocs.com", "HAKADOCS"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message

@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { User } from 'src/app/shared/models/user.model';
 import { environment } from 'src/environments/environment';
-import { tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 
 
 @Injectable({
@@ -25,9 +25,9 @@ export class AuthService {
     // const url = 'https://localhost:5003/api/account/login';
     const url = this.baseUrl + "account/login";
     return this.http.post<User>(url, model).pipe(
-      tap((data: any) => {
-        let user = data.user;
-        let clients = data.clients;
+      tap((user: User) => {
+       // let user = data.user;
+       // let clients = data.clients;
         this.setCurrentuser(user);
       })
     );
@@ -39,7 +39,7 @@ export class AuthService {
     this.currentuserSource.next(null);
     // this.presenceService.stopHubConnection();
     // this.dashboardService.stopHubConnection();
-    this.router.navigate(['/auth/signIn']);
+    this.router.navigate(['/auth/login']);
   }
 
   setCurrentuser(user: User) {
@@ -65,5 +65,15 @@ export class AuthService {
       })
     )
       return response;
+  }
+
+
+  register(values: any) {
+    return this.http.post(this.baseUrl + 'account/register', values);
+  }
+
+
+  checkEmailExists(email: string) {
+    return this.http.get(this.baseUrl+'account/emailexists?email='+email);
   }
 }

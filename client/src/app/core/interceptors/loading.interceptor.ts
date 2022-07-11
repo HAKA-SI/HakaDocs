@@ -22,10 +22,13 @@ export class LoadingInterceptor implements HttpInterceptor {
     if (request.method === 'POST' && request.url.includes('dashboard') && request.url.includes('GetSmsRecap')) {
       return next.handle(request);
     }
+    if (request.url.includes('emailexists')) {
+      return next.handle(request);
+    }
     this.busyService.busy();
-
     return next.handle(request).pipe(
-      finalize(() => {
+      delay(500),
+       finalize(() => {
         this.busyService.idle()
       })
     );

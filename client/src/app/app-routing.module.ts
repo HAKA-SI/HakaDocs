@@ -24,8 +24,10 @@ const routes: Routes = [
     canActivate:[AuthGuard]
   },
   {
-    path: 'auth/login',
-    component: LoginComponent,
+    path: 'auth',
+    loadChildren: () =>
+    import('./components/auth/auth.module').then((mod) => mod.AuthModule),
+  data: { breadcrumb: { skip: true } },
   },
 
 ];
