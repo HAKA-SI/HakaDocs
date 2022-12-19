@@ -44,12 +44,12 @@ namespace API.Entities
     public decimal TVA { get; set; }
     public decimal TVAAmount { get; set; }
     public decimal AmountTTC { get; set; }
-    public int? ChildId { get; set; }
-    public User Child { get; set; }
-    public int? FatherId { get; set; }
-    public User Father { get; set; }
-    public int? MotherId { get; set; }
-    public User Mother { get; set; }
+    public int CustomerId { get; set; }
+    public Customer Customer { get; set; }
+    // public int? FatherId { get; set; }
+    // public AppUser Father { get; set; }
+    // public int? MotherId { get; set; }
+    // public AppUser Mother { get; set; }
     public Boolean Validated { get; set; }
     public Boolean Expired { get; set; }
     public Boolean Cancelled { get; set; }
@@ -62,5 +62,6 @@ namespace API.Entities
     public int InsertUserId { get; set; }
     public DateTime UpdateDate { get; set; } = DateTime.Now;
     public int UpdateUserId { get; set; }
+    
     }
 }

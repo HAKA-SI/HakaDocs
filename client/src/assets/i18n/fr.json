@@ -1,0 +1,60 @@
+{
+  "add-student": {
+    "Sex":"Sexe",
+    "Create a file":"Créer un dossier",
+    "UserFile(s) of":"Dossier de",
+    "Children's file":"Enfants du dossier",
+    "Each child has their own file":"Chaque enfant a un dossier propre",
+    "Child":"Enfant",
+    "Woman":"Femme",
+    "Man":"Homme",
+    "Other":"Autre",
+    "Gender is required":"Le genre est obligatoire",
+    "Last name":"Nom",
+    "Last name is required":"Le nom est obligatoire",
+    "First name(s)":"Prénom(s)",
+    "First name is required":"Le prénom est obligatoire",
+    "Select the country code":"Choisir le code pays",
+    "Please select the country code":"Veuillez choisir le code pays",
+    "Contact":"Contact",
+    "Contact is required":"Le contact est obligatoire",
+    "Email":"Email",
+    "Please enter a valid email address":"S'il vous plaît, entrez une adresse email valide",
+    "Email is already in use":"Email est dejà utilisé",
+    "Add a child":"Ajouter un enfant",
+    "File's parents":"Parents du dossier",
+    "Parents are a contact for the follow-up of the file":"Les parents sont un contact pour le suivi du dossier",
+    "Parent":"Parent",
+    "Add a parent":"Ajouter un parent"
+  },
+
+  "all-students": {
+    "Image":"Image",
+    "Name":"Nom",
+    "User Files":"Dossiers",
+    "Search":"Rechercher",
+    "Gender":"Sexe",
+    "Select all files":"Sélectionner tous les dossiers",
+    "Select the file":"Sélectionner le dossier"
+  },
+
+  "form-dialog": {
+    "Children's file":"Enfants du dossier",
+    "File's parents":"Parents du dossier",
+    "Add a photo":"Ajouter une photo",
+    "Edit the photo":"Modifier la photo",
+    "Add a child":"Ajouter un enfant",
+    "Mobile":"Mobile",
+    "Number already exists":"Numéro existe déjà",
+    "Save File":"Enregistrer",
+    "Edit File":"modifier le dossier",
+    "Save File & Add New":"Enregistrer & Nouveau",
+    "Cancel":"Annuler",
+    "Prospect origin":"Origine du prospect",
+    "Please select the prospect origin":"Choisir l'origin du prospect svp",
+    "File's owner":"Propriétaire du dossier",
+    "Please select the file's owner":"Choisir le propriétaire du dossier svp",
+    "File's step":"Etape du dossier"
+  }
+
+}

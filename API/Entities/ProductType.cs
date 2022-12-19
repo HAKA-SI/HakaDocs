@@ -6,5 +6,7 @@ namespace API.Entities
         public int? ProductTypePId { get; set; }
         public ProductType ProductTypeP { get; set; }
         public string Name { get; set; }
+          public HaKaDocClient HaKaDocClient { get; set; }
+        public int HaKaDocClientId { get; set; }
     }
 }

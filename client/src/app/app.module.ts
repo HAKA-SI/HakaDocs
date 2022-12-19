@@ -20,11 +20,16 @@ import { SettingModule } from './components/setting/setting.module';;
 import { ReportsModule } from './components/reports/reports.module';
 import { AuthModule } from './components/auth/auth.module';
 import { HomeComponent } from './home/home.component';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './core/interceptors/error.interceptor';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { LoadingInterceptor } from './core/interceptors/loading.interceptor';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+export function createTranslateLoader(http: HttpClient): any {
+  return new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+}
 
 @NgModule({
   declarations: [
@@ -37,6 +42,13 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     AppRoutingModule,
     NgxSpinnerModule,
     HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+          provide: TranslateLoader,
+          useFactory: createTranslateLoader,
+          deps: [HttpClient],
+      },
+  }),
     DashboardModule,
     InvoiceModule,
     SettingModule,

@@ -17,6 +17,9 @@ import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.componen
 import { RightSidebarComponent } from './components/right-sidebar/right-sidebar.component';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { TranslateModule } from '@ngx-translate/core';
+import {  HttpClient} from '@angular/common/http';
+
 const maskConfig: Partial<IConfig> = {
   validation: false,
 };
@@ -38,6 +41,7 @@ const maskConfig: Partial<IConfig> = {
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
     }),
+    TranslateModule,
     RouterModule,
     NgxMaskModule.forRoot(maskConfig),
   ],
@@ -48,6 +52,7 @@ const maskConfig: Partial<IConfig> = {
     BsDropdownModule,
     NgxMaskModule,
     ToastrModule,
+    TranslateModule,
     TextInputComponent,
   ],
 })

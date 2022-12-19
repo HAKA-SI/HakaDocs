@@ -1,0 +1,186 @@
+{
+ 
+  "add-student": {
+    "Sex":"Sex",
+    "Create a file":"Create a file",
+    "UserFile(s) of":"UserFile(s) of",
+    "Children's file":"Children's file",
+    "Each child has their own file":"Each child has their own file",
+    "Child":"Child",
+    "Woman":"Woman",
+    "Man":"Man",
+    "Other":"Other",
+    "Gender is required":"Gender is required",
+    "Last name":"Last name",
+    "Last name is required":"Last name is required",
+    "First name(s)":"First name(s)",
+    "The first name is required":"The first name is required",
+    "Select the country code":"Select the country code",
+    "Please select the country code":"Please select the country code",
+    "Contact":"Contact",
+    "Contact is required":"Contact is required",
+    "Email":"Email",
+    "Please enter a valid email address":"Please enter a valid email address",
+    "Email is already in use":"Email is already in use",
+    "Add a child":"Add a child",
+    "File's parents":"File's parents",
+    "Parents are a contact for the follow-up of the file":"Parents are a contact for the follow-up of the file",
+    "Parent":"Parent",
+    "Add a parent":"Add a parent",
+    "Image":"Image",
+    "Name":"Name"
+    
+    
+    
+  },
+  
+  "all-students": {
+    "User Files":"User Files",
+    "Search":"Search",
+    "Image":"Image",
+    "Name":"Name",
+    "Gender":"Gender",
+    "Select all files":"Select all files",
+    "Select the file":"Select the file"
+
+  },
+
+  "form-dialog": {
+    "Children's file":"Children's file",
+    "File's parents":"File's parents",
+    "Add a photo":"Add a photo",
+    "Edit the photo":"Edit the photo",
+    "Add a child":"Add a child",
+    "Mobile":"Mobile",
+    "Number already exists":"Number already exists",
+    "Save File":"Save File",
+    "Edit File":"Edit File",
+    "Save File & Add New":"Save File & Add New",
+    "Cancel":"Cancel",
+    "Prospect origin":"Prospect origin",
+    "Please select the prospect origin":"Please select the prospect origin",
+    "File's owner":"File's owner",
+    "Please select the file's owner":"Please select the file's owner",
+    "File's step":"File's step"
+
+  },
+
+  "MENUITEMS": {
+    "MAIN": {
+      "TEXT": "Main"
+    },
+    "DASHBOARD": {
+      "TEXT": "Dashboard",
+      "LIST": {
+        "DASHBOARD1": "Dashboard 1",
+        "DASHBOARD2": "Dashboard 2",
+        "TEACHER-DASHBOARD": "Teacher Dashboard",
+        "STUDENT-DASHBOARD": "Student Dashboard"
+      }
+    },
+    "TEACHERS": {
+      "TEXT": "Teachers",
+      "LIST": {
+        "ALL-TEACHERS": "All Teachers",
+        "ADD-TEACHER": "Add Teacher",
+        "EDIT-TEACHER": "Edit Teacher",
+        "ABOUT-TEACHER": "About Teacher"
+      }
+    },
+    "STUDENTS": {
+      "TEXT": "Students",
+      "LIST": {
+        "ALL-STUDENTS": "All Students",
+        "ADD-STUDENT": "Add Student",
+        "EDIT-STUDENT": "Edit Student",
+        "ABOUT-STUDENT": "About Student"
+      }
+    },
+    "COURSES": {
+      "TEXT": "Courses",
+      "LIST": {
+        "ALL-COURSES": "All Courses",
+        "ADD-COURSE": "Add Course",
+        "EDIT-COURSE": "Edit Course",
+        "ABOUT-COURSE": "About Course"
+      }
+    },
+    "LIBRARY": {
+      "TEXT": "Library",
+      "LIST": {
+        "ALL-LIBRARY": "All Library Assets",
+        "ADD-LIBRARY": "Add Library Asset",
+        "EDIT-LIBRARY": "Edit Library Asset"
+      }
+    },
+    "DEPARTMENTS": {
+      "TEXT": "Departments",
+      "LIST": {
+        "ALL-DEPARTMENT": "All Departments",
+        "ADD-DEPARTMENT": "Add Department",
+        "EDIT-DEPARTMENT": "Edit Department"
+      }
+    },
+    "STAFF": {
+      "TEXT": "Staff",
+      "LIST": {
+        "ALL-STAFF": "All Staff",
+        "ADD-STAFF": "Add Staff",
+        "EDIT-STAFF": "Edit Staff",
+        "ABOUT-STAFF": "About Staff"
+      }
+    },
+    "HOLIDAY": {
+      "TEXT": "Holiday",
+      "LIST": {
+        "ALL-HOLIDAY": "All Holiday",
+        "ADD-HOLIDAY": "Add Holiday",
+        "EDIT-HOLIDAY": "Edit Holiday"
+      }
+    },
+    "FEES": {
+      "TEXT": "Fees",
+      "LIST": {
+        "ALL-FEES": "All Fees",
+        "ADD-FEES": "Add fees",
+        "EDIT-FEES": "Edit fees",
+        "FEE-RECEIPT": "Fee Receipt"
+      }
+    },
+
+    "TEACHER": {    
+      "TEXT": "Teacher",
+      "LIST": {
+        "DASHBOARD": "Dashboard",
+        "LECTURES": "Lectures",
+        "LEAVE-REQUEST": "Leave Request",
+        "EXAM-SCHEDULE": "Exam Schedule",
+        "SETTINGS": "Settings"
+      }
+    },
+    "STUDENT": {    
+      "TEXT": "Student",
+      "LIST": {
+        "DASHBOARD": "Dashboard",
+        "HOMEWORK": "Homework",
+        "LEAVE-REQUEST": "Leave Request",
+        "TIME-TABLE": "Time Table",
+        "SETTINGS": "Settings"
+      }
+    },
+    "APPS": {
+      "TEXT": "Apps"
+    },
+    "CALENDAR": {
+      "TEXT": "Calendar"
+    },
+    "TASK": {
+      "TEXT": "Task"
+    },
+    "CONTACTS": {
+      "TEXT": "Contacts"
+    }
+  }
+
+ 
+}

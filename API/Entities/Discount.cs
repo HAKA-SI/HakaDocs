@@ -14,5 +14,7 @@ namespace API.Entities
         public decimal DiscountAmount { get; set; } = 0;
         public int ProductQtyMin { get; set; } = 0;
         public decimal AmountMin { get; set; } = 0;
+         public HaKaDocClient HaKaDocClient { get; set; }
+        public int HaKaDocClientId { get; set; }
     }
 }

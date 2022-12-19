@@ -1,11 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace API.Entities
 {
-    public class Fee
+    public class Customer: BaseEntity
     {
-         public int Id { get; set; }
-        public string Name { get; set; }
-        public double amount { get; set; }
          public HaKaDocClient HaKaDocClient { get; set; }
         public int HaKaDocClientId { get; set; }
+        
     }
 }

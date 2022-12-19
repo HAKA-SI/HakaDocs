@@ -63,6 +63,7 @@ namespace API.Data
     public DbSet<OrderLineReceipt> OrderLineReceipts{ get; set; }
     public DbSet<OrderLineRegFee> OrderLineRegFees{ get; set; }
     public DbSet<Receipt> Receipts{ get; set; }
+    public DbSet<HaKaDocClient> HaKaDocClients{ get; set; }
 
 
     

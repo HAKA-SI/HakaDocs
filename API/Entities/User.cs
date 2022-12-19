@@ -70,5 +70,8 @@ namespace API.Entities
     // public Boolean IsMainTeacher { get; set; }
     // public ICollection<UserRole> UserRoles { get; set; }
     public ICollection<Photo> Photos { get; set; }
+
+      public HaKaDocClient HaKaDocClient { get; set; }
+        public int? HaKaDocClientId { get; set; }
   }
 }

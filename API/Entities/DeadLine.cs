@@ -11,6 +11,8 @@ namespace API.Entities
         public string Comment { get; set; }
         public DateTime DueDate { get; set; }
         public DateTime InsertDate { get; set; }
+         public HaKaDocClient HaKaDocClient { get; set; }
+        public int HaKaDocClientId { get; set; }
 
     }
 }

@@ -26,5 +26,7 @@ namespace API.Entities
     public Boolean Validated { get; set; }
     public Boolean Overdue { get; set; }
     public Boolean Paid { get; set; }
+     public HaKaDocClient HaKaDocClient { get; set; }
+        public int HaKaDocClientId { get; set; }
     }
 }

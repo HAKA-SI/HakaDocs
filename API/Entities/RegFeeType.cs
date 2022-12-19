@@ -6,5 +6,6 @@ namespace API.Entities
         public int? RegFeeTypePId { get; set; }
         public RegFeeType RegFeeTypeP { get; set; }
         public string Name { get; set; }
+        
     }
 }

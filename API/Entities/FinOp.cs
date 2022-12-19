@@ -32,7 +32,7 @@ namespace API.Entities
     public int? FromOtherUserId { get; set; }
     public AppUser FromOtherUser { get; set; }
     public int? ForUserId { get; set; }
-    public User ForUser { get; set; }
+    public AppUser ForUser { get; set; }
     public int? FromBankId { get; set; }
     public Bank FromBank { get; set; }
     public int? FromCashDeskId { get; set; }
@@ -51,9 +51,9 @@ namespace API.Entities
     public Boolean Rejected { get; set; }
     public DateTime InsertDate { get; set; }
     public int InsertUserId { get; set; }
-    public User InsertUser { get; set; }
+    public AppUser InsertUser { get; set; }
     public DateTime UpdateDate { get; set; }
     public int UpdateUserId { get; set; }
-    public User UpdateUser { get; set; }
+    public AppUser UpdateUser { get; set; }
     }
 }

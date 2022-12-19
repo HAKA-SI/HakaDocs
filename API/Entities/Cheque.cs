@@ -8,5 +8,7 @@ namespace API.Entities
     public string ChequeNum { get; set; }
     public decimal Amount { get; set; }
     public string PictureUrl { get; set; }
+     public HaKaDocClient HaKaDocClient { get; set; }
+        public int HaKaDocClientId { get; set; }
     }
 }

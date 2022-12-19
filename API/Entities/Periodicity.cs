@@ -11,5 +11,7 @@ namespace API.Entities
         public string Name { get; set; }
         public string Abbrev { get; set; }
         public byte NbDays { get; set; }
+          public HaKaDocClient HaKaDocClient { get; set; }
+        public int HaKaDocClientId { get; set; }
     }
 }
