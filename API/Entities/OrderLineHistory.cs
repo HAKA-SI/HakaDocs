@@ -17,7 +17,7 @@ namespace API.Entities
     public int? FinOpId { get; set; }
     public FinOp FinOp { get; set; }
     public int UserId { get; set; }
-    public User User { get; set; }
+    public AppUser User { get; set; }
     public DateTime OpDate { get; set; }
     public string Action { get; set; }
     public decimal OldAmount { get; set; }
@@ -27,9 +27,9 @@ namespace API.Entities
     public Boolean Rejected { get; set; }
     public DateTime InsertDate { get; set; }
     public int InsertUserId { get; set; }
-    public User InsertUser { get; set; }
+    public AppUser InsertUser { get; set; }
     public DateTime UpdateDate { get; set; }
     public int UpdateUserId { get; set; }
-    public User UpdateUser { get; set; }
+    public AppUser UpdateUser { get; set; }
     }
 }

@@ -38,7 +38,7 @@ namespace API.Entities
     public DateTime Deadline { get; set; }
     public DateTime Validity { get; set; }
     public int? ChildId { get; set; }
-    public User Child { get; set; }
+    public AppUser Child { get; set; }
     public Boolean Validated { get; set; }
     public Boolean Paid { get; set; }
     public Boolean Expired { get; set; }

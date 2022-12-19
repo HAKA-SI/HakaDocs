@@ -25,6 +25,8 @@ namespace API.Entities
         public ICollection<Message> MessagesReceived { get; set; }
         public ICollection<Email> EmailsSent { get; set; }
         public ICollection<Email> EmailsReceived { get; set; }
+        public HaKaDocClient HaKaDocClient { get; set; }
+        public int? HaKaDocClientId { get; set; }
 
 
     }

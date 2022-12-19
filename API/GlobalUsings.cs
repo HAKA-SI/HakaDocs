@@ -10,8 +10,7 @@ global using System.Text.Json.Serialization;
 global using System.Text.Unicode;
 global using System.Threading;
 global using System.Threading.Tasks;
-global 
-using Microsoft.AspNetCore.Authorization;
+global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Builder;
 global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.Http;
@@ -26,8 +25,7 @@ global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Extensions.Hosting;
 global using Microsoft.Extensions.Logging;
-global 
-using API.Data;
+global using API.Data;
 global using API.Dtos;
 global using API.Entities;
 global using API.Errors;
@@ -36,7 +34,12 @@ global using API.Helpers;
 global using API.Interfaces;
 global using API.Middleware;
 global using API.SignalR;
-global 
-using AutoMapper;
-global 
-using StackExchange.Redis;
+global using AutoMapper;
+global using StackExchange.Redis;
+global using CloudinaryDotNet;
+global using CloudinaryDotNet.Actions;
+global using API.Core.Interfaces;
+global using API.Core.services;
+global using API.Services;
+global using Microsoft.Extensions.Options;
+

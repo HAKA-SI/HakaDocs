@@ -5,7 +5,7 @@ namespace API.Entities
         public int Id { get; set; }
     public int? OrderId { get; set; }
     public int UserId { get; set; }
-    public User User { get; set; }
+    public AppUser User { get; set; }
     public Order Order { get; set; }
     public DateTime OpDate { get; set; }
     public string Action { get; set; }

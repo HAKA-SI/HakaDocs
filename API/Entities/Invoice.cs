@@ -20,7 +20,7 @@ namespace API.Entities
     public int? OrderLineId { get; set; }
     public OrderLine OrderLine { get; set; }
     public int? UserId { get; set; }
-    public User User { get; set; }
+    public AppUser User { get; set; }
     public Boolean Created { get; set; }
     public Boolean Cancelled { get; set; }
     public Boolean Validated { get; set; }

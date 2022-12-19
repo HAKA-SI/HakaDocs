@@ -1,17 +1,5 @@
-using API.Core.Interfaces;
-using API.Core.services;
-using API.Data;
-using API.Helpers;
-using API.Interfaces;
-using API.Services;
-using API.SignalR;
+
 // using API.workers;
-using AutoMapper;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using StackExchange.Redis;
 
 namespace API.Extensions
 {
@@ -24,7 +12,7 @@ namespace API.Extensions
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));
             services.AddScoped<ITokenService, TokenService>();
             services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<IEmailSender, EmailSender>();
+            services.AddTransient<IPhotoService, PhotoService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<LogUserActivity>();
             //   services.AddHostedService<Worker>();
