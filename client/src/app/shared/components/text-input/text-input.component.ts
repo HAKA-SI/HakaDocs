@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnInit, Self, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
+
 @Component({
   selector: 'app-text-input',
   templateUrl: './text-input.component.html',
@@ -10,8 +11,9 @@ export class TextInputComponent implements OnInit, ControlValueAccessor {
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() type = 'text';
   @Input() label: string;
+  @Input() required:boolean =true;
 
-  constructor(@Self() public controlDir: NgControl) {
+  constructor(@Self() public controlDir: NgControl,) {
     this.controlDir.valueAccessor = this;
   }
 

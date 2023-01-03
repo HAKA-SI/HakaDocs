@@ -1,3 +1,9 @@
+using System.Threading.Tasks;
+using API.Entities;
+using API.Interfaces;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+
 namespace API.Data
 {
     public class UserRepository : IUserRepository

@@ -52,12 +52,12 @@ export class NavService {
 					]
 				},
 				{
-					title: 'digital', type: 'sub', children: [
-						{ path: '/products/digital/digital-category', title: 'Category', type: 'link' },
-						{ path: '/products/digital/digital-sub-category', title: 'Sub Category', type: 'link' },
-						{ path: '/products/digital/digital-product-list', title: 'Product List', type: 'link' },
-						{ path: '/products/digital/digital-add-product', title: 'Add Product', type: 'link' },
-					]
+				title: 'digital', type: 'sub', children: [
+					{ path: '/products/digital/digital-category', title: 'Category', type: 'link' },
+					{ path: '/products/digital/digital-sub-category', title: 'Sub Category', type: 'link' },
+					{ path: '/products/digital/digital-product-list', title: 'Product List', type: 'link' },
+					{ path: '/products/digital/digital-add-product', title: 'Add Product', type: 'link' },
+				]
 				},
 			]
 		},
@@ -89,11 +89,24 @@ export class NavService {
 			]
 		},
 		{
+			title: 'Customers', icon: 'users', type: 'sub', active: false, children: [
+				{ path: '/customers/list-customer', title: 'Customer List', type: 'link' },
+				{ path: '/customers/create-customer', title: 'Create Customer', type: 'link' },
+			]
+		},
+		{
 			title: 'Users', icon: 'user-plus', type: 'sub', active: false, children: [
 				{ path: '/users/list-user', title: 'User List', type: 'link' },
 				{ path: '/users/create-user', title: 'Create User', type: 'link' },
 			]
 		},
+		{
+			title: 'Roles', icon: 'unlock', type: 'sub', active: false, children: [
+				{ path: '/accounts/roles', title: 'Users roles', type: 'link' },
+				{ path: '/accounts/create-role', title: 'Create Role', type: 'link' },
+			]
+		},
+		
 		{
 			title: 'Vendors', icon: 'users', type: 'sub', active: false, children: [
 				{ path: '/vendors/list-vendors', title: 'Vendor List', type: 'link' },
@@ -120,7 +133,8 @@ export class NavService {
 		},
 		{
 			title: 'Login',path: '/auth/login', icon: 'log-in', type: 'link', active: false
-		}
+		},
+		
 	]
 	// Array
 	items = new BehaviorSubject<Menu[]>(this.MENUITEMS);

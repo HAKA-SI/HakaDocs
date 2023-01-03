@@ -1,4 +1,8 @@
 
+using API.Interfaces;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+
 namespace API.Controllers
 {
     [Authorize]

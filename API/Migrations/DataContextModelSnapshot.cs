@@ -65,6 +65,9 @@ namespace API.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("HaKaDocClientId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -74,6 +77,8 @@ namespace API.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HaKaDocClientId");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
@@ -94,14 +99,11 @@ namespace API.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("City")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
@@ -117,7 +119,7 @@ namespace API.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FIrstName")
+                    b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Gender")
@@ -125,15 +127,6 @@ namespace API.Migrations
 
                     b.Property<int?>("HaKaDocClientId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Interests")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Introduction")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("KnownAs")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("LastActive")
                         .HasColumnType("datetime2");
@@ -146,9 +139,6 @@ namespace API.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("LookingFor")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -178,6 +168,8 @@ namespace API.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CityId");
 
                     b.HasIndex("HaKaDocClientId");
 
@@ -295,9 +287,6 @@ namespace API.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("MenuItemId");
@@ -379,7 +368,7 @@ namespace API.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("City");
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("API.Entities.Connection", b =>
@@ -423,9 +412,6 @@ namespace API.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
@@ -442,8 +428,8 @@ namespace API.Migrations
                     b.Property<bool>("AccountDataValidated")
                         .HasColumnType("bit");
 
-                    b.Property<byte>("Active")
-                        .HasColumnType("tinyint");
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
 
                     b.Property<int?>("BirthCityId")
                         .HasColumnType("int");
@@ -466,7 +452,7 @@ namespace API.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("DistrictId")
@@ -475,7 +461,7 @@ namespace API.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte>("Gender")
+                    b.Property<byte?>("Gender")
                         .HasColumnType("tinyint");
 
                     b.Property<int>("HaKaDocClientId")
@@ -502,9 +488,6 @@ namespace API.Migrations
                     b.Property<string>("PostalBox")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("RegCreated")
-                        .HasColumnType("bit");
-
                     b.Property<string>("SecondPhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -517,14 +500,8 @@ namespace API.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("UserTypeId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Validated")
                         .HasColumnType("bit");
-
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -544,9 +521,7 @@ namespace API.Migrations
 
                     b.HasIndex("MaritalStatusId");
 
-                    b.HasIndex("UserTypeId");
-
-                    b.ToTable("Customer");
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("API.Entities.DeadLine", b =>
@@ -625,9 +600,6 @@ namespace API.Migrations
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -716,9 +688,6 @@ namespace API.Migrations
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DocTypeId");
@@ -749,9 +718,6 @@ namespace API.Migrations
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1065,7 +1031,7 @@ namespace API.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
-                    b.Property<int>("CityId")
+                    b.Property<int?>("CityId")
                         .HasColumnType("int");
 
                     b.Property<string>("Contact1")
@@ -1088,9 +1054,6 @@ namespace API.Migrations
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("WebSiteUrl")
                         .HasColumnType("nvarchar(max)");
@@ -1179,12 +1142,9 @@ namespace API.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
-                    b.ToTable("MaritalStatus");
+                    b.ToTable("MaritalStatuses");
                 });
 
             modelBuilder.Entity("API.Entities.Menu", b =>
@@ -1224,9 +1184,6 @@ namespace API.Migrations
 
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -1660,9 +1617,6 @@ namespace API.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OrderLineId");
@@ -1831,9 +1785,6 @@ namespace API.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
@@ -1974,9 +1925,6 @@ namespace API.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Version")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("HaKaDocClientId");
@@ -2019,6 +1967,62 @@ namespace API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SmsTypes");
+                });
+
+            modelBuilder.Entity("API.Entities.Store", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Observation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CityId");
+
+                    b.ToTable("Stores");
+                });
+
+            modelBuilder.Entity("API.Entities.StoreUser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("StoreId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StoreId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("StoreUsers");
                 });
 
             modelBuilder.Entity("API.Entities.UserType", b =>
@@ -2148,11 +2152,26 @@ namespace API.Migrations
                     b.Navigation("District");
                 });
 
-            modelBuilder.Entity("API.Entities.AppUser", b =>
+            modelBuilder.Entity("API.Entities.AppRole", b =>
                 {
                     b.HasOne("API.Entities.HaKaDocClient", "HaKaDocClient")
                         .WithMany()
                         .HasForeignKey("HaKaDocClientId");
+
+                    b.Navigation("HaKaDocClient");
+                });
+
+            modelBuilder.Entity("API.Entities.AppUser", b =>
+                {
+                    b.HasOne("API.Entities.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId");
+
+                    b.HasOne("API.Entities.HaKaDocClient", "HaKaDocClient")
+                        .WithMany()
+                        .HasForeignKey("HaKaDocClientId");
+
+                    b.Navigation("City");
 
                     b.Navigation("HaKaDocClient");
                 });
@@ -2269,12 +2288,6 @@ namespace API.Migrations
                         .WithMany()
                         .HasForeignKey("MaritalStatusId");
 
-                    b.HasOne("API.Entities.UserType", "UserType")
-                        .WithMany()
-                        .HasForeignKey("UserTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("BirthCity");
 
                     b.Navigation("BirthCountry");
@@ -2290,8 +2303,6 @@ namespace API.Migrations
                     b.Navigation("HaKaDocClient");
 
                     b.Navigation("MaritalSatus");
-
-                    b.Navigation("UserType");
                 });
 
             modelBuilder.Entity("API.Entities.DeadLine", b =>
@@ -2541,9 +2552,7 @@ namespace API.Migrations
                 {
                     b.HasOne("API.Entities.City", "City")
                         .WithMany()
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CityId");
 
                     b.Navigation("City");
                 });
@@ -2899,6 +2908,36 @@ namespace API.Migrations
                         .HasForeignKey("RegFeeTypePId");
 
                     b.Navigation("RegFeeTypeP");
+                });
+
+            modelBuilder.Entity("API.Entities.Store", b =>
+                {
+                    b.HasOne("API.Entities.City", "City")
+                        .WithMany()
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("API.Entities.StoreUser", b =>
+                {
+                    b.HasOne("API.Entities.Store", "Store")
+                        .WithMany()
+                        .HasForeignKey("StoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Store");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

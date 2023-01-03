@@ -1,6 +1,19 @@
 
 // using API.workers;
 
+using API.Core.Interfaces;
+using API.Core.services;
+using API.Data;
+using API.Helpers;
+using API.Interfaces;
+using API.Services;
+using API.SignalR;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using StackExchange.Redis;
+
 namespace API.Extensions
 {
     public static class ApplicationServiceExtensions

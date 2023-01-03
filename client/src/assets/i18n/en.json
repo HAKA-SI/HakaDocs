@@ -180,6 +180,33 @@
     "CONTACTS": {
       "TEXT": "Contacts"
     }
+  },
+  "role-list":{
+    "title":"roles list",
+    "name":"role name",
+    "totalUsers":"total users",
+    "delete":"Delete"
+  },
+  "create-role":{
+    "title":"Add Role",
+    "roleName":"Role Name",
+    "save":"Save"
+  },
+  "create-customer":{
+    "title":"add new custoner",
+    "detail":"Customer details",
+    "firstName":"First Name",
+    "lastName":"Last Name",
+    "gender":"Gender",
+    "city":"City",
+    "dateOfBirth":"Date Of Birth",
+    "phoneNumber":"phoneNumber",
+    "secondPhoneNumber":"Second PhoneNumber",
+    "iddoc":"other ID ",
+    "passport":"Passport ",
+    "email":"Email",
+    "cni":"CNI",
+    "save":"Save"
   }
 
  

@@ -1,8 +1,8 @@
 export interface User{
   username: string;
   token: string;
-  lastName:string;
-  firstName:string;
+  gender:string;
+  haKaDocClientId:number;
   userTypeId:number;
   photoUrl: string;
   // knownAs: string;

@@ -22,8 +22,7 @@ export class AuthService {
   ) {}
 
   login(model: any) {
-    // const url = 'https://localhost:5003/api/account/login';
-    const url = this.baseUrl + "account/login";
+    const url = this.baseUrl + "auth/login";
     return this.http.post<User>(url, model).pipe(
       tap((user: User) => {
        // let user = data.user;
@@ -69,11 +68,11 @@ export class AuthService {
 
 
   register(values: any) {
-    return this.http.post(this.baseUrl + 'account/register', values);
+    return this.http.post(this.baseUrl + 'auth/register', values);
   }
 
 
   checkEmailExists(email: string) {
-    return this.http.get(this.baseUrl+'account/emailexists?email='+email);
+    return this.http.get(this.baseUrl+'auth/emailexists?email='+email);
   }
 }

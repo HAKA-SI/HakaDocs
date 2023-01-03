@@ -6,6 +6,8 @@ using System.Linq;
 using API.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using System.Text.Json;
+using API.Dtos;
 
 namespace API.Data
 {
@@ -16,25 +18,32 @@ namespace API.Data
             if (!userManager.Users.Any())
             {
 
+                //ajout d'un client pour les tests
+                var hakaClient = new HaKaDocClient
+                {
+                    Name = "test",
+                    Description = "compte client test",
+                    CountryCode = "000",
+
+                };
+                context.HaKaDocClients.Add(hakaClient);
+                await context.SaveChangesAsync();
+
                 var roles = new List<AppRole>{
                 new AppRole{Name="Admin"},
-                new AppRole{Name="Member"},
-                new AppRole{Name="Moderator"}
-            };
+                new AppRole{Name="Member"}
+                      };
                 foreach (var role in roles)
                 {
                     await roleManager.CreateAsync(role);
                 }
 
 
-                var adminUser = new AppUser { UserName = "admin" };
+                var adminUser = new AppUser { UserName = "admin", HaKaDocClientId = 1 };
                 await userManager.CreateAsync(adminUser, "password");
-                await userManager.AddToRolesAsync(adminUser, new[] { "Admin", "Moderator" });
+                await userManager.AddToRolesAsync(adminUser, new[] { "Admin", "Member" });
 
-                //ajout utilisateur étudiant
-                var studentUser = new AppUser { UserName = "student" };
-                await userManager.CreateAsync(studentUser, "password");
-                await userManager.AddToRoleAsync(studentUser, "Moderator");
+                //ajout d'un store tes
 
 
                 var banks = new List<Bank>()
@@ -69,7 +78,7 @@ namespace API.Data
                     await context.SaveChangesAsync();
                 }
             }
-           
+
 
             if (!context.DocTypes.Any())
             {
@@ -78,6 +87,29 @@ namespace API.Data
                     new DocType { Name = "CV" },
                     new DocType { Name = "Passport" }
                 );
+                await context.SaveChangesAsync();
+            }
+
+            if (!context.MaritalStatuses.Any())
+            {
+                var maritalsStatus = new List<MaritalStatus>() {
+                    new MaritalStatus{Name="Célbataire"},
+                    new MaritalStatus{Name="Marié(e)"},
+                    new MaritalStatus{Name="Veuf/veuve"},
+                    new MaritalStatus{Name="Divorcé(e)"}
+                };
+                context.AddRange(maritalsStatus);
+            }
+
+            if(!context.Cities.Any())
+            {
+                var cities = new List<City>(){
+                new City{Name="Abidjan",CountryId=1},
+                new City{Name="Yamoussokro",CountryId=1},
+                new City{Name="Bouake",CountryId=1},
+                };
+
+                context.AddRange(cities);
                 await context.SaveChangesAsync();
             }
 

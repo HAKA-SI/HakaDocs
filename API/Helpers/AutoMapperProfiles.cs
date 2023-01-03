@@ -1,4 +1,10 @@
 
+using System;
+using System.Linq;
+using API.Dtos;
+using API.Entities;
+using AutoMapper;
+
 namespace API.Helpers
 {
     public class AutoMapperProfiles : Profile
@@ -12,6 +18,7 @@ namespace API.Helpers
            CreateMap<Photo,PhotoDto>();
            CreateMap<MemberUpdateDto,AppUser>();
            CreateMap<RegisterDto,AppUser>();
+           CreateMap<CustomerCreationDto,Customer>();
            CreateMap<Message, MessageDto>()
            .ForMember(dest => dest.SenderPhotoUrl, opt => opt.MapFrom(src => src.Sender.Photos.FirstOrDefault(p => p.IsMain).Url))
            .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(src => src.Recipient.Photos.FirstOrDefault(p => p.IsMain).Url));

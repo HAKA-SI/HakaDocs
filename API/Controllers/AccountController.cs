@@ -1,5 +1,24 @@
+
+
+using API.Data;
+using API.Entities;
+using API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using AutoMapper;
+using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using API.Dtos;
+using Microsoft.AspNetCore.Mvc;
+using API.Extensions;
+using System.Linq;
+
 namespace API.Controllers
 {
+    [Authorize]
     public class AccountController : BaseApiController
     {
         private readonly DataContext _context;
@@ -11,12 +30,14 @@ namespace API.Controllers
         private readonly IEmailSender _emailSender;
 
         private readonly UserManager<AppUser> _userManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
         private readonly SignInManager<AppUser> _signInManager;
 
         public AccountController(
             UserManager<AppUser> userManager,
             SignInManager<AppUser> signInManager,
+            RoleManager<AppRole> roleInManager,
             DataContext context,
             ITokenService tokenService,
             IMapper mapper,
@@ -25,6 +46,7 @@ namespace API.Controllers
         )
         {
             _signInManager = signInManager;
+            _roleManager = roleInManager;
             _userManager = userManager;
             _mapper = mapper;
             _config = config;
@@ -33,124 +55,46 @@ namespace API.Controllers
             _emailSender = emailSender;
         }
 
-        
 
-       [HttpPost("register")]
-        public async Task<ActionResult> Register(RegisterDto registerDto)
+
+        [HttpPost("CreateRole/{haKaDocClientId}/{roleName}")]
+        public async Task<ActionResult> CreateRole(int haKaDocClientId, string roleName)
         {
-            string password =  _config["Password"] ;
-            if (CheckEmailExistAsync(registerDto.Email).Result.Value)
+            var actionAllowed =await verifyHakaDocClientAccount(haKaDocClientId);
+            if(!actionAllowed) return Unauthorized();
+            var role = new AppRole
             {
-                return new BadRequestObjectResult(new ApiValidationErrorResponse{Errors = new []{"email dejà utilisé..."}});
+                Name = roleName,
+                HaKaDocClientId = haKaDocClientId
+            };
+            var result =await _roleManager.CreateAsync(role);
+            if(result.Succeeded) return Ok();
+            return BadRequest("impossible d'ajouter le role");
+
+        }
+
+
+        [HttpGet("GetRoleList/{haKaDocClientId}")]
+        public async Task<ActionResult> GetRoleList(int haKaDocClientId)
+        {
+            var actionAllowed =await verifyHakaDocClientAccount(haKaDocClientId);
+            if(!actionAllowed) return Unauthorized();
+            var roles =await _roleManager.Roles.Include(a => a.UserRoles).Where(a => a.HaKaDocClientId == haKaDocClientId).ToListAsync();
+            var rolesToReturn = new List<RoleForListDto>();
+            foreach (var role in roles)
+            {
+                rolesToReturn.Add(new RoleForListDto{Name = role.Name,Id=role.Id,TotalUsers=role.UserRoles.Count()});
             }
-
-            var user = new AppUser
-            {
-                Email = registerDto.Email,
-                UserName = registerDto.Email,
-                PhoneNumber=registerDto.PhoneNumber,
-                
-            };
-
-            var result = await _userManager.CreateAsync(user, password);
-
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400));
-            //envoi du lien de confirmation
-            var email_to_send=new EmailFormDto{
-                    Subject="Confirmation de compte",
-                    ToEmail=registerDto.Email,
-                    Content="<h3> veuillez confirmez vontre compte en cliquznt sur le lien suivant"
-                };
-
-            SendEmail(email_to_send);
-            return Ok();
-
-         }
-
-        [AllowAnonymous]
-        [HttpPost("login")]
-        public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
-        {
-            var user =
-                await _userManager
-                    .Users
-                    .Include(p => p.Photos)
-                    .SingleOrDefaultAsync(user =>
-                        user.UserName == loginDto.Username.ToLower());
-            if (user == null) return BadRequest("invalid username");
-
-            var result =
-                await _signInManager
-                    .CheckPasswordSignInAsync(user, loginDto.Password, false);
-            if (!result.Succeeded) return Unauthorized();
-
-            // return user;
-            return new UserDto {
-                Username = user.UserName,
-                Token = await _tokenService.CreateToken(user),
-                PhotoUrl = user.Photos.FirstOrDefault(ph => ph.IsMain)?.Url,
-                KnownAs = user.KnownAs,
-                Gender = user.Gender
-            };
+            return Ok(rolesToReturn);
         }
 
-        [AllowAnonymous]
-        [HttpGet("emailexists")]
-        public async Task<ActionResult<bool>>
-        CheckEmailExistAsync([FromQuery] string email)
+        private async  Task<bool> verifyHakaDocClientAccount(int hakadocClientId)
         {
-            return await _userManager.FindByEmailAsync(email) != null;
+            var userName = User.GetUsername();
+            var loggedUser = await _signInManager.UserManager.FindByNameAsync(userName);
+            if(loggedUser.HaKaDocClientId !=hakadocClientId) return false;
+            return true;
         }
 
-    
-
-        // private async Task<List<ClientForListDto>> GetClientsTokens()
-        // {
-        //     var clients = await _context.Clients.ToListAsync();
-        //     var clientsToReturn = new List<ClientForListDto>();
-        //     foreach (var client in clients)
-        //     {
-        //         //making http post request
-        //         var httpClient = new HttpClient();
-        //         string url = client.BaseUrl + "auth/login";
-        //         var doc = new UserForLoginDto()
-        //         {
-        //             Username = "admin",
-        //             Password = "password"
-        //         };
-        //         httpClient.DefaultRequestHeaders.Accept.Clear();
-        //         httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        //         var response = await httpClient.PostAsJsonAsync(url, doc);
-        //         var responseString = await response.Content.ReadAsStringAsync();
-        //         var responseData = JsonConvert.DeserializeObject<AuthDataReturnedDto>(responseString);
-        //         if (responseData != null)
-        //         {
-        //             clientsToReturn.Add(
-        //                 new ClientForListDto {
-
-        //                     Id = client.Id,
-
-        //                     BaseUrl = client.BaseUrl,
-
-        //                     Name = client.Name,
-
-        //                     Token = responseData.Token,
-        //                     SubDomain = client.SubDomain }
-        //             );
-        //         }
-        //     }
-        //     return clientsToReturn;
-        // }
-        private async Task<bool> UserExists(string userName)
-        {
-            return await _userManager
-                .Users
-                .AnyAsync(user => user.UserName == userName.ToLower());
-        }
-        private async void SendEmail(EmailFormDto mail)
-        {
-            await _emailSender.SendEmailAsync(mail.ToEmail, mail.Subject, mail.Content);
-
-        }
     }
 }

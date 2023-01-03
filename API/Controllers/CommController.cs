@@ -1,3 +1,12 @@
+using System.Security.Cryptography.X509Certificates;
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using API.Dtos;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
+using API.Interfaces;
 
 namespace API.Controllers
 {
@@ -31,6 +40,8 @@ namespace API.Controllers
            };
            return Ok(response);
         }
+
+       
 
         private class Titre
         {

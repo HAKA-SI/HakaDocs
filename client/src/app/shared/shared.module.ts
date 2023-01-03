@@ -19,6 +19,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 import { TranslateModule } from '@ngx-translate/core';
 import {  HttpClient} from '@angular/common/http';
+import { DateInputComponent } from './components/date-input/date-input.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -34,10 +36,12 @@ const maskConfig: Partial<IConfig> = {
     BreadcrumbComponent,
     RightSidebarComponent,
     TextInputComponent,
+    DateInputComponent,
   ],
   imports: [
     CommonModule,
-    BsDropdownModule.forRoot(),
+    NgbModule,
+     BsDropdownModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
     }),
@@ -51,9 +55,11 @@ const maskConfig: Partial<IConfig> = {
     ToggleFullscreenDirective,
     BsDropdownModule,
     NgxMaskModule,
+    NgbModule,
     ToastrModule,
     TranslateModule,
     TextInputComponent,
+    DateInputComponent,
   ],
 })
 export class SharedModule {}

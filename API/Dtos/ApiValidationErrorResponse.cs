@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using API.Errors;
+
 namespace API.Dtos
 {
     public class ApiValidationErrorResponse : ApiResponse

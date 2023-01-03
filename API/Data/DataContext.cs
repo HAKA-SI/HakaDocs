@@ -1,11 +1,13 @@
 using System;
 using API.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Data
 {
@@ -64,6 +66,11 @@ namespace API.Data
     public DbSet<OrderLineRegFee> OrderLineRegFees{ get; set; }
     public DbSet<Receipt> Receipts{ get; set; }
     public DbSet<HaKaDocClient> HaKaDocClients{ get; set; }
+    public DbSet<Store> Stores{ get; set; }
+    public DbSet<StoreUser> StoreUsers{ get; set; }
+    public DbSet<MaritalStatus> MaritalStatuses{ get; set; }
+    public DbSet<Customer> Customers{ get; set; }
+    public DbSet<City> Cities{ get; set; }
 
 
     

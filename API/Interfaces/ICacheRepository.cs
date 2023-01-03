@@ -7,6 +7,8 @@ namespace API.Interfaces
 {
   public interface ICacheRepository
   {
+    Task<List<City>> GetCities();
+    Task<List<City>> SetCities();
     // Task<List<AppUser>> GetUsers();
     // Task<List<User>> GetStudents();
     // Task<List<User>> GetParents();
@@ -101,8 +103,6 @@ namespace API.Interfaces
     // Task<List<UserRole>> SetUserRoles();
     // Task<List<Country>> GetCountries();
     // Task<List<Country>> SetCountries();
-    // Task<List<City>> GetCities();
-    // Task<List<City>> SetCities();
     // Task<List<District>> GetDistricts();
     // Task<List<District>> SetDistricts();
     // Task<List<MaritalStatus>> GetMaritalStatus();

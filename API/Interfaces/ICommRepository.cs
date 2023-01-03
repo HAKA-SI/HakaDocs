@@ -1,3 +1,6 @@
+using System.Threading.Tasks;
+using API.Dtos;
+
 namespace API.Interfaces
 {
     public interface ICommRepository

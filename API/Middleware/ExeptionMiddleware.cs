@@ -1,3 +1,13 @@
+using System.Net;
+using System.Text.Json;
+using System.Threading.Tasks;
+using API.Dtos;
+using API.Errors;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+
 namespace API.Middleware
 {
     public class ExeptionMiddleware
@@ -44,7 +54,7 @@ namespace API.Middleware
                     mail.Subject = "HakaDocs Error";
                     mail.Content = "<h1>" + ex.Message + "</h1><br><h1>" + ex.InnerException + "</h1><br>" + ex.ToString();
                     mail.ToEmail = recipient;
-                    await SendEmail(mail);
+                  //  await SendEmail(mail);
 
                 }
 

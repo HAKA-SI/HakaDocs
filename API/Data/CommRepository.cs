@@ -1,3 +1,8 @@
+using System.Threading.Tasks;
+using API.Dtos;
+using API.Interfaces;
+using Microsoft.AspNetCore.Identity.UI.Services;
+
 namespace API.Data
 {
     public class CommRepository: ICommRepository

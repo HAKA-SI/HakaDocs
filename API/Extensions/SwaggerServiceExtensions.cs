@@ -11,7 +11,7 @@ namespace API.Extensions
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "SW API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HaKaDocs API", Version = "v1" });
                 var securityScheme = new OpenApiSecurityScheme{
                     Description ="JWT Bearer scheme",
                     Name ="Authorization",
@@ -35,7 +35,7 @@ namespace API.Extensions
         public static IApplicationBuilder UseSwaggerDocumentation(this IApplicationBuilder app)
         {
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "SW API v1"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HaKaDocs API v1"));
             return app;
         }
 

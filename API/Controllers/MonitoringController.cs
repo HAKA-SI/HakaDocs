@@ -1,4 +1,8 @@
 
+using API.Data;
+using Microsoft.AspNetCore.Mvc;
+using StackExchange.Redis;
+
 namespace API.Controllers
 {
   [Route("api/[controller]")]

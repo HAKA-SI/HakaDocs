@@ -55,6 +55,34 @@
     "File's owner":"Propriétaire du dossier",
     "Please select the file's owner":"Choisir le propriétaire du dossier svp",
     "File's step":"Etape du dossier"
+  },
+  "role-list":{
+    "title":"liste des roles",
+    "name":"nom du role",
+    "totalUsers":"total utilisateur",
+    "delete":"Supprimer"
+  },
+  "create-role":{
+    "title":"Ajouter un role",
+    "roleName":"nom du role",
+    "save":"Enregister"
+  },
+  "create-customer":{
+    "title":"ajouter Nouveau client",
+    "detail":"Détails du client",
+    "firstName":"Nom",
+    "lastName":"Prenom(s)",
+    "gender":"Sexe",
+    "city":"Ville",
+    "dateOfBirth":"Date de naissance",
+    "phoneNumber":"Contact prinicipal",
+    "secondPhoneNumber":"deuxième contact",
+    "iddoc":"Autre Pièce",
+    "passport":"Passeport ",
+    "cni":"CNI",
+    "email":"Email",
+    "save":"Enregister"
+
   }
 
 }

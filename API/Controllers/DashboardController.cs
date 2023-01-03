@@ -1,4 +1,7 @@
 
+using API.SignalR;
+using Microsoft.AspNetCore.SignalR;
+
 namespace API.Controllers
 {
     public class DashboardController : BaseApiController
