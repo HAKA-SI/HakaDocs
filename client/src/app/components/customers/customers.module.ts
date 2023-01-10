@@ -7,13 +7,15 @@ import { ListCustomerComponent } from './list-customer/list-customer.component';
 import { CreateCustomerComponent } from './create-customer/create-customer.component';
 import { CustomersRoutingModule } from './customers-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { EditCustomerComponent } from './edit-customer/edit-customer.component';
 
 
 
 @NgModule({
   declarations: [
     ListCustomerComponent,
-    CreateCustomerComponent
+    CreateCustomerComponent,
+    EditCustomerComponent
   ],
   imports: [
     CommonModule,

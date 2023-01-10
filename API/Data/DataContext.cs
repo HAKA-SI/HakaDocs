@@ -71,6 +71,20 @@ namespace API.Data
     public DbSet<MaritalStatus> MaritalStatuses{ get; set; }
     public DbSet<Customer> Customers{ get; set; }
     public DbSet<City> Cities{ get; set; }
+    public DbSet<ProductGroup> ProductGroups{ get; set; }
+    public DbSet<Category> Categories{ get; set; }
+    public DbSet<Feature> Features{ get; set; }
+    public DbSet<InventOp> InventOps{ get; set; }
+    public DbSet<InventOpType> InventOpTypes{ get; set; }
+    public DbSet<StockHistory> StockHistories{ get; set; }
+    public DbSet<StockHistoryAction> StockHistoryActions{ get; set; }
+    public DbSet<StockMvt> StockMvts{ get; set; }
+    public DbSet<StoreProduct> StoreProducts{ get; set; }
+    public DbSet<SubProduct> SubProducts{ get; set; }
+    public DbSet<SubProductFeature> SubProductFeatures{ get; set; }
+    public DbSet<Entities.Type> Types{ get; set; }
+    public DbSet<SubProductSN> SubProductSNs{ get; set; }
+    public DbSet<InventOpSubProductSN> InventOpSubProductSNs{ get; set; }
 
 
     

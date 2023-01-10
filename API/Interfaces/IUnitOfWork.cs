@@ -7,7 +7,9 @@ namespace API.Interfaces
     public interface IUnitOfWork
     {
         IUserRepository UserRepository { get; }
+        IAuthRepository AuthRepository { get; }
         ICommRepository CommRepository { get; }
+        ICustomerRepository CustomerRepository { get; }
         void Add<T>(T entity) where T : class;
         void Update<T>(T entity) where T : class;
         void Delete<T>(T entity) where T : class;

@@ -1,16 +1,10 @@
-using System.Reflection.Metadata.Ecma335;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 namespace API.Entities
 {
-    public class Store:BaseEntity
+    public class Store:BaseEntityWithName
     {
-        public string Name { get; set; }
-        public string Observation { get; set; }
-        public int CityId { get; set; }
-        public City City { get; set; }
+        public int? UserId { get; set; }
+        public AppUser User { get; set; }
+        public int? DistrictId { get; set; }
+        public District District { get; set; }
     }
 }

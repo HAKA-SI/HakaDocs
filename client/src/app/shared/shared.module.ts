@@ -21,6 +21,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import {  HttpClient} from '@angular/common/http';
 import { DateInputComponent } from './components/date-input/date-input.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ButtonViewComponent } from './components/button-view/button-view.component';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -37,6 +38,7 @@ const maskConfig: Partial<IConfig> = {
     RightSidebarComponent,
     TextInputComponent,
     DateInputComponent,
+    ButtonViewComponent,
   ],
   imports: [
     CommonModule,
@@ -60,6 +62,7 @@ const maskConfig: Partial<IConfig> = {
     TranslateModule,
     TextInputComponent,
     DateInputComponent,
+    ButtonViewComponent,
   ],
 })
 export class SharedModule {}

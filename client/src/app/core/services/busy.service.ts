@@ -11,9 +11,9 @@ busyRequestCount=0;
   busy() {
     this.busyRequestCount++;
     this.spinnerService.show(undefined, {
-      type: 'timer',
+      type: 'ball-scale-multiple',
       bdColor:'rgba(0,0,0,0.5)',
-      color:'#f64c67',
+      color:'#ef8787',
       fullScreen:true
     })
   }

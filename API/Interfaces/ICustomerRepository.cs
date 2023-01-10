@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using API.Entities;
 
 namespace API.Interfaces
 {
     public interface ICustomerRepository
     {
-        
+        Task<Customer> GetCustomerById(int customerId);
+        Task<List<Customer>>GetCustomerList(int haKaDocClientId);
     }
 }

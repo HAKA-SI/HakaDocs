@@ -24,7 +24,7 @@ namespace API.Controllers
         private readonly DataContext _context;
 
         private readonly ITokenService _tokenService;
-
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IConfiguration _config;
         private readonly IEmailSender _emailSender;
@@ -40,6 +40,7 @@ namespace API.Controllers
             RoleManager<AppRole> roleInManager,
             DataContext context,
             ITokenService tokenService,
+            IUnitOfWork unitOfWork,
             IMapper mapper,
             IConfiguration config,
             IEmailSender emailSender
@@ -49,6 +50,7 @@ namespace API.Controllers
             _roleManager = roleInManager;
             _userManager = userManager;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
             _config = config;
             _tokenService = tokenService;
             _context = context;
@@ -60,7 +62,7 @@ namespace API.Controllers
         [HttpPost("CreateRole/{haKaDocClientId}/{roleName}")]
         public async Task<ActionResult> CreateRole(int haKaDocClientId, string roleName)
         {
-            var actionAllowed =await verifyHakaDocClientAccount(haKaDocClientId);
+            var actionAllowed =await _unitOfWork.AuthRepository.CanDoAction(User.GetUserId(),haKaDocClientId);
             if(!actionAllowed) return Unauthorized();
             var role = new AppRole
             {
@@ -77,7 +79,7 @@ namespace API.Controllers
         [HttpGet("GetRoleList/{haKaDocClientId}")]
         public async Task<ActionResult> GetRoleList(int haKaDocClientId)
         {
-            var actionAllowed =await verifyHakaDocClientAccount(haKaDocClientId);
+            var actionAllowed =await _unitOfWork.AuthRepository.CanDoAction(User.GetUserId(),haKaDocClientId);
             if(!actionAllowed) return Unauthorized();
             var roles =await _roleManager.Roles.Include(a => a.UserRoles).Where(a => a.HaKaDocClientId == haKaDocClientId).ToListAsync();
             var rolesToReturn = new List<RoleForListDto>();
@@ -88,13 +90,13 @@ namespace API.Controllers
             return Ok(rolesToReturn);
         }
 
-        private async  Task<bool> verifyHakaDocClientAccount(int hakadocClientId)
-        {
-            var userName = User.GetUsername();
-            var loggedUser = await _signInManager.UserManager.FindByNameAsync(userName);
-            if(loggedUser.HaKaDocClientId !=hakadocClientId) return false;
-            return true;
-        }
+        // private async  Task<bool> verifyHakaDocClientAccount(int hakadocClientId)
+        // {
+        //     var userName = User.GetUsername();
+        //     var loggedUser = await _signInManager.UserManager.FindByNameAsync(userName);
+        //     if(loggedUser.HaKaDocClientId !=hakadocClientId) return false;
+        //     return true;
+        // }
 
     }
 }

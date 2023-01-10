@@ -1,7 +1,9 @@
 
 using System.Threading.Tasks;
+using API.Entities;
 using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace API.Data
@@ -11,24 +13,30 @@ namespace API.Data
         private readonly DataContext _context;
 
         private readonly IEmailSender _sender;
+        private readonly SignInManager<AppUser> _signInManager;
+
 
         private readonly IMapper _mapper;
 
         public UnitOfWork(
             DataContext context,
             IMapper mapper,
-            IEmailSender sender
+            IEmailSender sender,
+              SignInManager<AppUser> signInManager
         )
         {
             _mapper = mapper;
             _context = context;
             _sender = sender;
+            _signInManager=signInManager;
         }
 
         public IUserRepository UserRepository =>
             new UserRepository(_context, _mapper);
 
         public ICommRepository CommRepository => new CommRepository(_sender);
+        public IAuthRepository AuthRepository => new AuthRepository(_signInManager);
+        public ICustomerRepository CustomerRepository => new CustomerRepository(_context);
 
 
         public void Add<T>(T entity) where T : class

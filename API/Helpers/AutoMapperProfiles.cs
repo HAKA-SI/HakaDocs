@@ -22,6 +22,15 @@ namespace API.Helpers
            CreateMap<Message, MessageDto>()
            .ForMember(dest => dest.SenderPhotoUrl, opt => opt.MapFrom(src => src.Sender.Photos.FirstOrDefault(p => p.IsMain).Url))
            .ForMember(dest => dest.RecipientPhotoUrl, opt => opt.MapFrom(src => src.Recipient.Photos.FirstOrDefault(p => p.IsMain).Url));
+           CreateMap<Customer,CustomerForListDto>()
+            .ForMember(dest => dest.City, opt => opt.MapFrom(src => src.City.Name))
+            .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.Name))
+            .ForMember(dest => dest.District, opt => opt.MapFrom(src => src.District.Name))
+            .ForMember(dest => dest.BirthCountry, opt => opt.MapFrom(src => src.BirthCountry.Name))
+            .ForMember(dest => dest.MaritalSatus, opt => opt.MapFrom(src => src.MaritalSatus.Name))
+            .ForMember(dest => dest.BirthDistrict, opt => opt.MapFrom(src => src.BirthDistrict.Name))
+            .ForMember(dest => dest.BirthCity, opt => opt.MapFrom(src => src.BirthCity.Name))
+            .ForMember(dest => dest.HaKaDocClient, opt => opt.MapFrom(src => src.HaKaDocClient.Name));
            CreateMap<DateTime,DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
         }
     }

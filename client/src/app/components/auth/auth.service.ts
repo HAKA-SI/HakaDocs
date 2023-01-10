@@ -5,6 +5,7 @@ import { ReplaySubject } from 'rxjs';
 import { User } from 'src/app/shared/models/user.model';
 import { environment } from 'src/environments/environment';
 import { map, tap } from 'rxjs/operators';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 @Injectable({
@@ -14,6 +15,9 @@ export class AuthService {
   private baseUrl = environment.apiUrl;
   private currentuserSource = new ReplaySubject<User>(1);
   currentUser$ = this.currentuserSource.asObservable();
+  jwtHelper = new JwtHelperService();
+  redirectUrl: string;
+  decodedToken: any;
 
   constructor(
     private http: HttpClient,
@@ -32,6 +36,30 @@ export class AuthService {
     );
   }
 
+  roleMatch(allowedRoles): boolean {
+    let isMatch = false;
+    const userRoles = this.decodedToken.role as Array<string>;
+    allowedRoles.forEach(element => {
+      if (userRoles.includes(element)) {
+        isMatch = true;
+        return;
+      }
+    });
+    return isMatch;
+  }
+
+  isLogin(): boolean {
+    const token = localStorage.getItem('token');
+    return !this.jwtHelper.isTokenExpired(token);
+  }
+
+  loggedIn() {
+    const token = localStorage.getItem('token');
+    const isExpired= !this.jwtHelper.isTokenExpired(token);
+    return isExpired;
+  }
+
+
   logout() {
     localStorage.removeItem('user');
   //  localStorage.removeItem('clients');
@@ -39,6 +67,7 @@ export class AuthService {
     // this.presenceService.stopHubConnection();
     // this.dashboardService.stopHubConnection();
     this.router.navigate(['/auth/login']);
+    this.decodedToken=null;
   }
 
   setCurrentuser(user: User) {
@@ -46,6 +75,7 @@ export class AuthService {
     const roles = this.getDecodeToken(user.token).role;
     Array.isArray(roles) ? (user.roles = roles) : user.roles.push(roles);
     localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('token', JSON.stringify(user.token ));
     this.currentuserSource.next(user);
   }
 
@@ -55,16 +85,16 @@ export class AuthService {
     return JSON.parse(atob(token.split('.')[1]));
   }
 
-  isLogin(): boolean {
-    var response: boolean;
-    if (
-      this.currentUser$.subscribe((user) => {
-        if (user) return (response = true);
-        return (response = false);
-      })
-    )
-      return response;
-  }
+  // isLogin(): boolean {
+  //   var response: boolean;
+  //   if (
+  //     this.currentUser$.subscribe((user) => {
+  //       if (user) return (response = true);
+  //       return (response = false);
+  //     })
+  //   )
+  //     return response;
+  // }
 
 
   register(values: any) {

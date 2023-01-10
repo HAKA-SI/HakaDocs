@@ -20,7 +20,7 @@ export class CreateCustomerComponent implements OnInit {
 
   constructor(private authService: AuthService,private formBuilder: FormBuilder, public commonService: CommonService
     , private toastr: ToastrService, private customerService:CustomerService) {
-    this.createAccountForm();
+    this.createCustomerForm();
     this.getCities();
     this.authService.currentUser$
     .pipe(take(1))
@@ -29,13 +29,13 @@ export class CreateCustomerComponent implements OnInit {
   }
 
   
-  createAccountForm() {
+  createCustomerForm() {
     this.customerForm = this.formBuilder.group({
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
       gender: [null],
       dateOfBirth: [],
-      resCityId: [null, Validators.required],
+      cityId: [null, Validators.required],
       phoneNumber: ['', Validators.required],
       secondPhoneNumber: [''],
       email: [
@@ -62,7 +62,6 @@ export class CreateCustomerComponent implements OnInit {
 
 
   save() {
-    console.log(this.customerForm.value);
     this.customerService.createCustomer(this.customerForm.value,this.loggedUser.haKaDocClientId).subscribe(() => {
       this.toastr.success("enregistrement terminé...");
       this.customerForm.reset();

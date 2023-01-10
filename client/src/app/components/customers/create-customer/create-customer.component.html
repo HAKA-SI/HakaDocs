@@ -18,7 +18,7 @@
                                          <app-text-input formControlName="email" [label]="'create-customer.email'" [required]="false"></app-text-input>
                                          <div class="form-group row">
                                             <label for="cityId" class="col-xl-3 col-sm-4 mb-0">{{'create-customer.city'|translate}}</label>
-                                            <select class="form-control digits col-xl-8 col-sm-7" id="cityId" formControlName="resCityId">
+                                            <select class="form-control digits col-xl-8 col-sm-7" id="cityId" formControlName="cityId">
                                                 <option value="null"></option>
                                                 <option *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
                                             </select>

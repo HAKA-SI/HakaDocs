@@ -1,1 +1,19 @@
-<p>list-customer works!</p>
+<!-- Container-fluid starts-->
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-header">
+            <h5>User Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="btn-popup pull-right">
+                <a class="btn btn-secondary" [routerLink]="'/customers/create-customer'">Create Customer</a>
+            </div>
+            <div id="batchDelete" class="category-table custom-datatable transcation-datatable user-image">
+                <div class="table-responsive">
+                    <ng2-smart-table [settings]="settings" [source]="customers"></ng2-smart-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Container-fluid Ends-->

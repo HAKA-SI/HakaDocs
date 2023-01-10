@@ -27,6 +27,10 @@ namespace API.Dtos
         public string ToBeValidatedEmail { get; set; }
         public Boolean AccountDataValidated { get; set; } =false;    
         public string PostalBox { get; set; }
-        public string NationalIDNum { get; set; }
+          public string Cni { get; set; }
+        public string Passport { get; set; }
+        public string Iddoc { get; set; }
+        public string Email { get; set; }
+
     }
 }

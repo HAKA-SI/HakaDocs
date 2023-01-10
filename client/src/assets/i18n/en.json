@@ -192,6 +192,12 @@
     "roleName":"Role Name",
     "save":"Save"
   },
+  "confirm-dialog":{
+    "delete":"Do you really want to make this removal?"
+  },
+  "ngx-loader":{
+    "msg":"Please wait..."
+  },
   "create-customer":{
     "title":"add new custoner",
     "detail":"Customer details",
@@ -207,6 +213,13 @@
     "email":"Email",
     "cni":"CNI",
     "save":"Save"
+  },
+  "category": {
+    "add-category-button":"Add Category",
+    "category-name":"Category Name",
+    "save":"Save",
+    "close":"Close",
+    "add-category":"Add Physical Product Category"
   }
 
  

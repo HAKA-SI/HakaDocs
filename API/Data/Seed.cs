@@ -113,6 +113,16 @@ namespace API.Data
                 await context.SaveChangesAsync();
             }
 
+
+            if(!context.ProductGroups.Any())
+            {
+                var groups = new List<ProductGroup>(){
+                    new ProductGroup{Name="Physical"},
+                    new ProductGroup{Name="Digital"}
+                };
+                context.ProductGroups.AddRange(groups);
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

@@ -67,6 +67,12 @@
     "roleName":"nom du role",
     "save":"Enregister"
   },
+  "confirm-dialog":{
+    "delete":"voulez-vous vraiment éffectuer cette suppression?"
+  },
+  "ngx-loader":{
+    "msg":"Patientez..."
+  },
   "create-customer":{
     "title":"ajouter Nouveau client",
     "detail":"Détails du client",
@@ -82,7 +88,13 @@
     "cni":"CNI",
     "email":"Email",
     "save":"Enregister"
-
+  },
+  "category": {
+    "add-category-button":"Ajouter une catégorie",
+    "category-name":"Nom de la catégorie",
+    "save":"Enregistrer",
+    "close":"Fermer",
+    "add-category":"Ajouter une catégorie de produits physiques"
   }
 
 }

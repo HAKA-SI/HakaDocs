@@ -22,6 +22,10 @@ export class AppComponent implements OnInit{
       this.languageService.initLanguage();
 
     //  this.presenceService.createHubConnection(user);
+    } else {
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      this.authService.setCurrentuser(null);
     }
   }
 }

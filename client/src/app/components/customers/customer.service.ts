@@ -14,4 +14,17 @@ export class CustomerService {
   createCustomer(customer,clientId){
     return this.http.post(this.baseUrl+"CreateCustomer/"+clientId,customer);
   }
+
+  getCustomerList(clientId: Number) {
+    return this.http.get(this.baseUrl+'getCustomerList/'+clientId);
+  }
+
+  getCustomerById(customerId:number,clientId: Number) {
+    return this.http.get(this.baseUrl+'GetCustomerById/'+customerId+'/'+clientId);
+  }
+
+  updateCustomerData(customerId,clientId,CustomerData) {
+    return this.http.put(this.baseUrl+"UpdateCustomerData/"+customerId+'/'+clientId,CustomerData);
+
+  }
 }
