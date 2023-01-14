@@ -5,7 +5,6 @@ import { Customer } from 'src/app/_models/customer.model';
 import { AuthService } from '../../auth/auth.service';
 import { CustomerService } from '../customer.service';
 import {TranslateService} from "@ngx-translate/core";
-import { ButtonViewComponent } from 'src/app/shared/components/button-view/button-view.component';
 @Component({
   selector: 'app-list-customer',
   templateUrl: './list-customer.component.html',
@@ -34,7 +33,7 @@ export class ListCustomerComponent implements OnInit {
     let phoneNumber = 'create-customer.phoneNumber';
     let secondPhoneNumber = 'create-customer.secondPhoneNumber';
     let city = 'create-customer.city';
-    this.columnheaders = ['','','']
+    this.columnheaders = ['','','','','','','']
    //Used TranslateService from @ngx-translate/core
     this.translationService.get(firstName).subscribe(label => this.columnheaders[0] = label);
     this.translationService.get(lastName).subscribe(label => this.columnheaders[1] = label);
@@ -56,16 +55,16 @@ export class ListCustomerComponent implements OnInit {
         // position: 'right'
       },
       columns: {
-        button: {
-          title: 'Button',
-          type: 'custom',
-          renderComponent: ButtonViewComponent,
-          onComponentInitFunction(instance) {
-            instance.save.subscribe(row => {
-              alert(`${row.id} saved!`)
-            });
-          }
-        },
+        // button: {
+        //   title: 'Button',
+        //   type: 'custom',
+        //   renderComponent: ButtonViewComponent,
+        //   onComponentInitFunction(instance) {
+        //     instance.save.subscribe(row => {
+        //       alert(`${row.id} saved!`)
+        //     });
+        //   }
+        // },
 
   
         firstName: {

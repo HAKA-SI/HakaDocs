@@ -11,10 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 using API.Dtos;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 
 namespace API.Controllers
 {
-    [Authorize]
+     [Authorize]
+    [ServiceFilter(typeof(LogUserActivity))]
     public class CustomerController : BaseApiController
     {
         private readonly IMapper _mapper;

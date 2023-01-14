@@ -2,12 +2,20 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
+import { ToastrModule } from 'ngx-toastr';
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { TranslateModule } from '@ngx-translate/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {NgxPaginationModule} from 'ngx-pagination'; 
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+
 
 import { FeatherIconsComponent } from './components/feather-icons/feather-icons.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
-
 import { ToggleFullscreenDirective } from './directives/fullscreen.directive';
 import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
 import { TextInputComponent } from './components/text-input/text-input.component';
@@ -15,13 +23,7 @@ import { NavService } from './service/nav.service';
 import { WINDOW_PROVIDERS } from './service/windows.service';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { RightSidebarComponent } from './components/right-sidebar/right-sidebar.component';
-import { ToastrModule } from 'ngx-toastr';
-import { NgxMaskModule, IConfig } from 'ngx-mask';
-import { TranslateModule } from '@ngx-translate/core';
-import {  HttpClient} from '@angular/common/http';
 import { DateInputComponent } from './components/date-input/date-input.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { ButtonViewComponent } from './components/button-view/button-view.component';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -37,12 +39,15 @@ const maskConfig: Partial<IConfig> = {
     BreadcrumbComponent,
     RightSidebarComponent,
     TextInputComponent,
-    DateInputComponent,
-    ButtonViewComponent,
+    DateInputComponent
   ],
   imports: [
     CommonModule,
-    NgbModule,
+    NgxPaginationModule,
+     NgbModule,
+    ModalModule.forRoot(),
+    Ng2SearchPipeModule,
+    BsDatepickerModule.forRoot(),
      BsDropdownModule.forRoot(),
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
@@ -56,13 +61,17 @@ const maskConfig: Partial<IConfig> = {
     FeatherIconsComponent,
     ToggleFullscreenDirective,
     BsDropdownModule,
+    NgxPaginationModule,
+    BsDatepickerModule,
+    Ng2SearchPipeModule,
+
+    ModalModule,
     NgxMaskModule,
     NgbModule,
     ToastrModule,
     TranslateModule,
     TextInputComponent,
-    DateInputComponent,
-    ButtonViewComponent,
+    DateInputComponent
   ],
 })
 export class SharedModule {}

@@ -1,11 +1,13 @@
 
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
-    [Authorize]
+     [Authorize]
+    [ServiceFilter(typeof(LogUserActivity))]
     public class UsersController : BaseApiController
     {
         private readonly IMapper _mapper;

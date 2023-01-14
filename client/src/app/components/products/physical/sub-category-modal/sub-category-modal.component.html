@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <h5 class="modal-title f-w-600" id="exampleModalLabel">{{'sub-category.add-sub-categorie'|translate}}</h5>
+{{editionMode}}
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()"> <span aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="modal-body">
+      <form [formGroup]="subCategoryForm" class="needs-validation user-add" novalidate>
+           <app-text-input formControlName="name" [label]="'sub-category.name'"></app-text-input>
+           <div class="form-group row my-0">
+              <label class="col-xl-3 col-md-3">{{'sub-category.categorie'|translate}}</label>
+              <select class="custom-select col-md-8" required="" formControlName="categoryId">
+                  <option value="">{{'actions.select'|translate}}</option>
+                  <option *ngFor="let item of categories" [value]="item.id">{{item.name}}</option>
+              </select>
+          </div>
+       
+      </form>
+  </div>
+  <div class="modal-footer">
+    <button [disabled]="!subCategoryForm.valid" (click)="save()"  type="button" class="btn btn-primary">{{'actions.save'|translate}}</button>
+    <button (click)="closeModal()" class="btn btn-secondary" type="button" data-dismiss="modal"
+        >{{'actions.close'|translate}}</button>
+</div>

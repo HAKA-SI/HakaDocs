@@ -22,9 +22,7 @@ export class CreateCustomerComponent implements OnInit {
     , private toastr: ToastrService, private customerService:CustomerService) {
     this.createCustomerForm();
     this.getCities();
-    this.authService.currentUser$
-    .pipe(take(1))
-    .subscribe((user) => (this.loggedUser = user));
+    this.authService.currentUser$.pipe(take(1)).subscribe((user) => (this.loggedUser = user));
     // this.createPermissionForm();
   }
 

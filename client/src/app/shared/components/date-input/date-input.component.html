@@ -3,13 +3,9 @@
     <label for="{{label}}" class="col-xl-4 col-md-4"><span>*</span>
         {{label|translate}}</label>
     <div class="input-group col-md-8 col-xl-8">
-        <input [minDate]="{year: 1960, month: 1, day: 1}" class="datepicker-here form-control digits" ngbDatepicker
+        <input [minDate]="{year: 1960, month: 1, day: 1}" class="datepicker-here form-control digits" bsDatepicker
         [ngClass]="(controlDir && controlDir.control && controlDir.control.touched) ? !controlDir.control.valid ? 'is-invalid' : 'is-valid' : null"
-        id="{{label}}"  #f="ngbDatepicker">
-        <div class="input-group-append">
-            <button class="btn calendar" (click)="f.toggle()" type="button"><i
-                    class="fa fa-calendar"></i></button>
-        </div>
+        id="{{label}}" >
     </div>
 </div>
 

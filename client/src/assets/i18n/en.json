@@ -1,5 +1,15 @@
 {
- 
+  "actions":{
+    "save":"Save",
+    "close":"Close",
+    "delete":"Delete",
+    "editer":"Edit",
+    "details":"Details",
+   "select":"---Select---",
+   "search":"Search",
+   "previousLabel":"Prevous",
+   "nextLabel":"Next"
+   },
   "add-student": {
     "Sex":"Sex",
     "Create a file":"Create a file",
@@ -218,8 +228,16 @@
     "add-category-button":"Add Category",
     "category-name":"Category Name",
     "save":"Save",
+    "name":"Category",
+    "toalProducts":"Total Products",
     "close":"Close",
     "add-category":"Add Physical Product Category"
+  },
+  "sub-category":{
+    "name":"Sub Category",
+    "add-sub-categorie":"Add sub product",
+    "categorie":"Category",
+    "title":"Products Sub Category"
   }
 
  

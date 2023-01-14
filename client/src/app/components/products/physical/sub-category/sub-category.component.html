@@ -4,44 +4,42 @@
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <h5>Products Sub Category</h5>
+                    <h5>{{'sub-category.title'|translate}}</h5>
                 </div>
                 <div class="card-body">
                     <div class="btn-popup pull-right">
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-original-title="test"
-                            data-target="#exampleModal" (click)="open(content)">Add Sub Category</button>
-                        <ng-template #content let-modal>
-                            <div class="modal-header">
-                                <h5 class="modal-title f-w-600" id="exampleModalLabel">Add Physical Product</h5>
-                                <button type="button" class="close" aria-label="Close"
-                                    (click)="modal.dismiss('Cross click')">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form class="needs-validation">
-                                    <div class="form">
-                                        <div class="form-group">
-                                            <label for="validationCustom01" class="mb-1">Sub Category Name :</label>
-                                            <input class="form-control" id="validationCustom01" type="text">
-                                        </div>
-                                        <div class="form-group mb-0">
-                                            <label for="validationCustom02" class="mb-1">Sub Category Image :</label>
-                                            <input class="form-control" id="validationCustom02" type="file">
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" >Save</button>
-                                <button class="btn btn-secondary" type="button" data-dismiss="modal"
-                                    (click)="modal.dismiss('Cross click')">Close</button>
-                            </div>
-                        </ng-template>
+                            data-target="#exampleModal" (click)="showModal('add',null)">{{'sub-category.name'|translate}}</button>
+                     
                     </div>
                     <div id="batchDelete" class="category-table custom-datatable">
                         <div class="table-responsive">
-                            <ng2-smart-table [settings]="settings" [source]="sub_categories"></ng2-smart-table>
+                            <div *ngIf="products.length>0">
+                                <div class="form-group row">
+                                    <label for="searchText" class="col-xl-2 col-md-3">{{'actions.search'|translate}}</label>
+                                    <input  type="text" [(ngModel)]="searchText"  class="form-control col-xl-4 col-md-3" id="search" name="search">
+                                 </div>    
+                                <table class="table table-hover" >
+                                    <thead class="fw-bold headerGray">
+                                        <tr>
+                                        <th scope="col">{{'sub-category.name'|translate}}</th>
+                                        <th scope="col">{{'sub-category.categorie'|translate}}</th>
+                                        <th scope="col">options</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of products| filter: searchText|paginate: { itemsPerPage: 5, currentPage: page }">
+                                        <td>{{item.name}}</td>
+                                        <td>{{item.category}}</td>
+                                        <td>
+                                            <a class="text text-primary" (click)="showModal('edit',item)"><i class="fa fa-edit"></i></a>
+                                            <a class="text text-danger ml-1" (click)="deleteSubCategory(item)"><i class="fa-duotone fa-trash"></i></a>
+                                        </td>
+                                    </tbody>
+                                </table>
+                                <pagination-controls [previousLabel]="'actions.previousLabel'|translate" [nextLabel]="'actions.nextLabel'|translate" (pageChange)="page = $event"></pagination-controls>
+                            </div>
+
                         </div>
                     </div>
                 </div>

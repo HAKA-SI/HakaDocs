@@ -1,4 +1,16 @@
 {
+  "actions":{
+    "save":"Enregister",
+    "close":"Fermer",
+   "delete":"Supprimer",
+   "editer":"Editer",
+   "details":"Details",
+   "select":"---choisir---",
+   "search":"rechercher",
+   "previousLabel":"Précédent",
+   "nextLabel":"Suivant"
+   
+  },
   "add-student": {
     "Sex":"Sexe",
     "Create a file":"Créer un dossier",
@@ -94,7 +106,16 @@
     "category-name":"Nom de la catégorie",
     "save":"Enregistrer",
     "close":"Fermer",
+    "name":"Category",
+    "toalProducts":"Total Produit",
     "add-category":"Ajouter une catégorie de produits physiques"
+  },
+  "sub-category":{
+    "name":"sous categorie",
+    "add-sub-categorie":"ajouter une sous categorie",
+    "categorie":"categorie",
+    "title":"Sous categorie produit"
   }
+
 
 }

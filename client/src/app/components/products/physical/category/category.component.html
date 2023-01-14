@@ -38,7 +38,8 @@
                     </div>
                     <div id="batchDelete" class="category-table custom-datatable">
                         <div class="table-responsive">
-                            <ng2-smart-table [settings]="settings" [source]="categories"></ng2-smart-table>
+                            <!-- <ng2-smart-table  (createConfirm)="onCreateConfirm($event)" (custom)="onCustomAction($event)" [settings]="settings" [source]="categories"  (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onEditConfirm($event)"></ng2-smart-table> -->
+                            <ng2-smart-table [settings]="settings" [source]="categories"  (deleteConfirm)="onDeleteConfirm($event)" (editConfirm)="onEditConfirm($event)"></ng2-smart-table>
                         </div>
                     </div>
                 </div>

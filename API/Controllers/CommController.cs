@@ -7,9 +7,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using API.Interfaces;
+using API.Helpers;
 
 namespace API.Controllers
 {
+    [Authorize]
+    [ServiceFilter(typeof(LogUserActivity))]
+
     public class CommController : BaseApiController
 
     {
@@ -38,10 +42,10 @@ namespace API.Controllers
                new Titre{Id=4,Name="titre 4"},
                new Titre{Id=5,Name="titre 5"}
            };
-           return Ok(response);
+            return Ok(response);
         }
 
-       
+
 
         private class Titre
         {

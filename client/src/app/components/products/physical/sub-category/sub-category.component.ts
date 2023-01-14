@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { categoryDB } from 'src/app/shared/tables/category';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
+import { SubCategoryModalComponent } from '../sub-category-modal/sub-category-modal.component';
+import { User } from 'src/app/shared/models/user.model';
+import { AuthService } from 'src/app/components/auth/auth.service';
+import { take } from 'rxjs/operators';
+import { ProductsService } from '../../products.service';
+import { ConfirmService } from 'src/app/core/services/confirm.service';
+import { ToastrService } from 'ngx-toastr';
+
+
 
 @Component({
   selector: 'app-sub-category',
@@ -8,57 +16,65 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./sub-category.component.scss']
 })
 export class SubCategoryComponent implements OnInit {
-  public closeResult: string;
-  public sub_categories = []
+  page: number = 1;
+  public products = [];
+  bsModalRef: BsModalRef;
+  loggedUser: User;
+ searchText:string;
 
-  constructor(private modalService: NgbModal) {
-    this.sub_categories = categoryDB.category;
+
+  constructor(private productService: ProductsService, private modalService: BsModalService, private authService: AuthService
+    , private confirmService: ConfirmService, private toastr: ToastrService) {
+    this.authService.currentUser$.pipe(take(1)).subscribe((user) => (this.loggedUser = user));
   }
-
-  open(content) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-
-
-  public settings = {
-    actions: {
-      position: 'right'
-    },
-    columns: {
-      img: {
-        title: 'Image',
-        type: 'html',
-      },
-      product_name: {
-        title: 'Name'
-      },
-      price: {
-        title: 'Price'
-      },
-      status: {
-        title: 'Status',
-        type: 'html',
-      },
-      category: {
-        title: 'Sub Category',
-      }
-    },
-  };
 
   ngOnInit() {
+    this.getProducts();
+  }
+
+  showModal(editionMode: 'add' | 'edit', product: any | null) {
+    console.log(editionMode);
+
+    const config: ModalOptions = {
+      class: 'modal-dialog-centered',
+      initialState: {
+        hakaDocClientId: this.loggedUser.haKaDocClientId,
+        editionMode,
+        product
+      },
+    };
+    this.bsModalRef = this.modalService.show(SubCategoryModalComponent, config);
+    this.bsModalRef.content.subCategoryModel.subscribe(
+      (product: any) => {
+        if (editionMode = 'add') {
+          this.products.unshift(product);
+        } else {
+          const idx = this.products.findIndex(a => a.id === product.id);
+          this.products[idx] = product;
+        }
+      }
+    );
+  }
+
+  getProducts() {
+    this.productService.getProductsWithDetailsList(this.loggedUser.haKaDocClientId).subscribe((response: any) => {
+      this.products = response;
+    });
+  }
+
+  deleteSubCategory(product) {
+    this.confirmService.confirm('confirmation ','voulez vous vraiment supprimer cette sous categorie ?')
+    .subscribe(result => {
+      if(result) {
+        this.productService.deleteProduct(this.loggedUser.haKaDocClientId,product.id).subscribe(() => {
+          const idx = this.products.findIndex(a => a.id === product.id);
+        this.products.splice(idx, 1);
+        this.toastr.success("suppression éffectuée....");
+        }, error => {
+          this.toastr.error(error.message);
+        })
+      }
+    })
   }
 
 }

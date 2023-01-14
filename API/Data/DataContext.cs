@@ -170,6 +170,10 @@ namespace API.Data
             .IsRequired();
 
         builder.ApplyUtcDateTimeConverter();
+
+           builder.Entity<Category>().HasQueryFilter(p => p.Active);
+           builder.Entity<Product>().HasQueryFilter(p => p.Active);
+           builder.Entity<SubProduct>().HasQueryFilter(p => p.Active);
     }
 }
 

@@ -16,6 +16,14 @@ namespace API.Helpers
             src.Photos.FirstOrDefault(p => p.IsMain).Url))
              .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.CalculateAge()));;
            CreateMap<Photo,PhotoDto>();
+           CreateMap<Category,CategoryWithDetailsDto>()
+             .ForMember(dest => dest.HaKaDocClient, opt => opt.MapFrom(src => src.HaKaDocClient.Name))
+             .ForMember(dest => dest.TotalProducts, opt => opt.MapFrom(src => src.Products.Count()))
+           ;
+           CreateMap<Category,CategoryForListDto>();
+           CreateMap<Product,ProductForListDto>();
+           CreateMap<Product,ProductWithDetailDto>()
+            .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
            CreateMap<MemberUpdateDto,AppUser>();
            CreateMap<RegisterDto,AppUser>();
            CreateMap<CustomerCreationDto,Customer>();
