@@ -33,8 +33,7 @@ namespace API.Extensions
             services.AddDbContext<DataContext>(options =>
             {
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
-            },
-            ServiceLifetime.Transient);
+            });
 
             services.AddSingleton<IConnectionMultiplexer>(c =>
             {

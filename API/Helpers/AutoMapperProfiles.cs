@@ -39,6 +39,12 @@ namespace API.Helpers
             .ForMember(dest => dest.BirthDistrict, opt => opt.MapFrom(src => src.BirthDistrict.Name))
             .ForMember(dest => dest.BirthCity, opt => opt.MapFrom(src => src.BirthCity.Name))
             .ForMember(dest => dest.HaKaDocClient, opt => opt.MapFrom(src => src.HaKaDocClient.Name));
+
+            CreateMap<SubProductAddingDto,SubProduct>();
+             CreateMap<SubProduct,SubProductListDto>()
+           .ForMember( dest => dest.Category, opt =>opt.MapFrom(src => src.Product.Category.Name))
+           .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>src.Photos.FirstOrDefault(p => p.IsMain).Url))
+           .ForMember(dest => dest.Product, opt => opt.MapFrom(src =>src.Product.Name));
            CreateMap<DateTime,DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
         }
     }

@@ -9,6 +9,7 @@ import { Category } from 'src/app/_models/category.model';
 import { TranslateService } from "@ngx-translate/core";
 import { ConfirmService } from 'src/app/core/services/confirm.service';
 import { SharedAnimations } from 'src/app/shared/animations/shared-animations';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-category',
@@ -20,10 +21,11 @@ export class CategoryComponent implements OnInit {
   page: number = 1;
   public products = [];
   searchText: string;
-  categories: Category[];
+  categories: Category[]=[];
   categoryName: string;
   loggedUser: User;
   closeResult = '';
+  productCategoryId = environment.phisicalProductGroupId;
 
   constructor(private productService: ProductsService, private modalService: NgbModal, private toastr: ToastrService, private authService: AuthService,
     private translationService: TranslateService, private confirmService: ConfirmService) {
@@ -31,14 +33,13 @@ export class CategoryComponent implements OnInit {
 
   }
 
-  open(content) {
-    // if(!!categorie) {
-    //   this.selectedCategory = categorie;
-    //   this.categoryName = categorie.name;
-    // }
+  open(content,editionMode,categorie) {
+    if(!!categorie)this.categoryName = categorie.name;
+
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       if (result === 'save') {
-        this.save();
+        if(editionMode==='add') this.createCategory();
+        else this.editCategory(categorie);
       }
       else this.categoryName = '';
 
@@ -48,7 +49,7 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  save() {
+  createCategory() {
     this.productService.createCategory(this.loggedUser.haKaDocClientId, this.categoryName).subscribe((response: Category) => {
       // this.typeEmps = [...this.typeEmps, element];
       this.categories = [response, ...this.categories];
@@ -82,14 +83,8 @@ export class CategoryComponent implements OnInit {
 
   // onEditConfirm
 
-  onEditConfirm($event: any) {
-
-    const cat = $event.newData;
-    this.editCategory(cat.id, cat.name, $event);
-  }
-
-  onDeleteConfirm($event: any) {
-    if (+$event.data.totalProducts > 0) {
+  deleteCategory(categorie: Category) {
+    if (categorie.totalProducts > 0) {
       this.toastr.info("impossible de supprimer cette catégorie...");
       return;
     }
@@ -97,12 +92,9 @@ export class CategoryComponent implements OnInit {
     this.confirmService.confirm('confirmation ', 'voulez vous vraiment supprimer cette categorie ?')
       .subscribe(result => {
         if (result) {
-          this.productService.deleteCategory(this.loggedUser.haKaDocClientId, $event.data.id).subscribe(() => {
-            const all = $event.source.data;
-            const newData = $event.data;
-            const idx = all.findIndex(a => a.id === newData.id);
-            all.splice(idx, 1);
-            $event.source.load(all);
+          this.productService.deleteCategory(this.loggedUser.haKaDocClientId, categorie.id).subscribe(() => {
+            const idx = this.categories.findIndex(a => a.id === categorie.id);
+            this.categories.splice(idx, 1);
             this.toastr.success("suppression éffectuée....");
           }, error => {
             this.toastr.error(error.message);
@@ -111,16 +103,14 @@ export class CategoryComponent implements OnInit {
       })
   }
 
-  editCategory(categoryId, categoryName, event) {
-    this.productService.editCategory(this.loggedUser.haKaDocClientId, categoryId, categoryName).subscribe(() => {
-      const all = event.source.data;
-      const newData = event.newData;
-      const idx = all.findIndex(a => a.id === newData.id);
-      all[idx] = newData;
-      event.source.load(all);
+  editCategory(categorie) {
+    this.productService.editCategory(this.loggedUser.haKaDocClientId, categorie.id, this.categoryName).subscribe(() => {
+      const idx = this.categories.findIndex(a => a.id === categorie.id);
+      this.productService[idx] = categorie;
+      categorie.name=this.categoryName;
+       this.categoryName='';
       this.toastr.success("modification terminée...");
     }, error => this.toastr.error(error.message));
   }
-
 
 }

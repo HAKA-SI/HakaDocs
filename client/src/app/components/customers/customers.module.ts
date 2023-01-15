@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ListCustomerComponent } from './list-customer/list-customer.component';
@@ -20,6 +20,7 @@ import { EditCustomerComponent } from './edit-customer/edit-customer.component';
   imports: [
     CommonModule,
     NgbModule,
+    FormsModule,
     Ng2SmartTableModule,
     SharedModule,
     ReactiveFormsModule,

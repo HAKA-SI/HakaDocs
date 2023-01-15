@@ -46,8 +46,24 @@ export class ProductsService {
   getProductsWithDetailsList(clientId:number){
     return this.http.get(this.baseUrl+"ProductsWithDetails/"+clientId)
   }
-  getProducts(clientId:number){
-    return this.http.get(this.baseUrl+"productLisr/"+clientId)
+  productList(clientId:number){
+    return this.http.get(this.baseUrl+"ProductList/"+clientId)
+  }
+
+  createSubProduct(clientId:number,productData:any) {
+    return this.http.post(this.baseUrl+'CreateSubProduct/'+clientId,productData);
+  }
+
+  editSubProduct(clientId:number,subPorductId:number,photoEdited:boolean,productData:any) {
+    return this.http.post(this.baseUrl+'EditSubProduct/'+subPorductId+'/'+photoEdited+'/'+clientId,productData);
+  }
+
+  getSubProducts(clientId:number){
+    return this.http.get(this.baseUrl+"SubProductList/"+clientId)
+  }
+
+  getSubProduct(subPorductId,clientId:number){
+    return this.http.get(this.baseUrl+"SubProduct/"+subPorductId+'/'+clientId)
   }
 
 }

@@ -4,4 +4,6 @@ export const environment = {
   hubUrl:'hubs/',
   docsUrl: 'docs/',
   versionCheckURL: 'auto-reload/',
+  digitalProductGroupId:2,
+  phisicalProductGroupId:1,
 };

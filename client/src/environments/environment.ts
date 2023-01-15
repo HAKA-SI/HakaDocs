@@ -8,6 +8,9 @@ export const environment = {
   hubUrl:'https://localhost:5001/hubs/',
   docsUrl: 'https://localhost:5001/docs/',
   versionCheckURL: 'https://localhost:5003/auto-reload/',
+  digitalProductGroupId:2,
+  phisicalProductGroupId:1,
+
 };
 
 /*

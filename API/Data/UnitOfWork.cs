@@ -74,5 +74,10 @@ namespace API.Data
         {
             return _context.ChangeTracker.HasChanges();
         }
+
+        public DataContext GetDataContext()
+        {
+            return _context;
+        }
     }
 }

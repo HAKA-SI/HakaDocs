@@ -6,7 +6,6 @@ namespace API.Entities
     public class Photo : BaseEntity
     {
         public int? UserId { get; set; }
-        [ForeignKey("UserId")]
         public AppUser User { get; set; }
         public string Url { get; set; }
         public string Title { get; set; }
@@ -15,5 +14,7 @@ namespace API.Entities
         public bool IsMain { get; set; }
         public string PublicId { get; set; }
         public bool IsApproved { get; set; }
+        public int? SubProductId { get; set; }
+        public SubProduct SubProduct { get; set; }
     }
 }

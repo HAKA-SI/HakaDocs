@@ -6,6 +6,8 @@ using API.Entities;
 using API.Interfaces;
 using API.Data;
 using Microsoft.EntityFrameworkCore;
+using API.Dtos;
+using AutoMapper;
 
 namespace API.Data
 {
@@ -55,5 +57,21 @@ namespace API.Data
             return await _context.Products.Include(a => a.Category).Where(a => a.HaKaDocClientId == hakaDocClientId).ToListAsync();
         }
 
+        public async Task<List<SubProduct>> GetSubProducts(int haKaDocClientId)
+        {
+           return await _context.SubProducts.Include(a => a.Photos)
+                                            .Include(a => a.Product)
+                                            .ThenInclude(a => a.Category)
+                                            .Where(a => a.HaKaDocClientId==haKaDocClientId)
+                                            .ToListAsync();
+        }
+
+        public async Task<SubProduct> GetSubProduct(int subProductId)
+        {
+             return await _context.SubProducts.Include(a => a.Photos)
+                                              .Include(a => a.Product)
+                                              .ThenInclude(a => a.Category)
+                                              .FirstOrDefaultAsync(a => a.Id ==subProductId);
+        }
     }
 }

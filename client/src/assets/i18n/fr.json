@@ -3,12 +3,15 @@
     "save":"Enregister",
     "close":"Fermer",
    "delete":"Supprimer",
+   "cancel":"reprendre",
    "editer":"Editer",
    "details":"Details",
    "select":"---choisir---",
    "search":"rechercher",
    "previousLabel":"Précédent",
-   "nextLabel":"Suivant"
+   "nextLabel":"Suivant",
+   "true":"oui",
+   "false":"non"
    
   },
   "add-student": {
@@ -108,13 +111,25 @@
     "close":"Fermer",
     "name":"Category",
     "toalProducts":"Total Produit",
-    "add-category":"Ajouter une catégorie de produits physiques"
+    "add-category":"catégorie de produits physiques"
   },
   "sub-category":{
     "name":"sous categorie",
     "add-sub-categorie":"ajouter une sous categorie",
     "categorie":"categorie",
     "title":"Sous categorie produit"
+  },
+  "products":{
+    "add-product":"Ajouter un Produit",
+    "name":"Produit",
+    "unitPrice":"Prix Unitaire",
+    "category":"Categorie",
+    "product":"Sous Categorie",
+    "quantity":"Quantité",
+    "reorderLevel":"niveau de réapprovisionnement",
+    "observation":"Observation",
+    "withSerialNumber":"Numero de Serie",
+    "perUnit":"Par Unité"
   }
 
 

@@ -7,20 +7,22 @@ import { take } from 'rxjs/operators';
 import { ProductsService } from '../../products.service';
 import { ConfirmService } from 'src/app/core/services/confirm.service';
 import { ToastrService } from 'ngx-toastr';
+import { SharedAnimations } from 'src/app/shared/animations/shared-animations';
 
 
 
 @Component({
   selector: 'app-sub-category',
   templateUrl: './sub-category.component.html',
-  styleUrls: ['./sub-category.component.scss']
+  styleUrls: ['./sub-category.component.scss'],
+  animations: [SharedAnimations]
 })
 export class SubCategoryComponent implements OnInit {
   page: number = 1;
+  searchText:string;
   public products = [];
   bsModalRef: BsModalRef;
   loggedUser: User;
- searchText:string;
 
 
   constructor(private productService: ProductsService, private modalService: BsModalService, private authService: AuthService

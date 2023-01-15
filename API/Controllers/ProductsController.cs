@@ -19,11 +19,14 @@ namespace API.Controllers
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IPhotoService _photoService;
 
-        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper)
+
+        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _photoService = photoService;
         }
 
 
@@ -111,7 +114,7 @@ namespace API.Controllers
             _unitOfWork.Add(product);
             if (!(await _unitOfWork.Complete())) return BadRequest("impossible d'ajouter ce produit");
 
-              Product productFromDb = await _unitOfWork.ProductRepository.GetProductWithDetails(product.Id);
+            Product productFromDb = await _unitOfWork.ProductRepository.GetProductWithDetails(product.Id);
             return Ok(_mapper.Map<ProductWithDetailDto>(productFromDb));
         }
 
@@ -156,6 +159,167 @@ namespace API.Controllers
             var prodsFromDb = await _unitOfWork.ProductRepository.GetProducts(hakaDocClientId);
             return Ok(_mapper.Map<List<ProductForListDto>>(prodsFromDb));
             // return Ok(prodsFromDb);
+        }
+
+        [HttpPost("CreateSubProduct/{hakaDocClientId}")]
+        public async Task<ActionResult> CreateSubProduct(int hakaDocClientId, [FromForm] SubProductAddingDto model)
+        {
+
+            var loggeduserId = User.GetUserId();
+            if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
+
+            bool done = false;
+            var context = _unitOfWork.GetDataContext();
+            using (var identityContextTransaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var prod = _mapper.Map<SubProduct>(model);
+                    prod.InsertUserId = loggeduserId;
+                    prod.HaKaDocClientId = hakaDocClientId;
+                    _unitOfWork.Add(prod);
+                    await _unitOfWork.Complete();
+
+                    if (model.MainPhotoFile != null)
+                    {
+                        var result = _photoService.AddProductPhotoFile(model.MainPhotoFile);
+                        //if (result.Error != null) return BadRequest(result.Error.Message);
+                        var photo = new Photo
+                        {
+                            Url = result.SecureUri.ToString(),
+                            PublicId = result.PublicId,
+                            IsApproved = true,
+                            IsMain = true,
+                            SubProductId = prod.Id
+                        };
+                        _unitOfWork.Add(photo);
+                    }
+
+                    if (model.OtherPhotoFiles != null)
+                    {
+                        foreach (var img in model.OtherPhotoFiles)
+                        {
+                            var res = _photoService.AddProductPhotoFile(img);
+                            //  if (res.Error != null) return BadRequest(res.Error.Message);
+                            var ph = new Photo
+                            {
+                                Url = res.SecureUri.ToString(),
+                                PublicId = res.PublicId,
+                                IsApproved = true,
+                                IsMain = false,
+                                SubProductId = prod.Id
+                            };
+                            _unitOfWork.Add(ph);
+                        }
+                    }
+                    if (_unitOfWork.HasChanges())
+                        await _unitOfWork.Complete();
+                    identityContextTransaction.Commit();
+                    done = true;
+                }
+                catch (System.Exception)
+                {
+
+                    identityContextTransaction.Rollback();
+                }
+            }
+            if (done) return Ok();
+            return BadRequest("impossible de faire l'enregistrement");
+        }
+
+        [HttpGet("SubProductList/{hakaDocClientId}")]
+        public async Task<ActionResult> SubProductList(int hakaDocClientId)
+        {
+            var subProductsFromDb = await _unitOfWork.ProductRepository.GetSubProducts(hakaDocClientId);
+            return Ok(_mapper.Map<List<SubProductListDto>>(subProductsFromDb));
+        }
+
+
+        [HttpGet("SubProduct/{subProductId}/{hakaDocClientId}")]
+        public async Task<ActionResult> SubProduct(int subProductId, int hakaDocClientId)
+        {
+            var loggeduserId = User.GetUserId();
+            if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
+            SubProduct subProductFromDb = await _unitOfWork.ProductRepository.GetSubProduct(subProductId);
+            return Ok(_mapper.Map<SubProductListDto>(subProductFromDb));
+        }
+
+
+ [HttpPost("EditSubProduct/{subProductId}/{photoEdtited}/{hakaDocClientId}")]
+        public async Task<ActionResult> EditSubProduct(int subProductId,bool photoEdtited,int hakaDocClientId, [FromForm] SubProductAddingDto model)
+        {
+
+            var loggeduserId = User.GetUserId();
+            if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
+
+            bool done = false;
+            var context = _unitOfWork.GetDataContext();
+            var subproductFromDb = await _unitOfWork.ProductRepository.GetSubProduct(subProductId);
+            using (var identityContextTransaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var prod = _mapper.Map(model, subproductFromDb);
+                    prod.UpdateUserId = loggeduserId;
+                    _unitOfWork.Update(prod);
+                    await _unitOfWork.Complete();
+
+                    if(photoEdtited)
+                    {
+                        var photo = subproductFromDb.Photos.FirstOrDefault(a =>a.IsMain);
+                        if(photo!=null)
+                        {
+                        photo.IsMain=false;
+                        photo.IsApproved=false;
+                        _unitOfWork.Update(photo);
+                        }
+                    }
+
+                    if (model.MainPhotoFile != null)
+                    {
+                        var result = _photoService.AddProductPhotoFile(model.MainPhotoFile);
+                        //if (result.Error != null) return BadRequest(result.Error.Message);
+                        var photo = new Photo
+                        {
+                            Url = result.SecureUri.ToString(),
+                            PublicId = result.PublicId,
+                            IsApproved = true,
+                            IsMain = true,
+                            SubProductId = prod.Id
+                        };
+                        _unitOfWork.Add(photo);
+                    }
+
+                    if (model.OtherPhotoFiles != null)
+                    {
+                        foreach (var img in model.OtherPhotoFiles)
+                        {
+                            var res = _photoService.AddProductPhotoFile(img);
+                            //  if (res.Error != null) return BadRequest(res.Error.Message);
+                            var ph = new Photo
+                            {
+                                Url = res.SecureUri.ToString(),
+                                PublicId = res.PublicId,
+                                IsApproved = true,
+                                IsMain = false,
+                                SubProductId = prod.Id
+                            };
+                            _unitOfWork.Add(ph);
+                        }
+                    }
+                    if (_unitOfWork.HasChanges())
+                        await _unitOfWork.Complete();
+                    identityContextTransaction.Commit();
+                    done = true;
+                }
+                catch (System.Exception)
+                {
+
+                    identityContextTransaction.Rollback();
+                }
+            }
+            if (done) return Ok();
+            return BadRequest("impossible de faire l'enregistrement");
         }
 
     }

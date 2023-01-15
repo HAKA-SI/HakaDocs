@@ -41,6 +41,27 @@ export class NavService {
 			path: '/dashboard/default', title: 'Dashboard', icon: 'home', type: 'link', badgeType: 'primary', active: false
 		},
 		{
+			title: 'Stock', icon: 'database', type: 'sub', active: false, children: [
+				{
+					title: 'Physical', type: 'sub', children: [
+						{ path: '/stock/physical/stock-entry', title: 'Stock Entry', type: 'link' },
+						// { path: '/products/physical/sub-category', title: 'Sub Category', type: 'link' },
+						// { path: '/products/physical/product-list', title: 'Product List', type: 'link' },
+						// { path: '/products/physical/product-detail', title: 'Product Detail', type: 'link' },
+						// { path: '/products/physical/add-product', title: 'Add Product', type: 'link' },
+					]
+				},
+				{
+				title: 'digital', type: 'sub', children: [
+					// { path: '/products/digital/digital-category', title: 'Category', type: 'link' },
+					// { path: '/products/digital/digital-sub-category', title: 'Sub Category', type: 'link' },
+					// { path: '/products/digital/digital-product-list', title: 'Product List', type: 'link' },
+					// { path: '/products/digital/digital-add-product', title: 'Add Product', type: 'link' },
+				]
+				},
+			]
+		},
+		{
 			title: 'Products', icon: 'box', type: 'sub', active: false, children: [
 				{
 					title: 'Physical', type: 'sub', children: [

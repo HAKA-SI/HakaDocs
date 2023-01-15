@@ -25,6 +25,7 @@ namespace API.Entities
             public AppUser UpdateUser { get; set; }
             public int? UpdateUserId { get; set; }
         public ICollection<Photo> Photos { get; set; }
+        
 
     }
 }

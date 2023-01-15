@@ -338,6 +338,9 @@ namespace API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ProductGroupId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("UpdateUserId")
                         .HasColumnType("int");
 
@@ -346,6 +349,8 @@ namespace API.Migrations
                     b.HasIndex("HaKaDocClientId");
 
                     b.HasIndex("InsertUserId");
+
+                    b.HasIndex("ProductGroupId");
 
                     b.HasIndex("UpdateUserId");
 
@@ -2755,6 +2760,10 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API.Entities.ProductGroup", "ProductGroup")
+                        .WithMany()
+                        .HasForeignKey("ProductGroupId");
+
                     b.HasOne("API.Entities.AppUser", "UpdateUser")
                         .WithMany()
                         .HasForeignKey("UpdateUserId");
@@ -2762,6 +2771,8 @@ namespace API.Migrations
                     b.Navigation("HaKaDocClient");
 
                     b.Navigation("InsertUser");
+
+                    b.Navigation("ProductGroup");
 
                     b.Navigation("UpdateUser");
                 });
@@ -3433,7 +3444,7 @@ namespace API.Migrations
                         .WithMany("Photos")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("API.Entities.SubProduct", null)
+                    b.HasOne("API.Entities.SubProduct", "SubProduct")
                         .WithMany("Photos")
                         .HasForeignKey("SubProductId");
 
@@ -3441,13 +3452,15 @@ namespace API.Migrations
                         .WithMany("Photos")
                         .HasForeignKey("UserId");
 
+                    b.Navigation("SubProduct");
+
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("API.Entities.Product", b =>
                 {
                     b.HasOne("API.Entities.Category", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("API.Entities.HaKaDocClient", "HaKaDocClient")
@@ -3828,6 +3841,11 @@ namespace API.Migrations
                     b.Navigation("Photos");
 
                     b.Navigation("UserRoles");
+                });
+
+            modelBuilder.Entity("API.Entities.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("API.Entities.Customer", b =>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Dtos;
 using API.Entities;
 
 namespace API.Interfaces
@@ -15,5 +16,7 @@ namespace API.Interfaces
         Task<Product> GetProductWithDetails(int productId);
         Task<List<Product>> GetProducts(int hakaDocClientId);
         Task<List<Product>> GetProductsWithDetails(int hakaDocClientId);
+        Task<List<SubProduct>> GetSubProducts(int haKaDocClientId);
+        Task<SubProduct> GetSubProduct(int subProductId);
     }
 }

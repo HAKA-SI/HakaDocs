@@ -54,7 +54,7 @@ namespace API.Services
                     Transformation = new Transformation().Width(300).Height(300).FetchFormat("auto").Quality("auto")
                                                        .Crop("fill").Gravity("face")
                 };
-                uploadParams.Folder = "FanyaSoft/";
+                uploadParams.Folder = "HakaDocs/";
 
                 return _cloudinary.Upload(uploadParams);
             }

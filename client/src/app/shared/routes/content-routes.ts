@@ -13,6 +13,13 @@ export const content: Routes = [
     }
   },
   {
+    path: 'stock',
+    loadChildren: () => import('../../components/stock/stock.module').then(m => m.StockModule),
+    data: {
+      breadcrumb: "Stock"
+    }
+  },
+  {
     path: 'sales',
     loadChildren: () => import('../../components/sales/sales.module').then(m => m.SalesModule),
     data: {

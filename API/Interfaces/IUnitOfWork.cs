@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using API.Data;
 
 namespace API.Interfaces
 {
@@ -17,6 +18,7 @@ namespace API.Interfaces
         void DeleteAll<T>(List<T> entities) where T : class;
 
         Task<bool> Complete();
+        DataContext GetDataContext();
         bool HasChanges();
     }
 }
