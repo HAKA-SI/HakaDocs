@@ -1,0 +1,45 @@
+<form class="p-3" [formGroup]="stockEntryForm">
+  <app-text-input formControlName="refNum" [label]="'reference'"></app-text-input>
+  <app-date-input formControlName="mvtDate" [label]="'date'"></app-date-input>
+  <div class="form-group row" *ngIf="!storeId">
+    <label for="productId"   class="col-xl-3 col-sm-4 mb-0"><span>*</span>Magasin</label>
+    <select class="custom-select col-md-8" required="" formControlName="subProductId">
+      <option value="">{{'actions.select'|translate}}</option>
+      <option *ngFor="let store of stores" [value]="store.id">{{store.name}} ({{store.districtName}})
+      </option>
+    </select>
+  </div>
+
+  <div class="form-group row">
+    <!-- <label for="productId"  class="col-xl-3 col-sm-4 mb-0"><span>*</span>{{'products.withSerialNumber'|translate}}</label> -->
+    <label for="productId"  class="col-xl-3 col-sm-4 mb-0"><span>*</span>produits</label>
+    <select class="custom-select col-md-8" required="" formControlName="subProductId">
+      <option value="">{{'actions.select'|translate}}</option>
+      <option *ngFor="let item of subproducts" [value]="item.id">{{item.name}}</option>
+    </select>
+  </div>
+
+  <app-text-input formControlName="quantity" [type]="'number'" [label]="'quantité'"></app-text-input>
+
+
+  <!-- <div class="change-photo-btn">
+    <div><i class="feather-upload"></i>
+      <p>Choisir l'image principale du produit *</p>
+    </div>
+    <input type="file" class="upload" accept='image/*' id="imgFile" (change)="mainImgResult($event)">
+    <span class="file-upload-text"></span>
+  </div> -->
+  <!-- <div class="row mb-1" *ngIf="mainPhotoUrl">
+    <img [src]="mainPhotoUrl" class="img-thumbnail" alt="..." style="max-width: 100px; max-height: 100px;">
+  </div> -->
+  <div class="form-group row editor-label">
+    <label class="col-xl-3 col-md-4">{{'products.observation'|translate}}</label>
+    <textarea formControlName="note" rows="4" class="col-xl-8 col-md-7"></textarea>
+</div>
+</form>
+<div class="form-group row mb-0">
+  <div class="product-buttons col-sm-8 offset-xl-3 offset-sm-4">
+      <button type="button" [disabled]="!stockEntryForm.valid" class="btn btn-primary mr-1"  (click)="save()">{{'actions.save'|translate}}</button>
+      <button type="button" class="btn btn-light" (click)="resetForm()">{{'actions.cancel'|translate}}</button>
+  </div>
+</div>

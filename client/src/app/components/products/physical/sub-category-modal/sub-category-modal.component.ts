@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ToastrService } from 'ngx-toastr';
+import { environment } from 'src/environments/environment';
 import { ProductsService } from '../../products.service';
 
 @Component({
@@ -16,6 +17,8 @@ export class SubCategoryModalComponent implements OnInit {
   product: any;
   editionMode:'add'|'edit'='add';
   categories: any[] = [];
+  phisicalProductGroupId = environment.phisicalProductGroupId;
+
 
   constructor(private toastr:ToastrService,public bsModalRef: BsModalRef, private fb: FormBuilder, private productService: ProductsService) {
     this.createCategoryForm();
@@ -30,7 +33,7 @@ export class SubCategoryModalComponent implements OnInit {
   }
 
   getCategories() {
-    this.productService.categoryList(this.hakaDocClientId).subscribe((response: any[]) => {
+    this.productService.categoryList(this.hakaDocClientId,this.phisicalProductGroupId).subscribe((response: any[]) => {
       this.categories = response;
     })
   }

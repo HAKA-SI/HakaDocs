@@ -8,34 +8,37 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DateInputComponent implements OnInit, ControlValueAccessor {
-  @ViewChild('f', { static: true }) input: ElementRef;
+  @ViewChild('input', { static: true }) input: ElementRef;
+  @Input() type = 'text';
   @Input() label: string;
+  @Input() required:boolean =true;
+  // data?: Date;
 
-
-  constructor(@Self() public controlDir: NgControl) {
+  constructor(@Self() public controlDir: NgControl,) {
     this.controlDir.valueAccessor = this;
   }
 
   ngOnInit() {
-    // const control = this.controlDir.control;
-    // const validators = control.validator ? [control.validator] : [];
-    // const asyncValidators = control.asyncValidator ? [control.asyncValidator] : [];
+    const control = this.controlDir.control;
+    const validators = control.validator ? [control.validator] : [];
+    const asyncValidators = control.asyncValidator ? [control.asyncValidator] : [];
 
-    // control.setValidators(validators);
-    // control.setAsyncValidators(asyncValidators);
-    // control.updateValueAndValidity();
+    control.setValidators(validators);
+    control.setAsyncValidators(asyncValidators);
+    control.updateValueAndValidity();
   }
 
   onChange(event) { }
 
   onTouched() { }
 
-  writeValue(value: any): void {
-    // this.input.nativeElement.value = value || '';
-    //this.input._elRef.nativeElement.value = value || '';
-    console.log(this.input);
+  // onValueChange(value: Date): void {
+  //   this.data = value;
+  //   console.log(value);
     
-    // this.renderer.setProperty(this.input.nativeElement, 'value', value);
+  // }
+  writeValue(obj: any): void {
+    this.input.nativeElement.value = obj || '';
   }
 
   registerOnChange(fn: any): void {

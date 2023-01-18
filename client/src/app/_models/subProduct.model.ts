@@ -7,6 +7,7 @@ import { Photo } from "./photo.model";
         categoryId?: any;
         category: string;
         productId: number;
+        quantity: number;
         product: string;
         discontinued: boolean;
         unitInStock: number;
@@ -16,5 +17,6 @@ import { Photo } from "./photo.model";
         reorderLevel: number;
         photoUrl: string;
         photos: Photo[];
+        withSerialNumber:boolean;
         }
 

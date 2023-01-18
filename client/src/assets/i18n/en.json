@@ -248,6 +248,7 @@
     "unitPrice":"Unit Price",
     "category":"Sub Category",
     "product":"Sous Categorie",
+    "quantityPerUnit":"Quantity per Unit",
     "quantity":"Quantity",
     "reorderLevel":"ReOrder Level",
     "observation":"Observation",

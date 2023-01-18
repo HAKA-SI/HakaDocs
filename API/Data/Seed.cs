@@ -79,7 +79,6 @@ namespace API.Data
                 }
             }
 
-
             if (!context.DocTypes.Any())
             {
                 context.DocTypes.AddRange(
@@ -122,6 +121,54 @@ namespace API.Data
                 };
                 context.ProductGroups.AddRange(groups);
                 await context.SaveChangesAsync();
+            }
+
+            if(!context.Districts.Any()){
+                context.Districts.Add(
+                    new District{Name="Abidjan",CityId=1}
+                );
+                await context.SaveChangesAsync();
+            }
+
+             if(!context.Stores.Any()){
+                context.Stores.Add(
+                    new Store{Name="MagTest",DistrictId=1,HaKaDocClientId=1}
+                    
+                );
+                await context.SaveChangesAsync();
+            }
+             if(!context.InventOpTypes.Any())
+            {
+              var inventOpTypes = new List<InventOpType>(){
+                new InventOpType{Name="entrée Stock"},
+                new InventOpType{Name="approvisionnement"},
+                new InventOpType{Name="échange Produit"},
+                new InventOpType{Name="vente direct"},
+                new InventOpType{Name="vente en ligne"}
+              };
+              context.InventOpTypes.AddRange(inventOpTypes);
+              context.SaveChanges();
+            }
+
+            if (!context.CustomerCodes.Any())
+            {
+                var customerCode = new CustomerCode {
+                    HaKaDocClientId = 1,
+                    CodeLevel = 1
+                };
+                context.Add(customerCode);
+                await context.SaveChangesAsync();
+            
+            }
+
+             if (!context.StockHistoryActions.Any())
+            {
+              var histories = new List<StockHistoryAction>(){
+                new StockHistoryAction{Name="INPUT"},
+                new StockHistoryAction{Name="OUTPUT"}
+              };
+              context.StockHistoryActions.AddRange(histories);
+              context.SaveChanges();
             }
         }
     }

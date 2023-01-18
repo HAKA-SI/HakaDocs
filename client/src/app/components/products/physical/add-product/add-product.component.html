@@ -43,8 +43,8 @@
                                     </div>
                                     <app-text-input formControlName="name" [label]="'products.name'|translate"></app-text-input>
                                     <app-text-input type="'number'" formControlName="unitPrice" [label]="'products.unitPrice'|translate"></app-text-input>
-                                    <app-text-input type="'number'" formControlName="perUnit" [label]="'products.unitPrice'|translate"></app-text-input>
-                                    <app-text-input type="number" type="'number'" formControlName="'products.reorderLevel'|translate" [label]="'Quantité stock alerte'"></app-text-input>
+                                    <app-text-input type="'number'" formControlName="quantityPerUnite" [label]="'products.quantityPerUnit'|translate"></app-text-input>
+                                    <app-text-input type="number" type="'number'" formControlName="reorderLevel" [label]="'products.reorderLevel'|translate"></app-text-input>
                                     <div class="form-group row editor-label">
                                         <label class="col-xl-3 col-md-4">{{'products.observation'|translate}}</label>
                                         <textarea formControlName="note" rows="4" class="col-xl-8 col-md-7"></textarea>

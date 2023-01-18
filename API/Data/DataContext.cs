@@ -79,12 +79,15 @@ namespace API.Data
     public DbSet<StockHistory> StockHistories{ get; set; }
     public DbSet<StockHistoryAction> StockHistoryActions{ get; set; }
     public DbSet<StockMvt> StockMvts{ get; set; }
+    public DbSet<StockMvtInventOp> StockMvtInventOps{ get; set; }
     public DbSet<StoreProduct> StoreProducts{ get; set; }
     public DbSet<SubProduct> SubProducts{ get; set; }
     public DbSet<SubProductFeature> SubProductFeatures{ get; set; }
     public DbSet<Entities.Type> Types{ get; set; }
+    public DbSet<District> Districts{ get; set; }
     public DbSet<SubProductSN> SubProductSNs{ get; set; }
     public DbSet<InventOpSubProductSN> InventOpSubProductSNs{ get; set; }
+    public DbSet<CustomerCode> CustomerCodes{ get; set; }
 
 
     

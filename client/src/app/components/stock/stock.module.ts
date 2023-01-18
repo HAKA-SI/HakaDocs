@@ -8,12 +8,16 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { CKEditorModule } from 'ngx-ckeditor';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
+import { StockEntryNoSnComponent } from './stock-entry-no-sn/stock-entry-no-sn.component';
+import { StockEntrySnComponent } from './stock-entry-sn/stock-entry-sn.component';
 
 
 
 @NgModule({
   declarations: [
-    StockEntryComponent
+    StockEntryComponent,
+    StockEntryNoSnComponent,
+    StockEntrySnComponent
   ],
   imports: [
     CommonModule,

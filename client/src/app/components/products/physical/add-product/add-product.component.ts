@@ -5,6 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
 import { AuthService } from 'src/app/components/auth/auth.service';
 import { User } from 'src/app/shared/models/user.model';
+import { environment } from 'src/environments/environment';
 import { ProductsService } from '../../products.service';
 @Component({
   selector: 'app-add-product',
@@ -45,6 +46,8 @@ export class AddProductComponent implements OnInit {
   subProduct: any;
   editionMode: 'add' | 'edit' = 'add';
   photoEdited:boolean=false;
+  physicalGroupId = environment.phisicalProductGroupId;
+
 
 
   constructor(private router: Router,private route: ActivatedRoute, private toastr: ToastrService, private fb: FormBuilder, private authService: AuthService, private productService: ProductsService) {
@@ -73,7 +76,7 @@ export class AddProductComponent implements OnInit {
 
 
   getSubCategories() {
-    this.productService.productList(this.loggedUser.haKaDocClientId).subscribe((response: any[]) => this.subCategories = response);
+    this.productService.productList(this.loggedUser.haKaDocClientId,this.physicalGroupId).subscribe((response: any[]) => this.subCategories = response);
   }
 
   createProductForm() {
@@ -138,7 +141,7 @@ export class AddProductComponent implements OnInit {
   }
 
   saveSubProduct(formData: FormData) {
-    this.productService.createSubProduct(this.loggedUser.haKaDocClientId, formData).subscribe(
+    this.productService.createSubProduct(this.loggedUser.haKaDocClientId,this.physicalGroupId, formData).subscribe(
       (product: any) => {
         this.mainFile = null;
         this.toastr.success("enregistrement terminée...");

@@ -11,6 +11,7 @@ namespace API.Dtos
            public string HaKaDocClient { get; set; }
             public int HaKaDocClientId { get; set; }
             public int TotalProducts { get; set; } = 0;
+            public int ProductGroupId { get; set; }
         
     }
 }

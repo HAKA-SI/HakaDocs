@@ -14,6 +14,7 @@ namespace API.Dtos
         public int? CategoryId { get; set; }
         public string Category { get; set; }
         public int ProductId { get; set; }
+         public int Quantity { get; set; }
         public string Product { get; set; }
         public bool Discontinued { get; set; }
         public int UnitInStock { get; set; }

@@ -8,6 +8,7 @@ import { ProductsService } from '../../products.service';
 import { ConfirmService } from 'src/app/core/services/confirm.service';
 import { ToastrService } from 'ngx-toastr';
 import { SharedAnimations } from 'src/app/shared/animations/shared-animations';
+import { environment } from 'src/environments/environment';
 
 
 
@@ -23,6 +24,7 @@ export class SubCategoryComponent implements OnInit {
   public products = [];
   bsModalRef: BsModalRef;
   loggedUser: User;
+  physicalGroupId = environment.phisicalProductGroupId;
 
 
   constructor(private productService: ProductsService, private modalService: BsModalService, private authService: AuthService
@@ -59,7 +61,7 @@ export class SubCategoryComponent implements OnInit {
   }
 
   getProducts() {
-    this.productService.getProductsWithDetailsList(this.loggedUser.haKaDocClientId).subscribe((response: any) => {
+    this.productService.getProductsWithDetailsList(this.loggedUser.haKaDocClientId,this.physicalGroupId).subscribe((response: any) => {
       this.products = response;
     });
   }

@@ -20,14 +20,14 @@ namespace API.Data
         }
 
 
-        public async Task<List<Category>> GetCategories(int haKaDocClientId)
+        public async Task<List<Category>> GetCategories(int haKaDocClientId, int productGroupId)
         {
-            return await _context.Categories.AsNoTracking().Where(a => a.HaKaDocClientId == haKaDocClientId).OrderBy(a => a.Name).ToListAsync();
+            return await _context.Categories.AsNoTracking().Where(a => a.HaKaDocClientId == haKaDocClientId && a.ProductGroupId==productGroupId).OrderBy(a => a.Name).ToListAsync();
         }
 
-        public async Task<List<Category>> GetCategoriesWithProducts(int haKaDocClientId)
+        public async Task<List<Category>> GetCategoriesWithProducts(int haKaDocClientId, int productGroupId)
         {
-            return await _context.Categories.Include(a => a.HaKaDocClient).Include(a => a.Products).Where(a => a.HaKaDocClientId == haKaDocClientId).OrderBy(a => a.Name).ToListAsync();
+            return await _context.Categories.Include(a => a.HaKaDocClient).Include(a => a.Products).Where(a => a.HaKaDocClientId == haKaDocClientId && a.ProductGroupId==productGroupId).OrderBy(a => a.Name).ToListAsync();
         }
 
         public async Task<Category> GetCategory(int categoryId)
@@ -52,17 +52,17 @@ namespace API.Data
 
         }
 
-        public async Task<List<Product>> GetProductsWithDetails(int hakaDocClientId)
+        public async Task<List<Product>> GetProductsWithDetails(int hakaDocClientId,int productGroupId)
         {
-            return await _context.Products.Include(a => a.Category).Where(a => a.HaKaDocClientId == hakaDocClientId).ToListAsync();
+            return await _context.Products.Include(a => a.Category).Where(a => a.HaKaDocClientId == hakaDocClientId && a.Category.ProductGroupId==productGroupId).ToListAsync();
         }
 
-        public async Task<List<SubProduct>> GetSubProducts(int haKaDocClientId)
+        public async Task<List<SubProduct>> GetSubProducts(int haKaDocClientId, int productGroupId)
         {
            return await _context.SubProducts.Include(a => a.Photos)
                                             .Include(a => a.Product)
                                             .ThenInclude(a => a.Category)
-                                            .Where(a => a.HaKaDocClientId==haKaDocClientId)
+                                            .Where(a => a.HaKaDocClientId==haKaDocClientId && a.Product.Category.ProductGroupId==productGroupId)
                                             .ToListAsync();
         }
 
@@ -72,6 +72,34 @@ namespace API.Data
                                               .Include(a => a.Product)
                                               .ThenInclude(a => a.Category)
                                               .FirstOrDefaultAsync(a => a.Id ==subProductId);
+        }
+
+        public async Task<List<SubProduct>> GetSubProductWithSNs(int hakaDocClientId, int productGroupId)
+        {
+            return await _context.SubProducts.Include(a => a.Photos)
+                                            .Include(a => a.Product)
+                                            .ThenInclude(a => a.Category)
+                                            .Where(a => a.HaKaDocClientId==hakaDocClientId &&a.WithSerialNumber==true && a.Product.Category.ProductGroupId==productGroupId)
+                                            .ToListAsync();
+        }
+
+        public async Task<List<SubProduct>> GetSubProductWithoutSNs(int hakaDocClientId, int productGroupId)
+        {
+            return await _context.SubProducts.Include(a => a.Photos)
+                                            .Include(a => a.Product)
+                                            .ThenInclude(a => a.Category)
+                                            .Where(a => a.HaKaDocClientId==hakaDocClientId &&a.WithSerialNumber==false && a.Product.Category.ProductGroupId==productGroupId)
+                                            .ToListAsync();
+        }
+
+        public async Task<StockHistory> StoreSubProductHistory(int storeId, int subProductId)
+        {
+           return await _context.StockHistories.FirstOrDefaultAsync(a => a.StoreId == storeId && a.SubProductId == subProductId);
+        }
+
+        public async Task<StoreProduct> StoreProduct(int storeId, int subProductId)
+        {
+           return await _context.StoreProducts.FirstOrDefaultAsync(a =>a.StoreId==storeId && a.SubProductId==subProductId);
         }
     }
 }

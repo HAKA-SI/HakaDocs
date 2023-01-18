@@ -37,31 +37,39 @@
                                     </thead>
                                     <tbody>
                                         <tr *ngFor="let item of subProducts| filter: searchText|paginate: { itemsPerPage: 5, currentPage: page }, let i=index"
-                                            [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'50px'}}">
+                                            [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'50px'}}"
+                                            [ngClass]="item.quantity<item.reorderLevel ? 'text-danger' : 'text-success'">
                                             <td>
                                                 <div class="row">
                                                     <div class="col-2">
-                                                        <a><img class="" style="max-width: 60px; max-height: 50px;" [src]="item.photoUrl || 'assets/images/products/product1.jpg'" alt="User Image"></a>
+                                                        <a><img class="" style="max-width: 60px; max-height: 50px;"
+                                                                [src]="item.photoUrl || 'assets/images/products/product1.jpg'"
+                                                                alt="User Image"></a>
                                                     </div>
                                                     <div class="col-auto d-flex-column mx-2">
                                                         <b style="font-weight: bold;">{{item.name}}</b> <br>
-                                                        <small class="text-muted my-0 py-0">{{item.quantityPerUnite}} {{'products.perUnit'|translate}}</small>
+                                                        <small class="text-muted my-0 py-0">{{item.quantityPerUnite}}
+                                                            {{'products.perUnit'|translate}}</small>
                                                     </div>
-
                                                 </div>
                                             </td>
                                             <td>{{item.category}}</td>
                                             <td>{{item.product}}</td>
                                             <td>{{item.unitPrice}}</td>
-                                            <td>0</td>
+                                            <td>
+                                                <b>{{item.quantity}}</b>
+                                            </td>
                                             <td>{{item.reorderLevel}}</td>
                                             <td>
                                                 <span *ngIf="item.withSerialNumber">{{'actions.true'|translate}}</span>
-                                                <span *ngIf="!item.withSerialNumber">{{'actions.false'|translate}}</span>
+                                                <span
+                                                    *ngIf="!item.withSerialNumber">{{'actions.false'|translate}}</span>
                                             </td>
                                             <td>
-                                                 <a class="text text-primary" [routerLink]="'/products/physical/edit-product/'+item.id"><i class="fa-solid fa-pencil"></i></a>
-                                            <!-- <a class="text text-danger ml-1" (click)="deleteSubCategory(item)"><i class="fa-duotone fa-trash"></i></a>  -->
+                                                <a class="text text-primary"
+                                                    [routerLink]="'/products/physical/edit-product/'+item.id"><i
+                                                        class="fa-solid fa-pencil"></i></a>
+                                                <!-- <a class="text text-danger ml-1" (click)="deleteSubCategory(item)"><i class="fa-duotone fa-trash"></i></a>  -->
                                             </td>
                                     </tbody>
                                 </table>

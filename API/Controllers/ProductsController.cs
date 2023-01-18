@@ -9,6 +9,7 @@ using API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using API.Dtos;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Controllers
 {
@@ -20,18 +21,20 @@ namespace API.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
+        private readonly IConfiguration _config;
 
 
-        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService)
+        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService, IConfiguration config)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _config = config;
             _photoService = photoService;
         }
 
 
-        [HttpPost("CreateCategory/{hakaClientId}/{categoryName}")]
-        public async Task<ActionResult> CreateCategory(int hakaClientId, string categoryName)
+        [HttpPost("CreateCategory/{hakaClientId}/{categoryName}/{productGroupId}")]
+        public async Task<ActionResult> CreateCategory(int hakaClientId, string categoryName, int productGroupId)
         {
             var loggeduserId = User.GetUserId();
             if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaClientId))) return Unauthorized();
@@ -40,7 +43,8 @@ namespace API.Controllers
             {
                 Name = categoryName,
                 InsertUserId = loggeduserId,
-                HaKaDocClientId = hakaClientId
+                HaKaDocClientId = hakaClientId,
+                ProductGroupId = productGroupId
             };
 
             _unitOfWork.Add(category);
@@ -51,22 +55,22 @@ namespace API.Controllers
         }
 
 
-        [HttpGet("CategoryList/{hakaDocClientId}")]
-        public async Task<ActionResult> CategoryList(int hakaDocClientId)
+        [HttpGet("CategoryList/{productGroupId}/{hakaDocClientId}")]
+        public async Task<ActionResult> CategoryList(int productGroupId, int hakaDocClientId)
         {
             var loggeduserId = User.GetUserId();
             if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
-            var categories = await _unitOfWork.ProductRepository.GetCategories(hakaDocClientId);
+            var categories = await _unitOfWork.ProductRepository.GetCategories(hakaDocClientId, productGroupId);
             return Ok(_mapper.Map<List<CategoryForListDto>>(categories));
         }
 
 
-        [HttpGet("CategoryListWithDetails/{hakaDocClientId}")]
-        public async Task<ActionResult> CategoryListWithDetails(int hakaDocClientId)
+        [HttpGet("CategoryListWithDetails/{productGroupId}/{hakaDocClientId}")]
+        public async Task<ActionResult> CategoryListWithDetails(int productGroupId, int hakaDocClientId)
         {
             var loggeduserId = User.GetUserId();
             if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
-            var categoriesFromDb = await _unitOfWork.ProductRepository.GetCategoriesWithProducts(hakaDocClientId);
+            var categoriesFromDb = await _unitOfWork.ProductRepository.GetCategoriesWithProducts(hakaDocClientId, productGroupId);
             var categoriesToReturn = _mapper.Map<List<CategoryWithDetailsDto>>(categoriesFromDb);
             return Ok(categoriesToReturn);
         }
@@ -146,23 +150,23 @@ namespace API.Controllers
             return Ok();
         }
 
-        [HttpGet("ProductsWithDetails/{hakaDocClientId}")]
-        public async Task<ActionResult> ProductsWithDetails(int hakaDocClientId)
+        [HttpGet("ProductsWithDetails/{productGroupId}/{hakaDocClientId}")]
+        public async Task<ActionResult> ProductsWithDetails(int productGroupId, int hakaDocClientId)
         {
-            var prodsFromDb = await _unitOfWork.ProductRepository.GetProductsWithDetails(hakaDocClientId);
+            var prodsFromDb = await _unitOfWork.ProductRepository.GetProductsWithDetails(hakaDocClientId, productGroupId);
             return Ok(_mapper.Map<List<ProductWithDetailDto>>(prodsFromDb));
         }
 
-        [HttpGet("ProductList/{hakaDocClientId}")]
-        public async Task<ActionResult> ProductList(int hakaDocClientId)
+        [HttpGet("ProductList/{productGroupId}/{hakaDocClientId}")]
+        public async Task<ActionResult> ProductList(int productGroupId, int hakaDocClientId)
         {
-            var prodsFromDb = await _unitOfWork.ProductRepository.GetProducts(hakaDocClientId);
+            var prodsFromDb = await _unitOfWork.ProductRepository.GetProductsWithDetails(hakaDocClientId, productGroupId);
             return Ok(_mapper.Map<List<ProductForListDto>>(prodsFromDb));
             // return Ok(prodsFromDb);
         }
 
-        [HttpPost("CreateSubProduct/{hakaDocClientId}")]
-        public async Task<ActionResult> CreateSubProduct(int hakaDocClientId, [FromForm] SubProductAddingDto model)
+        [HttpPost("CreateSubProduct/{productGroupId}/{hakaDocClientId}")]
+        public async Task<ActionResult> CreateSubProduct(int productGroupId, int hakaDocClientId, [FromForm] SubProductAddingDto model)
         {
 
             var loggeduserId = User.GetUserId();
@@ -227,10 +231,10 @@ namespace API.Controllers
             return BadRequest("impossible de faire l'enregistrement");
         }
 
-        [HttpGet("SubProductList/{hakaDocClientId}")]
-        public async Task<ActionResult> SubProductList(int hakaDocClientId)
+        [HttpGet("SubProductList/{productGroupId}/{hakaDocClientId}")]
+        public async Task<ActionResult> SubProductList(int productGroupId, int hakaDocClientId)
         {
-            var subProductsFromDb = await _unitOfWork.ProductRepository.GetSubProducts(hakaDocClientId);
+            var subProductsFromDb = await _unitOfWork.ProductRepository.GetSubProducts(hakaDocClientId, productGroupId);
             return Ok(_mapper.Map<List<SubProductListDto>>(subProductsFromDb));
         }
 
@@ -245,8 +249,8 @@ namespace API.Controllers
         }
 
 
- [HttpPost("EditSubProduct/{subProductId}/{photoEdtited}/{hakaDocClientId}")]
-        public async Task<ActionResult> EditSubProduct(int subProductId,bool photoEdtited,int hakaDocClientId, [FromForm] SubProductAddingDto model)
+        [HttpPost("EditSubProduct/{subProductId}/{photoEdtited}/{hakaDocClientId}")]
+        public async Task<ActionResult> EditSubProduct(int subProductId, bool photoEdtited, int hakaDocClientId, [FromForm] SubProductAddingDto model)
         {
 
             var loggeduserId = User.GetUserId();
@@ -264,14 +268,14 @@ namespace API.Controllers
                     _unitOfWork.Update(prod);
                     await _unitOfWork.Complete();
 
-                    if(photoEdtited)
+                    if (photoEdtited)
                     {
-                        var photo = subproductFromDb.Photos.FirstOrDefault(a =>a.IsMain);
-                        if(photo!=null)
+                        var photo = subproductFromDb.Photos.FirstOrDefault(a => a.IsMain);
+                        if (photo != null)
                         {
-                        photo.IsMain=false;
-                        photo.IsApproved=false;
-                        _unitOfWork.Update(photo);
+                            photo.IsMain = false;
+                            photo.IsApproved = false;
+                            _unitOfWork.Update(photo);
                         }
                     }
 
@@ -321,6 +325,296 @@ namespace API.Controllers
             if (done) return Ok();
             return BadRequest("impossible de faire l'enregistrement");
         }
+
+        [HttpGet("SubProductWithSNsList/{hakaDocClientId}/{productGroupId}")]
+        public async Task<ActionResult> SubProductWithSNsList(int hakaDocClientId, int productGroupId)
+        {
+            var loggeduserId = User.GetUserId();
+            if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
+
+            List<SubProduct> subProductsFromDb = await _unitOfWork.ProductRepository.GetSubProductWithSNs(hakaDocClientId, productGroupId);
+            return Ok(_mapper.Map<List<SubProductListDto>>(subProductsFromDb));
+        }
+
+        [HttpPost("CreateSubProductsSN/{hakaDocClientId}")]
+        public async Task<ActionResult> CreateSubProductsSN(int hakaDocClientId, ProductSNAddingDto model)
+        {
+            var loggeduserId = User.GetUserId();
+            if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
+
+            int stockEntryTypeId = _config.GetValue<int>("AppSettings:stockEntryTypeId");
+            int in_stockEntryActionId = _config.GetValue<int>("AppSettings:inStockEntryHistoryId");
+            var dataContext = _unitOfWork.GetDataContext();
+            bool done = false;
+
+            //var createdProduct = await _uow.ProductRepository.CreateSubProductsNoSN(insertUserId, prod, stockmvt, prod.Quantity);
+
+            using (var identityContextTransaction = dataContext.Database.BeginTransaction())
+            {
+                try
+                {
+                    // insertion dans SubProductSN(avec le storeId=> ce a qui permetra de retrouver le Produit)
+                    // insertion StockMvts
+                    // insertion InventOps
+                    // insertion StockMvtInventOps
+                    // insertion InventOpSubProductSNs
+
+                    var stockmvt = new StockMvt
+                    {
+                        InventOpTypeId = stockEntryTypeId,
+                        ToStoreId = model.StoreId,
+                        RefNum = model.RefNum,
+                        Note = model.Note,
+                        MvtDate = model.MvtDate,
+                        InsertUserId = loggeduserId
+                    };
+
+                    //insertion dans stock mvt
+                    _unitOfWork.Add(stockmvt);
+                    await _unitOfWork.Complete();
+
+                    InventOp inv = new InventOp
+                    {
+                        InsertUserId = stockmvt.InsertUserId,
+                        InventOpTypeId = stockmvt.InventOpTypeId,
+                        OpDate = stockmvt.MvtDate,
+                        ToStoreId = stockmvt.ToStoreId,
+                        FromStoreId = stockmvt.FromStoreId,
+                        FormNum = stockmvt.RefNum,
+                        SubProductId = model.SubProductId,
+                        Quantity = model.sns.Count()
+                    };
+                    _unitOfWork.Add(inv);
+                    await _unitOfWork.Complete();
+
+                    var stockMvtInventOp = new StockMvtInventOp
+                    {
+                        InventOpId = inv.Id,
+                        StockMvtId = stockmvt.Id
+                    };
+                    _unitOfWork.Add(stockMvtInventOp);
+
+                     StoreProduct storeProduct = await _unitOfWork.ProductRepository.StoreProduct(model.StoreId, model.SubProductId);
+                    if (storeProduct == null)
+                    {
+                        storeProduct = new StoreProduct
+                        {
+                            StoreId = model.StoreId,
+                            SubProductId = model.SubProductId,
+                            Quantity = model.sns.Count()
+                        };
+                        _unitOfWork.Add(storeProduct);
+                    }
+                    else
+                        storeProduct.Quantity += model.sns.Count();
+
+                         var subproduct = await _unitOfWork.ProductRepository.GetSubProduct(model.SubProductId);
+                    subproduct.Quantity += model.sns.Count();
+                    _unitOfWork.Update(subproduct);
+
+                    StockHistory h = new StockHistory
+                    {
+                        OpDate = stockmvt.MvtDate,
+                        UserId = loggeduserId,
+                        InventOpId = inv.Id,
+                        StockHistoryActionId = in_stockEntryActionId,
+                        StoreId = model.StoreId,
+                        SubProductId = model.SubProductId
+                    };
+                    StockHistory history = await _unitOfWork.ProductRepository.StoreSubProductHistory(model.StoreId, model.SubProductId);
+                    if (history == null)
+                    {
+                        h.OldQty = 0;
+                        h.NewQty = model.sns.Count();
+                        h.Delta = model.sns.Count();
+                    }
+                    else
+                    {
+                        h.OldQty = history.NewQty;
+                        h.NewQty = history.NewQty + model.sns.Count();
+                        h.Delta = (h.NewQty - h.OldQty);
+                    }
+                    _unitOfWork.Add(h);
+
+                    foreach (var item in model.sns)
+                    {
+                        //
+                        var prod = new SubProductSN
+                        {
+                            StoreId = model.StoreId,
+                            SubProductId = model.SubProductId,
+                            SN = item,
+                            InsertUserId=loggeduserId,
+                            HaKaDocClientId=hakaDocClientId
+                        };
+                        _unitOfWork.Add(prod);
+                        await _unitOfWork.Complete();
+
+                        InventOpSubProductSN inventProd = new InventOpSubProductSN
+                        {
+                            InventOpId = inv.Id,
+                            SubProductSNId = prod.Id
+                        };
+                        _unitOfWork.Add(inventProd);
+                    }
+
+                    await _unitOfWork.Complete();
+                    identityContextTransaction.Commit();
+                    done = true;
+                }
+                catch (System.Exception)
+                {
+                    identityContextTransaction.Rollback();
+                }
+            }
+
+            if (done == true) return Ok();
+            return BadRequest("impossible d'enregistrer l'entrée en stock");
+        }
+
+        [HttpPost("CreateSubProductsNoSN/{hakaDocClientId}")]
+        public async Task<ActionResult> CreateSubProductsNoSN(int hakaDocClientId, [FromForm] ProductSNAddingDto model)
+        {
+            var loggeduserId = User.GetUserId();
+            if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
+            int stockEntryTypeId = _config.GetValue<int>("AppSettings:stockEntryTypeId");
+            int in_stockEntryActionId = _config.GetValue<int>("AppSettings:inStockEntryHistoryId");
+            var dataContext = _unitOfWork.GetDataContext();
+            // var createdIds = await _uow.ProductRepository.CreateSubProductsSN(insertUserId, model, stockEntryTypeId, in_stockEntryActionId);
+
+            bool done = false;
+
+
+            using (var identityContextTransaction = dataContext.Database.BeginTransaction())
+
+                try
+                {
+                    //insertion dans stockMvt (une ligne)
+                    // insertion dans inventOP (nbre de subproducts)
+                    // mise à jour de la quantité de subproduct dans le magasin et dans SubProduct(pour le nombre total)
+                    //  insertion dans StockMvtInventOP (nbre de subproducts)
+                    // insertion dans StockHistory (nbre de subproducts)
+
+
+                    //stockMvt
+                    var stockmvt = new StockMvt
+                    {
+                        InventOpTypeId = stockEntryTypeId,
+                        ToStoreId = model.StoreId,
+                        RefNum = model.RefNum,
+                        Note = model.Note,
+                        MvtDate = model.MvtDate,
+                        InsertUserId = loggeduserId
+                    };
+
+                    _unitOfWork.Add(stockmvt);
+                    await _unitOfWork.Complete();
+
+
+                    //InventOp
+                    var inventOp = new InventOp
+                    {
+                        InsertUserId = loggeduserId,
+                        InventOpTypeId = stockmvt.InventOpTypeId,
+                        OpDate = stockmvt.MvtDate,
+                        ToStoreId = stockmvt.ToStoreId,
+                        SubProductId = model.SubProductId,
+                        FormNum = stockmvt.RefNum,
+                        Quantity = model.Quantity
+                    };
+                    _unitOfWork.Add(inventOp);
+                    await _unitOfWork.Complete();
+
+                    //Mise a jour des quantité
+                    var subproduct = await _unitOfWork.ProductRepository.GetSubProduct(model.SubProductId);
+                    subproduct.Quantity += Convert.ToInt32(model.Quantity);
+                    _unitOfWork.Update(subproduct);
+
+                    StoreProduct storeProduct = await _unitOfWork.ProductRepository.StoreProduct(model.StoreId, model.SubProductId);
+                    if (storeProduct == null)
+                    {
+                        storeProduct = new StoreProduct
+                        {
+                            StoreId = model.StoreId,
+                            SubProductId = model.SubProductId,
+                            Quantity = Convert.ToInt32(model.Quantity)
+                        };
+                        _unitOfWork.Add(storeProduct);
+                    }
+                    else
+                        storeProduct.Quantity += Convert.ToInt32(model.Quantity);
+
+                    await _unitOfWork.Complete();
+
+
+                    //stockMvtInventOp
+                    var stockMvtInventOp = new StockMvtInventOp
+                    {
+                        InventOpId = inventOp.Id,
+                        StockMvtId = stockmvt.Id
+                    };
+                    _unitOfWork.Add(stockMvtInventOp);
+                    await _unitOfWork.Complete();
+
+                    //stockHistory
+                    StockHistory h = new StockHistory
+                    {
+                        OpDate = stockmvt.MvtDate,
+                        UserId = loggeduserId,
+                        InventOpId = inventOp.Id,
+                        StockHistoryActionId = in_stockEntryActionId,
+                        StoreId = model.StoreId,
+                        SubProductId = model.SubProductId
+                    };
+                    StockHistory history = await _unitOfWork.ProductRepository.StoreSubProductHistory(model.StoreId, model.SubProductId);
+                    if (history == null)
+                    {
+                        h.OldQty = 0;
+                        h.NewQty = Convert.ToInt32(model.Quantity);
+                        h.Delta = Convert.ToInt32(model.Quantity);
+                    }
+                    else
+                    {
+                        h.OldQty = history.NewQty;
+                        h.NewQty = (history.NewQty + Convert.ToInt32(model.Quantity));
+                        h.Delta = (h.NewQty - h.OldQty);
+                    }
+                    _unitOfWork.Add(h);
+                    await _unitOfWork.Complete();
+
+                    // foreach (var item in model.sns)
+                    // {
+                    //     //
+                    //     var prod = new SubProductSN
+                    //     {
+                    //         StoreId = model.StoreId,
+                    //         SubProductId = model.SubProductId,
+                    //         SN = item
+                    //     };
+                    //     _unitOfWork.Add(prod);
+                    //     await _unitOfWork.Complete();
+
+                    //     InventOpSubProductSN inventProd = new InventOpSubProductSN
+                    //     {
+                    //         InventOpId = inventOp.Id,
+                    //         SubProductSNId = prod.Id
+                    //     };
+                    //     _unitOfWork.Add(inventProd);
+                    //     await _unitOfWork.Complete();
+                    // }
+                    identityContextTransaction.Commit();
+                    done = true;
+                }
+                catch (System.Exception ex)
+                {
+                    identityContextTransaction.Rollback();
+                }
+
+            if (done == true) return Ok();
+            return BadRequest("impossible d'enregistrer l'entrée en stock");
+
+        }
+
 
     }
 }

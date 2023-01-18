@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ReplaySubject } from 'rxjs';
 import { User } from 'src/app/shared/models/user.model';
 import { environment } from 'src/environments/environment';
-import { map, tap } from 'rxjs/operators';
+import {  tap } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 

@@ -1,1 +1,32 @@
-<p>stock-entry works!</p>
+<div class="container-fluid" *ngIf="stores.length>0">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card tab2-card">
+                <div class="card-header">
+                    <h5> Entrée stock</h5>
+                </div>
+                <div class="card-body tab2-card">
+                    <ngb-tabset class="tab-coupon">
+                        <ngb-tab title="Produit sans numéro de serie">
+                            <ng-template ngbTabContent>
+                                <div class="tab-pane fade active show" id="nosn" role="tabpanel" aria-labelledby="no-sn">
+                                <app-stock-entry-no-sn [stores]="stores" [subproducts]="subProductWithoutSns" [loggedUser]="loggedUser"></app-stock-entry-no-sn>
+                                </div>
+                            </ng-template>
+                        </ngb-tab>
+                        <ngb-tab title="Produit sans numéro de serie">
+                            <ng-template ngbTabContent>
+                                <div class="tab-pane fade active show" id="sn" role="tabpanel" aria-labelledby="sn">
+                                <app-stock-entry-sn [stores]="stores" [subproducts]="subProductWithSn" [loggedUser]="loggedUser"></app-stock-entry-sn>
+                                </div>
+                            </ng-template>
+                        </ngb-tab>
+                    </ngb-tabset>
+                    <!-- <div class="pull-right">
+                        <button type="button" class="btn btn-primary">Save</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

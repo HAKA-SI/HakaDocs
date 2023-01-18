@@ -25,7 +25,7 @@ export class CategoryComponent implements OnInit {
   categoryName: string;
   loggedUser: User;
   closeResult = '';
-  productCategoryId = environment.phisicalProductGroupId;
+  phisicalProductGroupId = environment.phisicalProductGroupId;
 
   constructor(private productService: ProductsService, private modalService: NgbModal, private toastr: ToastrService, private authService: AuthService,
     private translationService: TranslateService, private confirmService: ConfirmService) {
@@ -50,7 +50,7 @@ export class CategoryComponent implements OnInit {
   }
 
   createCategory() {
-    this.productService.createCategory(this.loggedUser.haKaDocClientId, this.categoryName).subscribe((response: Category) => {
+    this.productService.createCategory(this.loggedUser.haKaDocClientId, this.categoryName,this.phisicalProductGroupId).subscribe((response: Category) => {
       // this.typeEmps = [...this.typeEmps, element];
       this.categories = [response, ...this.categories];
       this.categoryName = '';
@@ -75,7 +75,7 @@ export class CategoryComponent implements OnInit {
   }
 
   getCategories() {
-    this.productService.categoryWithDetailsList(this.loggedUser.haKaDocClientId).subscribe((response: any) => {
+    this.productService.categoryWithDetailsList(this.loggedUser.haKaDocClientId,this.phisicalProductGroupId).subscribe((response: any) => {
       this.categories = response;
 
     })

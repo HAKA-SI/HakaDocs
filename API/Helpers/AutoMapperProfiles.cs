@@ -45,6 +45,8 @@ namespace API.Helpers
            .ForMember( dest => dest.Category, opt =>opt.MapFrom(src => src.Product.Category.Name))
            .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>src.Photos.FirstOrDefault(p => p.IsMain).Url))
            .ForMember(dest => dest.Product, opt => opt.MapFrom(src =>src.Product.Name));
+             CreateMap<Store,StoreListDto>()
+           .ForMember(dest => dest.DistrictName, opt => opt.MapFrom(src => src.District.Name));
            CreateMap<DateTime,DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
         }
     }

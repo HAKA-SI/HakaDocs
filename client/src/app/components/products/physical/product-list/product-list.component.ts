@@ -7,6 +7,7 @@ import { SharedAnimations } from 'src/app/shared/animations/shared-animations';
 import { User } from 'src/app/shared/models/user.model';
 import { productDB } from 'src/app/shared/tables/product-list';
 import { SubProduct } from 'src/app/_models/subProduct.model';
+import { environment } from 'src/environments/environment';
 import { ProductsService } from '../../products.service';
 
 @Component({
@@ -21,6 +22,7 @@ subProducts :SubProduct[]=[];
 loggedUser:User;
 page: number = 1;
 searchText:string;
+physicalProductGroupId = environment.phisicalProductGroupId;
 
   constructor(private productService: ProductsService, private toastr: ToastrService, private authService: AuthService,
     private confirmService: ConfirmService) {
@@ -32,7 +34,7 @@ searchText:string;
     this.getSubProducts();
   }
   getSubProducts() {
-    this.productService.getSubProducts(this.loggedUser.haKaDocClientId).subscribe((response:SubProduct[]) => this.subProducts=response);
+    this.productService.getSubProducts(this.loggedUser.haKaDocClientId,this.physicalProductGroupId).subscribe((response:SubProduct[]) => this.subProducts=response);
   }
 
 
