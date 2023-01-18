@@ -31,6 +31,7 @@ export class CreateCustomerComponent implements OnInit {
     this.customerForm = this.formBuilder.group({
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
+      customerCode: [''],
       gender: [null],
       dateOfBirth: [],
       cityId: [null, Validators.required],

@@ -10,14 +10,14 @@
                         <ngb-tab title="Produit sans numéro de serie">
                             <ng-template ngbTabContent>
                                 <div class="tab-pane fade active show" id="nosn" role="tabpanel" aria-labelledby="no-sn">
-                                <app-stock-entry-no-sn [stores]="stores" [subproducts]="subProductWithoutSns" [loggedUser]="loggedUser"></app-stock-entry-no-sn>
+                                <app-stock-entry-no-sn (done)="reload($event)" [stores]="stores" [subproducts]="subProductWithoutSns" [loggedUser]="loggedUser"></app-stock-entry-no-sn>
                                 </div>
                             </ng-template>
                         </ngb-tab>
                         <ngb-tab title="Produit sans numéro de serie">
                             <ng-template ngbTabContent>
                                 <div class="tab-pane fade active show" id="sn" role="tabpanel" aria-labelledby="sn">
-                                <app-stock-entry-sn [stores]="stores" [subproducts]="subProductWithSn" [loggedUser]="loggedUser"></app-stock-entry-sn>
+                                <app-stock-entry-sn  (done)="reload($event)"[stores]="stores" [subproducts]="subProductWithSn" [loggedUser]="loggedUser"></app-stock-entry-sn>
                                 </div>
                             </ng-template>
                         </ngb-tab>

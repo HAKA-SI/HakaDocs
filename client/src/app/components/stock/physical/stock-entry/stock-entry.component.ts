@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { AuthService } from 'src/app/components/auth/auth.service';
 import { ProductsService } from 'src/app/components/products/products.service';
@@ -21,10 +22,12 @@ export class StockEntryComponent implements OnInit {
   loggedUser: User;
   stores:Store[]=[];
   showStoreSelection:boolean=true;
+  
 
 
-  constructor(private authService: AuthService, private productService: ProductsService, private storeService:StoresService) {
+  constructor(private authService: AuthService,private router:Router, private productService: ProductsService, private storeService:StoresService) {
     this.authService.currentUser$.pipe(take(1)).subscribe((user) => (this.loggedUser = user));
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false
    }
 
   ngOnInit(): void {
@@ -47,6 +50,12 @@ export class StockEntryComponent implements OnInit {
           this.subProductWithoutSns = [...this.subProductWithoutSns, element];
       });
     });
+  }
+
+  reload(event){
+    this.router.navigateByUrl('/stock/physical/stock-entry', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/stock/physical/stock-entry']);
+  }); 
   }
 
 }

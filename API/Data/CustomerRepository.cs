@@ -22,6 +22,11 @@ namespace API.Data
             return await _context.Customers.FirstOrDefaultAsync(a => a.Id==customerId);
         }
 
+        public async Task<CustomerCode> GetCustomerCodeLevel(int haKaDocClientId)
+        {
+          return await _context.CustomerCodes.FirstOrDefaultAsync(a => a.HaKaDocClientId ==haKaDocClientId);
+        }
+
         public async Task<List<Customer>> GetCustomerList(int haKaDocClientId)
         {
            var customers= await _context.Customers.Where(a => a.HaKaDocClientId==haKaDocClientId)

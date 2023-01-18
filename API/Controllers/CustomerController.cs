@@ -15,7 +15,7 @@ using API.Helpers;
 
 namespace API.Controllers
 {
-     [Authorize]
+    [Authorize]
     [ServiceFilter(typeof(LogUserActivity))]
     public class CustomerController : BaseApiController
     {
@@ -36,7 +36,25 @@ namespace API.Controllers
             var customerToCreate = _mapper.Map<Customer>(model);
             customerToCreate.HaKaDocClientId = haKaDocClientId;
             customerToCreate.InsertUserId = insertUserId;
+            if (string.IsNullOrEmpty(model.CustomerCode))
+            {
+                CustomerCode customerCode = await _unitOfWork.CustomerRepository.GetCustomerCodeLevel(haKaDocClientId);
+                if (customerCode.CodeLevel < 10)
+                    customerToCreate.CustomerCode = "C0000" + customerCode.CodeLevel;
+                else if (customerCode.CodeLevel < 100 && customerCode.CodeLevel >= 10)
+                    customerToCreate.CustomerCode = "C000" + customerCode.CodeLevel;
+                else if (customerCode.CodeLevel < 1000 && customerCode.CodeLevel >= 100)
+                    customerToCreate.CustomerCode = "C00" + customerCode.CodeLevel;
+                else if (customerCode.CodeLevel < 10000 && customerCode.CodeLevel >= 1000)
+                    customerToCreate.CustomerCode = "C0" + customerCode.CodeLevel;
+                else
+                    customerToCreate.CustomerCode = "C" + customerCode.CodeLevel;
+
+                customerCode.CodeLevel++;
+                _unitOfWork.Update(customerCode);
+            }
             _unitOfWork.Add(customerToCreate);
+
             if (await _unitOfWork.Complete()) return Ok();
             return BadRequest();
         }

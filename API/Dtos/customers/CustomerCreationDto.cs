@@ -12,6 +12,7 @@ namespace API.Dtos
          public byte? Gender { get; set; }
         public string PhoneNumber { get; set; }
         public string CountryCode { get; set; }
+        public string CustomerCode { get; set; }
         public string SecondPhoneNumber { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public DateTime Created { get; set; } =DateTime.Now;

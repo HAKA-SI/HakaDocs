@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { StoresService } from '../../stores/stores.service';
 })
 export class StockEntrySnComponent implements OnInit {
 
+  @Output() done = new EventEmitter();
   @Input() stockEntryForm: FormGroup;
   @Input() loggedUser: User;
   @Input() stores: Store[] = [];
@@ -97,8 +98,9 @@ export class StockEntrySnComponent implements OnInit {
         // formValues.mvtDate = datestr;
 
         this.productService.createSubProductsWithSN(this.loggedUser.haKaDocClientId,formValues).subscribe(() => {
-          this.resetForm();
+          //this.resetForm();
           this.toastr.success("enregistrement terminé...");
+          this.done.emit(true);
           // this.mainFile = null;
           // this.otherFiles= [];
           // this.mainPhotoUrl='';

@@ -14,6 +14,7 @@ namespace API.Dtos
         public string IdNum { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        public string CustomerCode { get; set; }
         // public int UserTypeId { get; set; }
         // public UserType UserType { get; set; }
         public byte? Gender { get; set; }

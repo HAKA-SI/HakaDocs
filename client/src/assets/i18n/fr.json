@@ -93,6 +93,7 @@
     "detail":"Détails du client",
     "firstName":"Nom",
     "lastName":"Prenom(s)",
+    "customerCode":"Code Client",
     "gender":"Sexe",
     "city":"Ville",
     "dateOfBirth":"Date de naissance",

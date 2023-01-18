@@ -15,6 +15,7 @@
                                         <h4>{{'create-customer.detail'|translate}}</h4>
                                          <app-text-input formControlName="firstName" [label]="'create-customer.firstName'"></app-text-input>
                                          <app-text-input formControlName="lastName" [label]="'create-customer.lastName'"></app-text-input>
+                                         <app-text-input formControlName="customerCode" [label]="'create-customer.customerCode'"></app-text-input>
                                          <app-text-input formControlName="email" [label]="'create-customer.email'" [required]="false"></app-text-input>
                                          <div class="form-group row">
                                             <label for="cityId" class="col-xl-3 col-sm-4 mb-0">{{'create-customer.city'|translate}}</label>
@@ -35,7 +36,7 @@
                                          <app-text-input formControlName="cni" [label]="'create-customer.cni'" [required]="false"></app-text-input>
                                          <app-text-input formControlName="passport" [label]="'create-customer.passport'" [required]="false"></app-text-input>
                                          <app-text-input formControlName="iddoc" [label]="'create-customer.iddoc'" [required]="false"></app-text-input>
-                                        <app-text-input formControlName="dateOfBirth" [type]="'date'" [label]="'create-customer.dateOfBirth'" [required]="false"></app-text-input>
+                                        <app-date-input formControlName="dateOfBirth" [type]="'date'" [label]="'create-customer.dateOfBirth'" [required]="false"></app-date-input>
                                     </form>
                                 </div>
                             </ng-template>

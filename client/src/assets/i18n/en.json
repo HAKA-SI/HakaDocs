@@ -214,7 +214,8 @@
   "create-customer":{
     "title":"add new custoner",
     "detail":"Customer details",
-    "firstName":"First Name",
+    "customerCode":"Code Client",
+     "firstName":"First Name",
     "lastName":"Last Name",
     "gender":"Gender",
     "city":"City",

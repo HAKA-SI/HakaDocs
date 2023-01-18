@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Input, OnInit } from '@angular/core';
+import { AfterContentInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/shared/models/user.model';
 import { SubProduct } from 'src/app/_models/subProduct.model';
@@ -20,6 +20,7 @@ export class StockEntryNoSnComponent implements OnInit {
   mainFile: File;
   otherFiles: File[] = [];
   otherFilesUrl = [];
+  @Output() done = new EventEmitter();
   @Input() stockEntryForm: FormGroup;
   @Input() loggedUser: User;
   @Input() stores: Store[] = [];
@@ -109,8 +110,9 @@ export class StockEntryNoSnComponent implements OnInit {
 
         this.productService.createSubProductsWithoutSN(this.loggedUser.haKaDocClientId, formData).subscribe(() => {
           
-          this.resetForm();
+          //this.resetForm();
           this.toastr.success("enregistrement terminé...");
+          this.done.emit(true);
 
         }, error => this.toastr.error(error))
       }

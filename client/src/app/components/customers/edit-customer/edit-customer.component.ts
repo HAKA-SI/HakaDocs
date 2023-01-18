@@ -27,10 +27,35 @@ export class EditCustomerComponent implements OnInit {
     this.getCities();
   }
 
+
+  ngOnInit(): void {
+
+    const  customerId = this.route.snapshot.params['id'];
+    if(!!customerId) {
+      this.customerService.getCustomerById(customerId,this.loggedUser.haKaDocClientId).subscribe((response) => {
+        this.customer =response; 
+        this.customerForm.patchValue(this.customer);
+        if(!!this.customer.dateOfBirth)
+        this.customerForm.get('dateOfBirth').patchValue(this.formatDate(this.customer.dateOfBirth as Date));
+      },error => {
+        this.toastr.error(error.rror);
+        this.router.navigate(['/customers/list-customer']);
+      })
+    } else {
+      this.toastr.error("no customer parameter found");
+      this.router.navigate(['/customers/list-customer']);
+    }
+
+    // this.createAccountForm();
+    // this.getCities();
+  }
+
+
   createCustomerForm() {
     this.customerForm = this.formBuilder.group({
       lastName: ['', Validators.required],
       firstName: ['', Validators.required],
+      customerCode: [''],
       gender: [null],
       dateOfBirth: [],
       cityId: [null, Validators.required],
@@ -46,27 +71,6 @@ export class EditCustomerComponent implements OnInit {
     })
   }
 
-
-  ngOnInit(): void {
-
-    const  customerId = this.route.snapshot.params['id'];
-    if(!!customerId) {
-      this.customerService.getCustomerById(customerId,this.loggedUser.haKaDocClientId).subscribe((response) => {
-        this.customer =response; 
-        this.customerForm.patchValue(this.customer);
-        this.customerForm.get('dateOfBirth').patchValue(this.formatDate(this.customer.dateOfBirth as Date));
-      },error => {
-        this.toastr.error(error.rror);
-        this.router.navigate(['/customers/list-customer']);
-      })
-    } else {
-      this.toastr.error("no customer parameter found");
-      this.router.navigate(['/customers/list-customer']);
-    }
-
-    // this.createAccountForm();
-    // this.getCities();
-  }
 
   private formatDate(date) {
     let newDate = new Date(date);

@@ -11,6 +11,7 @@ export interface Customer {
     gender: number | null;
     phoneNumber: string;
     countryCode: string;
+    customerCode: string;
     secondPhoneNumber: string;
     dateOfBirth: string | null;
     created: string;
