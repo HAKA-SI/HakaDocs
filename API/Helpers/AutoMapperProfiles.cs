@@ -47,6 +47,8 @@ namespace API.Helpers
            .ForMember(dest => dest.Product, opt => opt.MapFrom(src =>src.Product.Name));
              CreateMap<Store,StoreListDto>()
            .ForMember(dest => dest.DistrictName, opt => opt.MapFrom(src => src.District.Name));
+     CreateMap<SubProductSN,SubProductSnListDto>();
+
            CreateMap<DateTime,DateTime>().ConvertUsing(d => DateTime.SpecifyKind(d, DateTimeKind.Utc));
         }
     }

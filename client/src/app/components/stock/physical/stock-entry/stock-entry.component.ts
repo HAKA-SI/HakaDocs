@@ -36,7 +36,7 @@ export class StockEntryComponent implements OnInit {
   }
 
   getStores() {
-    this.storeService.storeLLis(this.loggedUser.haKaDocClientId).subscribe((response:Store[]) =>{
+    this.storeService.storeList(this.loggedUser.haKaDocClientId).subscribe((response:Store[]) =>{
       this.stores=response;
     });
   }

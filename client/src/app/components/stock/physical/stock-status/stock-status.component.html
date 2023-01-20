@@ -1,0 +1,118 @@
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>{{'products.name'|translate}}</h5>
+                </div>
+                <div class="card-body"> 
+                    <div class="category-table custom-datatable" *ngIf="!showSubProductSNsTable">
+                        <div class="table-responsive">
+                            <div *ngIf="!!noResult">
+                                <span class="text text-info">{{noResult}}</span>
+                            </div>
+                        </div>
+                        <div *ngIf="subProducts.length>0">
+                            <div class="form-group row">
+                                <label for="searchText"
+                                    class="col-xl-2 col-md-3">{{'actions.search'|translate}}</label>
+                                <input type="text" [(ngModel)]="searchText" class="form-control col-xl-4 col-md-3"
+                                    id="search" name="search">
+                            </div>
+                            <table class="table table-hover">
+                                <thead class="fw-bold headerGray">
+                                    <tr>
+                                        <th scope="col">{{'products.name'|translate}}</th>
+                                        <th scope="col">{{'products.category'|translate}}</th>
+                                        <th scope="col">{{'products.product'|translate}}</th>
+                                        <th scope="col">{{'products.unitPrice'|translate}}</th>
+                                        <th scope="col">{{'products.quantity'|translate}}</th>
+                                        <th scope="col">{{'products.reorderLevel'|translate}}</th>
+                                        <th scope="col">{{'products.withSerialNumber'|translate}}</th>
+                                        <th scope="col">Options</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of subProducts| filter: searchText|paginate: { itemsPerPage: 5, currentPage: page }, let i=index"
+                                        [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'50px'}}"
+                                        [ngClass]="item.quantity<item.reorderLevel ? 'text-danger' : 'text-success'">
+                                        <td>
+                                            <div class="row">
+                                                <div class="col-2">
+                                                    <a><img class="" style="max-width: 60px; max-height: 50px;"
+                                                            [src]="item.photoUrl || 'assets/images/products/product1.jpg'"
+                                                            alt="User Image"></a>
+                                                </div>
+                                                <div class="col-auto d-flex-column mx-2">
+                                                    <b style="font-weight: bold;">{{item.name}}</b> <br>
+                                                    <small class="text-muted my-0 py-0">{{item.quantityPerUnite}}
+                                                        {{'products.perUnit'|translate}}</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{item.category}}</td>
+                                        <td>{{item.product}}</td>
+                                        <td>{{item.unitPrice}}</td>
+                                        <td>
+                                            <b>{{item.quantity}}</b>
+                                        </td>
+                                        <td>{{item.reorderLevel}}</td>
+                                        <td>
+                                            <span *ngIf="item.withSerialNumber">{{'actions.true'|translate}}</span>
+                                            <span
+                                                *ngIf="!item.withSerialNumber">{{'actions.false'|translate}}</span>
+                                        </td>
+                                        <td>
+                                            <a class="text text-primary" (click)="getSubProductSNs(item.id)" *ngIf="item.withSerialNumber && item.quantity>0"><i class="fa-light fa-circle-chevron-right"></i></a>
+                                        </td>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="category-table custom-datatable" *ngIf="showSubProductSNsTable">
+                        <table class="table table-hover">
+                            <thead class="fw-bold headerGray">
+                                <tr>
+                                    <th scope="col">{{'products.name'|translate}}</th>
+                                    <th scope="col">{{'products.sn'|translate}}</th>
+                                    <th scope="col">{{'products.category'|translate}}</th>
+                                    <th scope="col">{{'products.product'|translate}}</th>
+                                    <th scope="col">{{'products.unitPrice'|translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of subProductSNs| filter: searchText|paginate: { itemsPerPage: 5, currentPage: page }, let i=index"
+                                    [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'50px'}}"
+                                    [ngClass]="item.quantity<item.reorderLevel ? 'text-danger' : 'text-success'">
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-2">
+                                                <a><img class="" style="max-width: 60px; max-height: 50px;"
+                                                        [src]="item.photoUrl || 'assets/images/products/product1.jpg'"
+                                                        alt="User Image"></a>
+                                            </div>
+                                            <div class="col-auto d-flex-column mx-2">
+                                                <b style="font-weight: bold;">{{item.subProduct.name}}</b> <br>
+                                                <small class="text-muted my-0 py-0">{{item.subProduct.quantityPerUnite}}
+                                                    {{'products.perUnit'|translate}}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <b>{{item.sn}}</b>
+                                    </td>
+                                    <td>{{item.subProduct.category}}</td>
+                                    <td>{{item.subProduct.product}}</td>
+                                    <td>{{item.subProduct.unitPrice}}</td>
+                            </tbody>
+                        </table>
+                        <div class="pull-right">
+                            <button class="btn btn-secondary" (click)="hideSubProductSnTable()">{{'actions.back'|translate}}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

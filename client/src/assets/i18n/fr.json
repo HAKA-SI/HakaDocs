@@ -2,6 +2,8 @@
   "actions":{
     "save":"Enregister",
     "close":"Fermer",
+    "back":"Retour",
+    "next":"Suivant",
    "delete":"Supprimer",
    "cancel":"reprendre",
    "editer":"Editer",
@@ -123,6 +125,7 @@
   "products":{
     "add-product":"Ajouter un Produit",
     "name":"Produit",
+    "sn":"Numéro de serie",
     "unitPrice":"Prix Unitaire",
     "category":"Categorie",
     "product":"Sous Categorie",

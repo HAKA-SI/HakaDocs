@@ -8,7 +8,9 @@ namespace API.Interfaces
 {
     public interface IStoreRepository
     {
-          Task<List<Store>> StoreList(int HaKaDocClientId);
+        Task<List<SubProduct>> GetStoreStock(int storeId);
+        Task<List<SubProduct>> GetStoreStockElements(int storeId);
+        Task<List<Store>> StoreList(int HaKaDocClientId);
     //   Task<Store> CreateStore(Store store);
     //   Task<List<SubProductSN>> StoreSubProductSNs(int storeId);
     }

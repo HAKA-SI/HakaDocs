@@ -45,6 +45,8 @@ export class NavService {
 				{
 					title: 'Physical', type: 'sub', children: [
 						{ path: '/stock/physical/stock-entry', title: 'Stock Entry', type: 'link' },
+						{ path: '/stock/physical/stock-status', title: 'Stock Status', type: 'link' },
+						{ path: '/stock/physical/stock-movements', title: 'Recorded Movements', type: 'link' },
 						// { path: '/products/physical/sub-category', title: 'Sub Category', type: 'link' },
 						// { path: '/products/physical/product-list', title: 'Product List', type: 'link' },
 						// { path: '/products/physical/product-detail', title: 'Product Detail', type: 'link' },

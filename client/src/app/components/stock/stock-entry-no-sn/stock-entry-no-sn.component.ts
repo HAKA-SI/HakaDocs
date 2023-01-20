@@ -39,8 +39,6 @@ export class StockEntryNoSnComponent implements OnInit {
     if (!!this.storeId) {
       this.stockEntryForm.patchValue({ storeId: this.storeId });
     }
-
-
   }
 
   createStockEntryForm() {

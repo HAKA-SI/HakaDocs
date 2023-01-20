@@ -101,5 +101,14 @@ namespace API.Data
         {
            return await _context.StoreProducts.FirstOrDefaultAsync(a =>a.StoreId==storeId && a.SubProductId==subProductId);
         }
+
+        public async  Task<List<SubProductSN>> GetSubProductSnBySubProductId(int subProductId)
+        {
+            return await _context.SubProductSNs.Include(a => a.SubProduct)
+                                                .ThenInclude(a =>a.Photos)
+                                                .Include(a =>a.SubProduct.Product)
+                                                .Include(a => a.SubProduct.Product.Category)
+                                                .Where(a => a.SubProductId == subProductId).ToListAsync();
+        }
     }
 }

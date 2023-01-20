@@ -17,7 +17,7 @@ export class StoresService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  storeLLis(clientId: number) {
+  storeList(clientId: number) {
     return this.http.get(this.baseUrl + "StoreList/" + clientId).pipe(
       tap((stores: Store[]) => {
         // let user = data.user;
@@ -30,5 +30,9 @@ export class StoresService {
       })
     );
     ;
+  }
+
+  storeStock(storeId:number){
+    return this.http.get(this.baseUrl+'StoreStock/'+storeId);
   }
 }

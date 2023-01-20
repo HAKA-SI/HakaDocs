@@ -11,6 +11,7 @@ namespace API.Dtos
         public string Name { get; set; }
         public int? TypeId { get; set; }
         public string Type { get; set; }
+        public string SN { get; set; }
         public int? CategoryId { get; set; }
         public string Category { get; set; }
         public int ProductId { get; set; }

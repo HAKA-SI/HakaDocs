@@ -73,6 +73,10 @@ export class ProductsService {
 
   createSubProductsWithSN(clientId:number,productData:any) {
     return this.http.post(this.baseUrl+'CreateSubProductsSN/'+clientId,productData);
+  } 
+
+  subProductSNBySubProductId(clientId:number,subPorductId:number) {
+    return this.http.get(this.baseUrl+"SubProductSnBySubProductId/"+clientId+'/'+subPorductId)
   }
 
 }

@@ -22,5 +22,6 @@ namespace API.Interfaces
         Task<List<SubProduct>> GetSubProductWithoutSNs(int hakaDocClientId, int productGroupId);
         Task<StockHistory> StoreSubProductHistory(int storeId, int subProductId);
         Task<StoreProduct> StoreProduct(int storeId, int subProductId);
+        Task<List<SubProductSN>> GetSubProductSnBySubProductId(int subProductId);
     }
 }

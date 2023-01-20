@@ -4,6 +4,8 @@
     "close":"Close",
     "delete":"Delete",
     "editer":"Edit",
+    "back":"Back",
+    "next":"Next"
     "details":"Details",
      "cancel":"discard",
    "select":"---Select---",
@@ -246,6 +248,7 @@
   "products":{
     "add-product":"Add Product",
     "name":"Product",
+    "sn":"Serial Number",
     "unitPrice":"Unit Price",
     "category":"Sub Category",
     "product":"Sous Categorie",

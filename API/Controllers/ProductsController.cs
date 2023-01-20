@@ -394,7 +394,7 @@ namespace API.Controllers
                     };
                     _unitOfWork.Add(stockMvtInventOp);
 
-                     StoreProduct storeProduct = await _unitOfWork.ProductRepository.StoreProduct(model.StoreId, model.SubProductId);
+                    StoreProduct storeProduct = await _unitOfWork.ProductRepository.StoreProduct(model.StoreId, model.SubProductId);
                     if (storeProduct == null)
                     {
                         storeProduct = new StoreProduct
@@ -408,7 +408,7 @@ namespace API.Controllers
                     else
                         storeProduct.Quantity += model.sns.Count();
 
-                         var subproduct = await _unitOfWork.ProductRepository.GetSubProduct(model.SubProductId);
+                    var subproduct = await _unitOfWork.ProductRepository.GetSubProduct(model.SubProductId);
                     subproduct.Quantity += model.sns.Count();
                     _unitOfWork.Update(subproduct);
 
@@ -444,8 +444,8 @@ namespace API.Controllers
                             StoreId = model.StoreId,
                             SubProductId = model.SubProductId,
                             SN = item,
-                            InsertUserId=loggeduserId,
-                            HaKaDocClientId=hakaDocClientId
+                            InsertUserId = loggeduserId,
+                            HaKaDocClientId = hakaDocClientId
                         };
                         _unitOfWork.Add(prod);
                         await _unitOfWork.Complete();
@@ -613,6 +613,17 @@ namespace API.Controllers
             if (done == true) return Ok();
             return BadRequest("impossible d'enregistrer l'entrée en stock");
 
+        }
+
+        [HttpGet("SubProductSnBySubProductId/{hakaDocClientId}/{subProductId}")]
+        public async Task<ActionResult> SubProductSnBySubProductId(int hakaDocClientId, int subProductId)
+        {
+            var loggeduserId = User.GetUserId();
+            if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
+
+            List<SubProductSN> subProductSNsFromDb = await _unitOfWork.ProductRepository.GetSubProductSnBySubProductId(subProductId);
+
+            return Ok(_mapper.Map<List<SubProductSnListDto>>(subProductSNsFromDb));
         }
 
 

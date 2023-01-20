@@ -10,6 +10,8 @@ import { CKEditorModule } from 'ngx-ckeditor';
 import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { StockEntryNoSnComponent } from './stock-entry-no-sn/stock-entry-no-sn.component';
 import { StockEntrySnComponent } from './stock-entry-sn/stock-entry-sn.component';
+import { StockStatusComponent } from './physical/stock-status/stock-status.component';
+import { StockMovementsComponent } from './physical/stock-movements/stock-movements.component';
 
 
 
@@ -17,7 +19,9 @@ import { StockEntrySnComponent } from './stock-entry-sn/stock-entry-sn.component
   declarations: [
     StockEntryComponent,
     StockEntryNoSnComponent,
-    StockEntrySnComponent
+    StockEntrySnComponent,
+    StockStatusComponent,
+    StockMovementsComponent
   ],
   imports: [
     CommonModule,
