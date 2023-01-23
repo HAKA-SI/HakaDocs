@@ -125,12 +125,17 @@ export class StockMovementsComponent implements OnInit {
     })
   }
 
-  deleteInvenOp(id: number, subProductId: number) {
+  deleteInvenOp(inventOpId: number, subProductId: number) {
     // throw new Error('Method not implemented.');
     this.confirmService.confirm('confirmation ', 'voulez vous vraiment ce transfert de stock ?')
       .subscribe(result => {
         if (result) {
-
+          this.productService.deleteInventOpSubProduct(this.loggedUser.haKaDocClientId,inventOpId,subProductId).subscribe(() => {
+            const idx = this.inventOps.findIndex(a => a.id == inventOpId);
+            this.inventOps.splice(idx, 1);
+            this.toastr.success("suppression éffectuée...");
+         //   this.getInvenOps();
+          })
         }
       })
   }

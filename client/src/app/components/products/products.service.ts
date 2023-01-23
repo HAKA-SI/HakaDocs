@@ -88,6 +88,9 @@ export class ProductsService {
   deleteInventOpSubProductSN(clientId: number, inventOpId: number, subPorductSNId: number) {
     return this.http.delete(this.baseUrl+'DeleteInventOpSubProductSN/'+clientId+'/'+inventOpId+'/'+subPorductSNId,{});
   }
+  deleteInventOpSubProduct(clientId: number, inventOpId: number, subPorductId: number) {
+    return this.http.delete(this.baseUrl+'DeleteInventOpSubProduct/'+clientId+'/'+inventOpId+'/'+subPorductId,{});
+  }
 
   canDeleteSubProductInventOp(clienId:number,storeId:number,subPorductId:number,quantity:number):Observable<boolean> {
     return this.http.get<boolean>(this.baseUrl+'CanDeleteSubProductInventOp/'+clienId+'/'+subPorductId+'/'+storeId+'/'+quantity);

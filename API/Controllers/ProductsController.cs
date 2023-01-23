@@ -649,16 +649,16 @@ namespace API.Controllers
                 {
                     SubProductSN subProductSn = await _unitOfWork.ProductRepository.GetSubProductSN(subPorductSNId);
                     subProductSn.Active = false;
-                    
+
                     _unitOfWork.Update(subProductSn);
 
-                    SubProduct subProduct= await _unitOfWork.ProductRepository.GetSubProduct(subProductSn.SubProductId);
+                    SubProduct subProduct = await _unitOfWork.ProductRepository.GetSubProduct(subProductSn.SubProductId);
                     subProduct.Quantity--;
                     _unitOfWork.Update(subProduct);
 
-                    StoreProduct storeProd = await _unitOfWork.ProductRepository.StoreProduct(subProductSn.StoreId,subProductSn.Id);
+                    StoreProduct storeProd = await _unitOfWork.ProductRepository.StoreProduct(subProductSn.StoreId, subProduct.Id);
                     storeProd.Quantity--;
-                     _unitOfWork.Update(storeProd);
+                    _unitOfWork.Update(storeProd);
 
                     var inv = await _unitOfWork.ProductRepository.GetInventOpById(inventOpId);
                     if (inv.InventOpSubProductSNs.Count() == 1)
@@ -686,13 +686,51 @@ namespace API.Controllers
             return BadRequest("impossible de faire l'enregistrement");
         }
 
+
+        [HttpDelete("DeleteInventOpSubProduct/{hakaDocClientId}/{inventOpId}/{subProductId}")]
+        public async Task<ActionResult> DeleteInventOpSubProduct(int hakaDocClientId, int inventOpId, int subProductId)
+        {
+            var loggeduserId = User.GetUserId();
+            if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
+            bool done = false;
+            var context = _unitOfWork.GetDataContext();
+            using (var identityContextTransaction = context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var inv = await _unitOfWork.ProductRepository.GetInventOpById(inventOpId);
+                    inv.Active = false;
+                    _unitOfWork.Update(inv);
+
+                    SubProduct subProduct = await _unitOfWork.ProductRepository.GetSubProduct(subProductId);
+                    subProduct.Quantity = subProduct.Quantity - Convert.ToInt32(inv.Quantity);
+                    _unitOfWork.Update(subProduct);
+
+                    StoreProduct storeProd = await _unitOfWork.ProductRepository.StoreProduct(Convert.ToInt32(inv.ToStoreId),subProduct.Id);
+                    storeProd.Quantity=storeProd.Quantity-Convert.ToInt32(inv.Quantity);
+                    _unitOfWork.Update(storeProd);
+
+                    await _unitOfWork.Complete();
+                    identityContextTransaction.Commit();
+                    done = true;
+                }
+                catch (System.Exception)
+                {
+                    identityContextTransaction.Rollback();
+                }
+            }
+            if (done) return Ok();
+            return BadRequest("impossible de faire l'enregistrement");
+        }
+
+
         [HttpGet("CanDeleteSubProductInventOp/{hakaDocClientId}/{subProductId}/{storeId}/{quantity}")]
         public async Task<ActionResult> CanDeleteSubProductInventOp(int hakaDocClientId, int quantity, int subProductId, int storeId)
         {
             var loggeduserId = User.GetUserId();
             if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
-            StoreProduct storeProd = await _unitOfWork.StoreRepository.GetStoreProduct(storeId,subProductId);
-            if(storeProd.Quantity>=quantity) return Ok(true);
+            StoreProduct storeProd = await _unitOfWork.StoreRepository.GetStoreProduct(storeId, subProductId);
+            if (storeProd.Quantity >= quantity) return Ok(true);
             return Ok(false);
         }
 
