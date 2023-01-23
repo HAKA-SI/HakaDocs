@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos;
 using API.Entities;
+using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
@@ -39,6 +40,16 @@ namespace API.Controllers
           var subProductsFromDb = await _unitOfWork.StoreRepository.GetStoreStock(storeId);
           
          return Ok(_mapper.Map<List<SubProductListDto>>(subProductsFromDb));
+         }
+
+         [HttpGet("{hakaDocClientId}/StoreInventOps/{storeId}")]
+         public async Task<ActionResult> StoreInventOps(int hakaDocClientId, int storeId)
+         {  var loggeduserId = User.GetUserId();
+            if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
+            
+            List<InventOp> inventOpFromDbs = await _unitOfWork.StoreRepository.GetStoreInventOps(storeId);
+            var inventOpsToReturn = _mapper.Map<List<InventopForListDto>>(inventOpFromDbs);
+            return Ok(inventOpsToReturn);
          }
 
     }

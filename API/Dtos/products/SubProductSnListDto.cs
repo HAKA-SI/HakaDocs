@@ -14,5 +14,6 @@ namespace API.Dtos
         public SubProductListDto SubProduct { get; set; }
         public string SN { get; set; }
         public int Quantity { get; set; }=1;
+          public bool CanBeDeleted { get; set; } = true;
     }
 }

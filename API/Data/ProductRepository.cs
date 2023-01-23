@@ -110,5 +110,37 @@ namespace API.Data
                                                 .Include(a => a.SubProduct.Product.Category)
                                                 .Where(a => a.SubProductId == subProductId).ToListAsync();
         }
+
+        public async Task<List<SubProductSN>> getInventOpSubProductSNs(int inventOpId, int subProductId)
+        {
+            var invProds = await _context.InventOpSubProductSNs.Where(a =>a.InventOpId==inventOpId)
+                                                                .ToListAsync();
+            var ids = invProds.Select(a => a.SubProductSNId);
+
+            return await _context.SubProductSNs.Include(a => a.SubProduct)
+                                                .ThenInclude(a =>a.Photos)
+                                                .Include(a =>a.SubProduct.Product)
+                                                .Include(a => a.SubProduct.Product.Category)
+                                                .Where(a => ids.Contains(a.Id)).ToListAsync();
+                                                                    
+        }
+
+        public async Task<SubProductSN> GetSubProductSN(int subproductId)
+        {
+            return await _context.SubProductSNs.FirstOrDefaultAsync(a => a.Id==subproductId);
+        }
+
+        public async Task<InventOp> GetInventOpById(int inventOpId)
+        {
+           return await _context.InventOps.Include(a =>a.StockMvtInventOps)
+                                            .Include(a => a.InventOpSubProductSNs)
+                                            .Include(a => a.StockHistory)
+                                            .FirstOrDefaultAsync(a => a.Id ==inventOpId);
+        }
+
+        // public async Task<InventOpSubProductSN> InventOpSubProductSN(int inventOpId, int subPorductSNId)
+        // {
+        //     return  await _context.InventOpSubProductSNs.Include(a => a.InventOp).FirstOrDefaultAsync(a => a.InventOpId==inventOpId && a.SubProductSNId==subPorductSNId);
+        // }
     }
 }

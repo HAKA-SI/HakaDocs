@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
+ 
   private baseUrl = environment.apiUrl+'Products/';
 
   
@@ -77,6 +79,18 @@ export class ProductsService {
 
   subProductSNBySubProductId(clientId:number,subPorductId:number) {
     return this.http.get(this.baseUrl+"SubProductSnBySubProductId/"+clientId+'/'+subPorductId)
+  }
+
+  inventOpSubProductSNs(clientId,inventOpId:number,subProductId:number){
+    return this.http.get(this.baseUrl+"InventOpSubProdutSNs/"+clientId+'/'+inventOpId+'/'+subProductId)
+  }
+
+  deleteInventOpSubProductSN(clientId: number, inventOpId: number, subPorductSNId: number) {
+    return this.http.delete(this.baseUrl+'DeleteInventOpSubProductSN/'+clientId+'/'+inventOpId+'/'+subPorductSNId,{});
+  }
+
+  canDeleteSubProductInventOp(clienId:number,storeId:number,subPorductId:number,quantity:number):Observable<boolean> {
+    return this.http.get<boolean>(this.baseUrl+'CanDeleteSubProductInventOp/'+clienId+'/'+subPorductId+'/'+storeId+'/'+quantity);
   }
 
 }

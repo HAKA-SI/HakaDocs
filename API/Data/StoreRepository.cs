@@ -16,6 +16,28 @@ namespace API.Data
             _context = context;
         }
 
+        public async Task<List<InventOp>> GetStoreInventOps(int storeId)
+        {
+            return await _context.InventOps.Include(a => a.InventOpType)
+                                                        .Include(a => a.FromStore)
+                                                        .Include(a => a.ToStore)
+                                                        .Include(a => a.FromEmployee)
+                                                        .Include(a => a.ToEmployee)
+                                                        .Include(a => a.SubProduct)
+                                                        .ThenInclude(a =>a.Product)
+                                                        .ThenInclude(a =>a.Category)
+                                                        .Include(a => a.SubProduct.Photos)
+                                                        .Include(a => a.InsertUser)
+                                                        .Where(a =>a.FromStoreId == storeId || a.ToStoreId==storeId)
+                                                        .OrderByDescending(a =>a.OpDate)
+                                                        .ToListAsync();
+        }
+
+        public async Task<StoreProduct> GetStoreProduct(int storeId, int subProductId)
+        {
+            return await _context.StoreProducts.FirstOrDefaultAsync(a =>a.StoreId==storeId && a.SubProductId==subProductId);
+        }
+
         public async Task<List<SubProduct>> GetStoreStock(int storeId)
         {
             var storeProduct = await _context.StoreProducts.Where(a => a.StoreId == storeId).ToListAsync();

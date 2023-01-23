@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReplaySubject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { InvenOp } from 'src/app/_models/inventOp.model';
 import { Store } from 'src/app/_models/store.model';
 import { environment } from 'src/environments/environment';
 
@@ -35,4 +36,10 @@ export class StoresService {
   storeStock(storeId:number){
     return this.http.get(this.baseUrl+'StoreStock/'+storeId);
   }
+
+
+  storeInventOps(clientId:number,storeId:number):Observable<InvenOp[]> {
+    return this.http.get<InvenOp[]>(this.baseUrl+clientId+'/StoreInventOps/'+storeId);
+  }
+
 }

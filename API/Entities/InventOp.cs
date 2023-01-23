@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace API.Entities
 {
     public class InventOp: BaseEntity
@@ -21,5 +23,8 @@ namespace API.Entities
         public int? SubProductId { get; set; }
         public SubProduct SubProduct { get; set; }
         public int? Quantity { get; set; }
+        public StockHistory StockHistory { get; set; }
+        public ICollection<InventOpSubProductSN> InventOpSubProductSNs { get; set; }
+        public ICollection<StockMvtInventOp> StockMvtInventOps { get; set; }
     }
 }

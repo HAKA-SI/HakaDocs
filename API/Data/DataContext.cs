@@ -177,6 +177,9 @@ namespace API.Data
            builder.Entity<Category>().HasQueryFilter(p => p.Active);
            builder.Entity<Product>().HasQueryFilter(p => p.Active);
            builder.Entity<SubProduct>().HasQueryFilter(p => p.Active);
+           builder.Entity<SubProductSN>().HasQueryFilter(p => p.Active);
+           builder.Entity<InventOp>().HasQueryFilter(p => p.Active);
+           builder.Entity<InventOpSubProductSN>().HasQueryFilter(p => p.Active);
     }
 }
 

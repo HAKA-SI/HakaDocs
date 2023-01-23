@@ -41,6 +41,8 @@ namespace API.Helpers
             .ForMember(dest => dest.HaKaDocClient, opt => opt.MapFrom(src => src.HaKaDocClient.Name));
 
             CreateMap<SubProductAddingDto,SubProduct>();
+            CreateMap<InventOp,InventopForListDto>()
+            .ForMember( dest => dest.InventOpType, opt =>opt.MapFrom(src => src.InventOpType.Name));
              CreateMap<SubProduct,SubProductListDto>()
            .ForMember( dest => dest.Category, opt =>opt.MapFrom(src => src.Product.Category.Name))
            .ForMember(dest => dest.PhotoUrl, opt => opt.MapFrom(src =>src.Photos.FirstOrDefault(p => p.IsMain).Url))

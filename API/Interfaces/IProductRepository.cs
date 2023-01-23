@@ -23,5 +23,9 @@ namespace API.Interfaces
         Task<StockHistory> StoreSubProductHistory(int storeId, int subProductId);
         Task<StoreProduct> StoreProduct(int storeId, int subProductId);
         Task<List<SubProductSN>> GetSubProductSnBySubProductId(int subProductId);
+        Task<List<SubProductSN>> getInventOpSubProductSNs(int inventOpId, int subProductId);
+        Task<SubProductSN> GetSubProductSN(int subproductId);
+        // Task<InventOpSubProductSN> InventOpSubProductSN(int inventOpId, int subPorductSNId);
+        Task<InventOp> GetInventOpById(int inventOpId);
     }
 }
