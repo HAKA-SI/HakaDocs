@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/components/auth/auth.service';
-import { User } from 'src/app/shared/models/user.model';
+import { AuthService } from 'src/app/_services/auth.service';
+import { User } from 'src/app/_models/user.model';
 import { take } from 'rxjs/operators';
 import { ProductsService } from '../../products.service';
 import { Category } from 'src/app/_models/category.model';

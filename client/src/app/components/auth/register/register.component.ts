@@ -4,7 +4,7 @@ import { AsyncValidatorFn, FormBuilder, FormGroup, Validators } from '@angular/f
 import { Router } from '@angular/router';
 import { of, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
-import { AuthService } from '../auth.service';
+import { AuthService } from '../../../_services/auth.service';
 
 
 @Component({
@@ -49,7 +49,9 @@ owlcarouselOptions = {
       firstName : [null,[ Validators.required]],
       phoneNumber : [null,[ Validators.required,Validators.minLength(10),Validators.maxLength(10)]],
       email : [null, [Validators.required, Validators.required,Validators
-        .pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')],[this.validateEmailNotTaken()]],
+        .pattern('^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$')]
+        // , [this.validateEmailNotTaken()]
+      ],
       // password : [null,[ Validators.required, Validators.minLength(8)]],
     })
   }
@@ -77,21 +79,21 @@ owlcarouselOptions = {
 
   }
 
-  validateEmailNotTaken(): AsyncValidatorFn {
-    return control => {
-      return timer(500).pipe(
-        switchMap(() => {
-          if (!control.value) {
-            return of(null);
-          }
-          return this.authService.checkEmailExists(control.value).pipe(
-            map(res => {
-              return res ? { emailExists: true } : null;
-            })
-          );
-        })
-      );
-    };
-  }
+  // validateEmailNotTaken(): AsyncValidatorFn {
+  //   return control => {
+  //     return timer(500).pipe(
+  //       switchMap(() => {
+  //         if (!control.value) {
+  //           return of(null);
+  //         }
+  //         return this.authService.checkEmailExists(,control.value).pipe(
+  //           map(res => {
+  //             return res ? { emailExists: true } : null;
+  //           })
+  //         );
+  //       })
+  //     );
+  //   };
+  // }
 
 }

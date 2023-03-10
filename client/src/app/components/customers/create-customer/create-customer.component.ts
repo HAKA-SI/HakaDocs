@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
-import { User } from 'src/app/shared/models/user.model';
+import { User } from 'src/app/_models/user.model';
 import { CommonService } from 'src/app/_services/common.service';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '../../../_services/auth.service';
 import { CustomerService } from '../customer.service';
 
 @Component({
@@ -17,7 +17,7 @@ export class CreateCustomerComponent implements OnInit {
   public permissionForm: FormGroup;
   cities:any[]=[];
   loggedUser:User;
-
+  
   constructor(private authService: AuthService,private formBuilder: FormBuilder, public commonService: CommonService
     , private toastr: ToastrService, private customerService:CustomerService) {
     this.createCustomerForm();

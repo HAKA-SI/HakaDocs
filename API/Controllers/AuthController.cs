@@ -52,37 +52,40 @@ namespace API.Controllers
 
         
 
-       [HttpPost("register")]
-        public async Task<ActionResult> Register(RegisterDto registerDto)
-        {
-            string password =  _config["Password"] ;
-            if (CheckEmailExistAsync(registerDto.Email).Result.Value)
-            {
-                return new BadRequestObjectResult(new ApiValidationErrorResponse{Errors = new []{"email dejà utilisé..."}});
-            }
+    //    [HttpPost("register")]
+    //     public async Task<ActionResult> Register(RegisterDto registerDto)
+    //     {
+    //         string password =  _config["Password"] ;
+    //         if (await CheckEmailExistAsync(registerDto.Email).Result.Value)
+    //         {
+    //             return new BadRequestObjectResult(new ApiValidationErrorResponse{Errors = new []{"email dejà utilisé..."}});
+    //         }
 
-            var user = new AppUser
-            {
-                Email = registerDto.Email,
-                UserName = registerDto.Email,
-                PhoneNumber=registerDto.PhoneNumber,
+    //         var user = new AppUser
+    //         {
+    //             Email = registerDto.Email,
+    //             UserName = registerDto.Email,
+    //             PhoneNumber=registerDto.PhoneNumber,
                 
-            };
+    //         };
 
-            var result = await _userManager.CreateAsync(user, password);
+    //         var result = await _userManager.CreateAsync(user, password);
 
-            if (!result.Succeeded) return BadRequest(new ApiResponse(400));
-            //envoi du lien de confirmation
-            var email_to_send=new EmailFormDto{
-                    Subject="Confirmation de compte",
-                    ToEmail=registerDto.Email,
-                    Content="<h3> veuillez confirmez vontre compte en cliquznt sur le lien suivant"
-                };
+    //         if (!result.Succeeded) return BadRequest(new ApiResponse(400));
+    //         //envoi du lien de confirmation
+    //         var email_to_send=new EmailFormDto{
+    //                 Subject="Confirmation de compte",
+    //                 ToEmail=registerDto.Email,
+    //                 Content="<h3> veuillez confirmez vontre compte en cliquznt sur le lien suivant"
+    //             };
 
-            SendEmail(email_to_send);
-            return Ok();
+    //         SendEmail(email_to_send);
+    //         return Ok();
 
-         }
+    //      }
+
+
+    
 
         [AllowAnonymous]
         [HttpPost("login")]
@@ -112,13 +115,7 @@ namespace API.Controllers
             };
         }
 
-        [AllowAnonymous]
-        [HttpGet("emailexists")]
-        public async Task<ActionResult<bool>>
-        CheckEmailExistAsync([FromQuery] string email)
-        {
-            return await _userManager.FindByEmailAsync(email) != null;
-        }
+        
 
     
 

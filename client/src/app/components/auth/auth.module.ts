@@ -13,6 +13,7 @@ import { RegisterStepperComponent } from './register-stepper/register-stepper.co
 import { ProgressComponent } from './progress/progress.component';
 import { ProgressStepComponent } from './progress/progress-step/progress-step.component';
 import { ProgressStepDirective } from './progress/progress-step.directive';
+import { ConfirmUserEmailComponent } from './confirm-user-email/confirm-user-email.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ProgressStepDirective } from './progress/progress-step.directive';
     RegisterStepperComponent,
     ProgressComponent,
     ProgressStepComponent,
-    ProgressStepDirective
+    ProgressStepDirective,
+    ConfirmUserEmailComponent
   ],
   imports: [
     CommonModule,

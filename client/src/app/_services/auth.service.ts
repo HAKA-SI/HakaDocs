@@ -1,10 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ReplaySubject } from 'rxjs';
-import { User } from 'src/app/shared/models/user.model';
+import { Observable, ReplaySubject } from 'rxjs';
+import { User } from 'src/app/_models/user.model';
 import { environment } from 'src/environments/environment';
-import {  tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 
@@ -23,14 +23,14 @@ export class AuthService {
     private http: HttpClient,
     //private presenceService: PresenceService,
     private router: Router
-  ) {}
+  ) { }
 
   login(model: any) {
     const url = this.baseUrl + "auth/login";
     return this.http.post<User>(url, model).pipe(
       tap((user: User) => {
-       // let user = data.user;
-       // let clients = data.clients;
+        // let user = data.user;
+        // let clients = data.clients;
         this.setCurrentuser(user);
       })
     );
@@ -55,27 +55,30 @@ export class AuthService {
 
   loggedIn() {
     const token = localStorage.getItem('token');
-    const isExpired= !this.jwtHelper.isTokenExpired(token);
+    const isExpired = !this.jwtHelper.isTokenExpired(token);
     return isExpired;
   }
 
 
-  logout() {
+  logout(gotoHomePage: boolean = true) {
     localStorage.removeItem('user');
-  //  localStorage.removeItem('clients');
+    //  localStorage.removeItem('clients');
     this.currentuserSource.next(null);
     // this.presenceService.stopHubConnection();
     // this.dashboardService.stopHubConnection();
-    this.router.navigate(['/auth/login']);
-    this.decodedToken=null;
+    if (gotoHomePage)
+      this.router.navigate(['/auth/login']);
+    this.decodedToken = null;
   }
 
   setCurrentuser(user: User) {
-    user.roles = [];
-    const roles = this.getDecodeToken(user.token).role;
-    Array.isArray(roles) ? (user.roles = roles) : user.roles.push(roles);
-    localStorage.setItem('user', JSON.stringify(user));
-    localStorage.setItem('token', JSON.stringify(user.token ));
+    if (!!user) {
+      user.roles = [];
+      const roles = this.getDecodeToken(user.token).role;
+      Array.isArray(roles) ? (user.roles = roles) : user.roles.push(roles);
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('token', JSON.stringify(user.token));
+    }
     this.currentuserSource.next(user);
   }
 
@@ -101,8 +104,15 @@ export class AuthService {
     return this.http.post(this.baseUrl + 'auth/register', values);
   }
 
-
-  checkEmailExists(email: string) {
-    return this.http.get(this.baseUrl+'auth/emailexists?email='+email);
+  setUserLoginPassword(id: number, loginModel: any) {
+    return this.http.post(this.baseUrl + 'account/' + id + '/setLoginPassword', loginModel)
+      .pipe(
+        map((user: User) => {
+          if (user) {
+            this.setCurrentuser(user);
+          }
+        })
+      );
   }
+
 }

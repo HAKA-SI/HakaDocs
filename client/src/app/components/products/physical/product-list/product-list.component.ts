@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
-import { AuthService } from 'src/app/components/auth/auth.service';
+import { AuthService } from 'src/app/_services/auth.service';
 import { ConfirmService } from 'src/app/core/services/confirm.service';
 import { SharedAnimations } from 'src/app/shared/animations/shared-animations';
-import { User } from 'src/app/shared/models/user.model';
+import { User } from 'src/app/_models/user.model';
 import { productDB } from 'src/app/shared/tables/product-list';
 import { SubProduct } from 'src/app/_models/subProduct.model';
 import { environment } from 'src/environments/environment';

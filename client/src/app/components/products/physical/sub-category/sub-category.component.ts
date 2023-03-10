@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BsModalRef, BsModalService, ModalOptions } from 'ngx-bootstrap/modal';
 import { SubCategoryModalComponent } from '../sub-category-modal/sub-category-modal.component';
-import { User } from 'src/app/shared/models/user.model';
-import { AuthService } from 'src/app/components/auth/auth.service';
+import { User } from 'src/app/_models/user.model';
+import { AuthService } from 'src/app/_services/auth.service';
 import { take } from 'rxjs/operators';
 import { ProductsService } from '../../products.service';
 import { ConfirmService } from 'src/app/core/services/confirm.service';
@@ -21,7 +21,7 @@ import { environment } from 'src/environments/environment';
 export class SubCategoryComponent implements OnInit {
   page: number = 1;
   searchText:string;
-  public products = [];
+  public products :any=[];
   bsModalRef: BsModalRef;
   loggedUser: User;
   physicalGroupId = environment.phisicalProductGroupId;
@@ -32,8 +32,8 @@ export class SubCategoryComponent implements OnInit {
     this.authService.currentUser$.pipe(take(1)).subscribe((user) => (this.loggedUser = user));
   }
 
-  ngOnInit() {
-    this.getProducts();
+   ngOnInit() {
+   this.getProducts();
   }
 
   showModal(editionMode: 'add' | 'edit', product: any | null) {
@@ -60,10 +60,10 @@ export class SubCategoryComponent implements OnInit {
     );
   }
 
-  getProducts() {
-    this.productService.getProductsWithDetailsList(this.loggedUser.haKaDocClientId,this.physicalGroupId).subscribe((response: any) => {
-      this.products = response;
-    });
+  async getProducts() {
+   this.products = await this.productService.getProductsWithDetailsList(this.loggedUser.haKaDocClientId,this.physicalGroupId).toPromise();
+    console.log('list des produits :', this.products);
+    
   }
 
   deleteSubCategory(product) {

@@ -1,7 +1,7 @@
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../components/auth/auth.service';
-import { User } from 'src/app/shared/models/user.model';
+import { AuthService } from '../../../_services/auth.service';
+import { User } from 'src/app/_models/user.model';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NavService } from '../../service/nav.service';
 import { LanguageService } from 'src/app/core/services/language.service';

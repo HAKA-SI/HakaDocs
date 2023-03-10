@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
-import { User } from 'src/app/shared/models/user.model';
-import { AuthService } from '../../auth/auth.service';
-import { AccountsService } from '../accounts.service';
+import { User } from 'src/app/_models/user.model';
+import { AuthService } from '../../../_services/auth.service';
+import { AccountsService } from '../../../_services/accounts.service';
 
 @Component({
   selector: 'app-roles-list',

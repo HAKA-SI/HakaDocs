@@ -1,6 +1,6 @@
-import { AuthService } from './components/auth/auth.service';
+import { AuthService } from './_services/auth.service';
 import { Component, OnInit } from '@angular/core';
-import { User } from './shared/models/user.model';
+import { User } from './_models/user.model';
 import { LanguageService } from './core/services/language.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class AppComponent implements OnInit{
 
   constructor(private authService : AuthService, private languageService: LanguageService) {}
   ngOnInit(): void {
-    this;this.setCurrentuser();
+    this.setCurrentuser();
   }
 
   setCurrentuser() {

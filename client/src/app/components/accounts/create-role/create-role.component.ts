@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
-import { User } from 'src/app/shared/models/user.model';
-import { AuthService } from '../../auth/auth.service';
-import { AccountsService } from '../accounts.service';
+import { User } from 'src/app/_models/user.model';
+import { AuthService } from '../../../_services/auth.service';
+import { AccountsService } from '../../../_services/accounts.service';
 
 @Component({
   selector: 'app-create-role',

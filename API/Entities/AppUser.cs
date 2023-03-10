@@ -23,6 +23,10 @@ namespace API.Entities
         public ICollection<Email> EmailsReceived { get; set; }
         public HaKaDocClient HaKaDocClient { get; set; }
         public int? HaKaDocClientId { get; set; }
+        public  string ValidationCode { get; set; }
+        public DateTime? ValidationDate { get; set; }
+        public bool CodeValidated { get; set; }
+        public bool Active { get; set; } = false;
 
 
     }

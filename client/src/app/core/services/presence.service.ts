@@ -4,7 +4,7 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { ToastrService } from 'ngx-toastr';
 import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { User } from 'src/app/shared/models/user.model';
+import { User } from 'src/app/_models/user.model';
 import { environment } from 'src/environments/environment';
 
 @Injectable({

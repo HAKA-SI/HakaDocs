@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
-import { AuthService } from 'src/app/components/auth/auth.service';
+import { AuthService } from 'src/app/_services/auth.service';
 import { StoresService } from 'src/app/components/stores/stores.service';
 import { SharedAnimations } from 'src/app/shared/animations/shared-animations';
-import { User } from 'src/app/shared/models/user.model';
+import { User } from 'src/app/_models/user.model';
 import { Store } from 'src/app/_models/store.model';
 import { SubProduct } from 'src/app/_models/subProduct.model';
 import { SubProductSN } from 'src/app/_models/subProductSN.model';

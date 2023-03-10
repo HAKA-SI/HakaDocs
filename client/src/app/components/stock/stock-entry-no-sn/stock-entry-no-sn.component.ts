@@ -1,6 +1,6 @@
 import { AfterContentInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/app/shared/models/user.model';
+import { User } from 'src/app/_models/user.model';
 import { SubProduct } from 'src/app/_models/subProduct.model';
 import { Store } from 'src/app/_models/store.model';
 import { ProductsService } from '../../products/products.service';

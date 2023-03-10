@@ -1,8 +1,8 @@
 import { Component,OnInit } from '@angular/core';
 import { take } from 'rxjs/operators';
-import { User } from 'src/app/shared/models/user.model';
+import { User } from 'src/app/_models/user.model';
 import { Customer } from 'src/app/_models/customer.model';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '../../../_services/auth.service';
 import { CustomerService } from '../customer.service';
 import {TranslateService} from "@ngx-translate/core";
 import { SharedAnimations } from 'src/app/shared/animations/shared-animations';

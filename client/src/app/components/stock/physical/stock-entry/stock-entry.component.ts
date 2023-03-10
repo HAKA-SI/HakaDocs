@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
-import { AuthService } from 'src/app/components/auth/auth.service';
+import { AuthService } from 'src/app/_services/auth.service';
 import { ProductsService } from 'src/app/components/products/products.service';
 import { StoresService } from 'src/app/components/stores/stores.service';
-import { User } from 'src/app/shared/models/user.model';
+import { User } from 'src/app/_models/user.model';
 import { Store } from 'src/app/_models/store.model';
 import { SubProduct } from 'src/app/_models/subProduct.model';
 import { environment } from 'src/environments/environment';

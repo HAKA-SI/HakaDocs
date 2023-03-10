@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
 import { ConfirmService } from 'src/app/core/services/confirm.service';
-import { User } from 'src/app/shared/models/user.model';
+import { User } from 'src/app/_models/user.model';
 import { Store } from 'src/app/_models/store.model';
 import { SubProduct } from 'src/app/_models/subProduct.model';
 import { ProductsService } from '../../products/products.service';
