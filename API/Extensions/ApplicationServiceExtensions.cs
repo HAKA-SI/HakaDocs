@@ -8,6 +8,7 @@ using API.Helpers;
 using API.Interfaces;
 using API.Services;
 using API.SignalR;
+using API.Workers;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +30,7 @@ namespace API.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<LogUserActivity>();
             //   services.AddHostedService<Worker>();
+              services.AddHostedService<TestWorker>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(options =>
             {

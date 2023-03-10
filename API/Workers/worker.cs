@@ -25,29 +25,37 @@ namespace API.Workers
             _logger.LogInformation("Sms Worker start....");
             while (!stoppingToken.IsCancellationRequested)
             {
-                using (var scope = _serviceScopeFactory.CreateScope())
+                try
                 {
-                //     var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-                //    var connectionString = builder["ConnectionStrings:DefaultConnection"];
-                //     var optionsBuilder = new DbContextOptionsBuilder();
-                //     optionsBuilder.UseSqlServer(connectionString);
+                    // using (var scope = _serviceScopeFactory.CreateScope())
+                    // {
+                    //     //     var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+                    //     //    var connectionString = builder["ConnectionStrings:DefaultConnection"];
+                    //     //     var optionsBuilder = new DbContextOptionsBuilder();
+                    //     //     optionsBuilder.UseSqlServer(connectionString);
 
-                //     var context = new DataContext(optionsBuilder.Options);
+                    //     //     var context = new DataContext(optionsBuilder.Options);
 
-                //     var users = await context.Users.ToListAsync();
-                //     foreach (var item in users)
-                //     {
-                //         item.Created = DateTime.Now;
-                //     }
-                //     await context.SaveChangesAsync();
+                    //     //     var users = await context.Users.ToListAsync();
+                    //     //     foreach (var item in users)
+                    //     //     {
+                    //     //         item.Created = DateTime.Now;
+                    //     //     }
+                    //     //     await context.SaveChangesAsync();
 
-                    var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-                    var users = await dataContext.Users.ToListAsync();
-                    foreach (var item in users)
-                    {
-                        item.Created = DateTime.Now;
-                    }
-                    await dataContext.SaveChangesAsync();
+                    //     var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+                    //     var users = await dataContext.Users.ToListAsync();
+                    //     foreach (var item in users)
+                    //     {
+                    //         item.Created = DateTime.Now;
+                    //     }
+                    //     await dataContext.SaveChangesAsync();
+                    // }
+
+                }
+                catch (System.Exception)
+                {
+                    throw;
                 }
 
                 _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
