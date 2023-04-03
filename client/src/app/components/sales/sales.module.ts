@@ -7,13 +7,16 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { SalesRoutingModule } from './sales-routing.module';
 import { OrdersComponent } from './orders/orders.component';
 import { TransactionsComponent } from './transactions/transactions.component';
+import { AddSaleComponent } from './add-sale/add-sale.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
-  declarations: [OrdersComponent, TransactionsComponent],
+  declarations: [OrdersComponent, TransactionsComponent, AddSaleComponent],
   imports: [
     CommonModule,
     SalesRoutingModule,
     Ng2SmartTableModule,
+    SharedModule,
     NgxDatatableModule
   ]
 })

@@ -86,6 +86,7 @@ export class NavService {
 		},
 		{
 			title: 'Sales', icon: 'dollar-sign', type: 'sub', active: false, children: [
+				{ path: '/sales/add-sale', title: 'Add Sale', type: 'link' },
 				{ path: '/sales/orders', title: 'Orders', type: 'link' },
 				{ path: '/sales/transactions', title: 'Transactions', type: 'link' },
 			]

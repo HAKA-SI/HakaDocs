@@ -250,6 +250,7 @@
     "name":"Product",
     "sn":"Serial Number",
     "unitPrice":"Unit Price",
+    "vatExempted":"Excluded from VAT",
     "category":"Sub Category",
     "product":"Sous Categorie",
     "quantityPerUnit":"Quantity per Unit",

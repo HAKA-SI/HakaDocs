@@ -27,6 +27,7 @@ namespace API.Dtos
         public bool WithSerialNumber { get; set; }
         public string Note { get; set; }
         public List<PhotoDto> Photos { get; set; }
+        public bool VatExempted { get; set; }
 
     }
 }

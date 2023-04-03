@@ -16,6 +16,7 @@ export class AddProductComponent implements OnInit {
   public counter: number = 1;
   subCategories: any[] = [];
   subProductForm: FormGroup;
+  tva = 18;
   // categories: Category[] = [];
   products: any[] = [];
   mainPhotoUrl = '';
@@ -86,6 +87,7 @@ export class AddProductComponent implements OnInit {
       note: [''],
       unitPrice: [null, Validators.required],
       withSerialNumber: [null, Validators.required],
+      vatExempted: [true, Validators.required],
       quantityPerUnite: [null, Validators.required],
       reorderLevel: [1, Validators.required],
     })
@@ -123,6 +125,7 @@ export class AddProductComponent implements OnInit {
     formData.append('withSerialNumber', subproductData.withSerialNumber);
     formData.append('quantityPerUnite', subproductData.quantityPerUnite);
     formData.append('reorderLevel', subproductData.reorderLevel);
+    formData.append('vatExempted', subproductData.vatExempted);
     formData.append('note', subproductData.note);
 
     if (!!this.mainFile) {

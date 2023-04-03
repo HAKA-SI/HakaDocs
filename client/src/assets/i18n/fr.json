@@ -127,6 +127,7 @@
     "name":"Produit",
     "sn":"Numéro de serie",
     "unitPrice":"Prix Unitaire",
+    "vatExempted":"Exénoré de la TVA",
     "category":"Categorie",
     "product":"Sous Categorie",
     "quantityPerUnit":"Quantité par unité",

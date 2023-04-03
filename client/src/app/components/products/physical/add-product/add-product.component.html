@@ -18,14 +18,15 @@
                                             <img class="img-fluid image_zoom_1" alt="" [src]="url[0].img">
                                         </div>
                                     </div>
-                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="col-xl-9">
                             <form class="needs-validation" [formGroup]="subProductForm" novalidate>
                                 <div class="add-product-form">
                                     <div class="form-group row">
-                                        <label for="productId" class="col-xl-3 col-sm-4 mb-0">{{'products.product'|translate}}</label>
+                                        <label for="productId"
+                                            class="col-xl-3 col-sm-4 mb-0">{{'products.product'|translate}}</label>
                                         <select class="custom-select col-md-8" required="" formControlName="productId">
                                             <option value="">{{'actions.select'|translate}}</option>
                                             <option *ngFor="let item of subCategories" [value]="item.id">{{item.name}}
@@ -34,17 +35,32 @@
                                     </div>
 
                                     <div class="form-group row">
-                                        <label for="productId" class="col-xl-3 col-sm-4 mb-0"><span>*</span>{{'products.withSerialNumber'|translate}}</label>
-                                        <select class="custom-select col-md-8" required="" formControlName="withSerialNumber">
+                                        <label for="productId"
+                                            class="col-xl-3 col-sm-4 mb-0"><span>*</span>{{'products.withSerialNumber'|translate}}</label>
+                                        <select class="custom-select col-md-8" required=""
+                                            formControlName="withSerialNumber">
                                             <option value="">{{'actions.select'|translate}}</option>
                                             <option *ngFor="let item of choices" [value]="item.value">{{item.label}}
                                             </option>
                                         </select>
                                     </div>
-                                    <app-text-input formControlName="name" [label]="'products.name'|translate"></app-text-input>
-                                    <app-text-input type="'number'" formControlName="unitPrice" [label]="'products.unitPrice'|translate"></app-text-input>
-                                    <app-text-input type="'number'" formControlName="quantityPerUnite" [label]="'products.quantityPerUnit'|translate"></app-text-input>
-                                    <app-text-input type="number" type="'number'" formControlName="reorderLevel" [label]="'products.reorderLevel'|translate"></app-text-input>
+                                    <app-text-input formControlName="name"
+                                        [label]="'products.name'|translate"></app-text-input>
+                                    <app-text-input type="'number'" formControlName="unitPrice"
+                                        [label]="'products.unitPrice'|translate"></app-text-input>
+
+                                    <div class="form-group row">
+                                        <div class="form-group form-check col-xl-8 col-md-7 offset-md-4 offset-xl-3">
+                                            <input type="checkbox" class="form-check-input" id="exampleCheck1" formControlName="vatExempted">
+                                            <label class="form-check-label" for="exampleCheck1">{{'products.vatExempted'|translate}}</label>
+                                            <span *ngIf="!subProductForm.value.vatExempted">(Montant HT <b>{{(subProductForm.value.unitPrice*((100-tva)/100)).toFixed(2)}}</b> )</span>
+                                        </div>
+                                    </div>
+
+                                    <app-text-input type="'number'" formControlName="quantityPerUnite"
+                                        [label]="'products.quantityPerUnit'|translate"></app-text-input>
+                                    <app-text-input type="number" type="'number'" formControlName="reorderLevel"
+                                        [label]="'products.reorderLevel'|translate"></app-text-input>
                                     <div class="form-group row editor-label">
                                         <label class="col-xl-3 col-md-4">{{'products.observation'|translate}}</label>
                                         <textarea formControlName="note" rows="4" class="col-xl-8 col-md-7"></textarea>
@@ -53,8 +69,10 @@
                             </form>
                             <div class="form-group row mb-0">
                                 <div class="product-buttons col-sm-8 offset-xl-3 offset-sm-4">
-                                    <button type="button" class="btn btn-primary mr-1" (click)="save()">{{'actions.save'|translate}}</button>
-                                    <button type="button" class="btn btn-light" (click)="resetForm()">{{'actions.cancel'|translate}}</button>
+                                    <button type="button" class="btn btn-primary mr-1"
+                                        (click)="save()" [disabled]="!subProductForm.valid">{{'actions.save'|translate}}</button>
+                                    <button type="button" class="btn btn-light"
+                                        (click)="resetForm()">{{'actions.cancel'|translate}}</button>
                                 </div>
                             </div>
                         </div>

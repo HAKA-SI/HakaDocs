@@ -20,12 +20,13 @@ namespace API.Entities
         public string Note { get; set; }
         public HaKaDocClient HaKaDocClient { get; set; }
         public int HaKaDocClientId { get; set; }
-          public AppUser InsertUser { get; set; }
-            public int InsertUserId { get; set; }
-            public AppUser UpdateUser { get; set; }
-            public int? UpdateUserId { get; set; }
+        public AppUser InsertUser { get; set; }
+        public int InsertUserId { get; set; }
+        public AppUser UpdateUser { get; set; }
+        public int? UpdateUserId { get; set; }
         public ICollection<Photo> Photos { get; set; }
-        
+        public bool VatExempted { get; set; }
+
 
     }
 }

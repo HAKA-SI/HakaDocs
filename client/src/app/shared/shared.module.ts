@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {NgxPaginationModule} from 'ngx-pagination'; 
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { CdkStepperModule } from '@angular/cdk/stepper';
 
 
 import { FeatherIconsComponent } from './components/feather-icons/feather-icons.component';
@@ -24,6 +25,7 @@ import { WINDOW_PROVIDERS } from './service/windows.service';
 import { BreadcrumbComponent } from './components/breadcrumb/breadcrumb.component';
 import { RightSidebarComponent } from './components/right-sidebar/right-sidebar.component';
 import { DateInputComponent } from './components/date-input/date-input.component';
+import { StepperComponent } from './components/stepper/stepper.component';
 
 const maskConfig: Partial<IConfig> = {
   validation: false,
@@ -39,12 +41,14 @@ const maskConfig: Partial<IConfig> = {
     BreadcrumbComponent,
     RightSidebarComponent,
     TextInputComponent,
-    DateInputComponent
+    DateInputComponent,
+    StepperComponent
   ],
   imports: [
     CommonModule,
     NgxPaginationModule,
      NgbModule,
+     CdkStepperModule,
     ModalModule.forRoot(),
     Ng2SearchPipeModule,
     BsDatepickerModule.forRoot(),
@@ -63,6 +67,7 @@ const maskConfig: Partial<IConfig> = {
     BsDropdownModule,
     NgxPaginationModule,
     BsDatepickerModule,
+    CdkStepperModule,
     Ng2SearchPipeModule,
 
     ModalModule,
@@ -71,7 +76,8 @@ const maskConfig: Partial<IConfig> = {
     ToastrModule,
     TranslateModule,
     TextInputComponent,
-    DateInputComponent
+    DateInputComponent,
+    StepperComponent
   ],
 })
 export class SharedModule {}

@@ -54,7 +54,7 @@ export class ProductsService {
   }
 
   createSubProduct(clientId:number,productGroupId,productData:any) {
-    return this.http.post(this.baseUrl+'CreateSubProduct/'+productGroupId+''+clientId,productData);
+    return this.http.post(this.baseUrl+'CreateSubProduct/'+productGroupId+'/'+clientId,productData);
   }
 
   editSubProduct(clientId:number,subPorductId:number,photoEdited:boolean,productData:any) {
