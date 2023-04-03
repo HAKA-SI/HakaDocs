@@ -30,7 +30,7 @@ namespace API.Extensions
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<LogUserActivity>();
             //   services.AddHostedService<Worker>();
-              services.AddHostedService<TestWorker>();
+            //   services.AddHostedService<TestWorker>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(options =>
             {
