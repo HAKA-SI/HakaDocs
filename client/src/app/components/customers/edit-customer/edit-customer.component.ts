@@ -6,7 +6,7 @@ import { take } from 'rxjs/operators';
 import { User } from 'src/app/_models/user.model';
 import { CommonService } from 'src/app/_services/common.service';
 import { AuthService } from '../../../_services/auth.service';
-import { CustomerService } from '../customer.service';
+import { CustomerService } from '../../../_services/customer.service';
 
 @Component({
   selector: 'app-edit-customer',

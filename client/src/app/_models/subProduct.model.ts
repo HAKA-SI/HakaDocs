@@ -18,5 +18,6 @@ import { Photo } from "./photo.model";
         photoUrl: string;
         photos: Photo[];
         withSerialNumber:boolean;
+        id:number;
         }
 

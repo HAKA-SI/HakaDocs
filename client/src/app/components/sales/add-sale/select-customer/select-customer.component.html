@@ -1,0 +1,39 @@
+<div class="table-responsive mt-5">
+    <div *ngIf="customers.length>0">
+        <div class="form-group row">
+            <label for="searchText" class="col-xl-2 col-md-3">{{'actions.search'|translate}}</label>
+            <input type="text" [(ngModel)]="searchText" class="form-control col-xl-4 col-md-3" id="search"
+                name="search">
+        </div>
+        <table class="table table-hover">
+            <thead class="fw-bold headerGray">
+                <tr>
+                    <th scope="col">{{'create-customer.customerCode'|translate}}</th>
+                    <th scope="col">{{'create-customer.firstName'|translate}}</th>
+                    <th scope="col">{{'create-customer.lastName'|translate}}</th>
+                    <th scope="col">{{'create-customer.phoneNumber'|translate}}</th>
+                    <th scope="col">{{'create-customer.city'|translate}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of customers| filter: searchText|paginate: { itemsPerPage: 5, currentPage: page }let i=index"
+                    [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'50px'}}"
+                    (click)="selectLine(item)"
+                    [ngClass]="{'bg-primary text-white': item.selected}">
+                    <td>{{item.customerCode}}</td>
+                    <td>{{item.lastName}}</td>
+                    <td>{{item.firstName}}</td>
+                    <td>
+                        {{item.phoneNumber}}
+                        <span *ngIf="item.secondPhoneNumber">/{{item.secondPhoneNumber}}</span>
+                    </td>
+                    <td>{{item.city}}</td>
+            </tbody>
+        </table>
+        <pagination-controls [previousLabel]="'actions.previousLabel'|translate"
+            [nextLabel]="'actions.nextLabel'|translate" (pageChange)="page = $event"></pagination-controls>
+    </div>
+</div>
+<button class="btn btn-primary" cdkStepperNext>
+    Go to products <i class="fa fa-angle-right"></i>
+</button>

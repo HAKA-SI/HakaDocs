@@ -1,30 +1,11 @@
-<div class="container mt-5">
     <div class="row">
-        <div class="col-12">
-            <app-stepper [linearModeSelected]="true" #appStepper>
-                <!-- <cdk-step [label]="'Address'" [completed]="(checkoutForm.get('addressForm')).valid"> -->
-                    
-                <cdk-step [label]="'Address'">
-                    <form>
-                        <div class="form-group">
-                          <label for="exampleInputEmail1">Email address</label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                          <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                        </div>
-                        <div class="form-group">
-                          <label for="exampleInputPassword1">Password</label>
-                          <input type="password" class="form-control" id="exampleInputPassword1">
-                        </div>
-                        <div class="form-group form-check">
-                          <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                          <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                      </form>
-                    <!-- <app-checkout-address [checkoutForm]="checkoutForm"></app-checkout-address> -->
+        <div class="col-8">
+            <app-stepper [linearModeSelected]="false" #appStepper [disabled]="false">
+                <cdk-step [label]="'client'" >
+                   <app-select-customer [customers]="customers" ></app-select-customer>
                 </cdk-step>
-                <cdk-step [label]="'Delivery'">
-                   <!-- <app-checkout-delivery [checkoutForm]="checkoutForm"></app-checkout-delivery> -->
+                <cdk-step [label]="'choix des produits'">
+                    <app-select-products [subProducts]="subProducts" ></app-select-products>
                 </cdk-step>
                 <cdk-step [label]="'Review'">
                     <!-- <app-checkout-review [appStepper]="appStepper"></app-checkout-review> -->
@@ -34,13 +15,7 @@
                 </cdk-step>
             </app-stepper>
         </div>
-        <!-- <div class="col-4">
-            <app-order-totals
-                *ngIf="(basketTotals$ | async)"
-                [shippingPrice]="(basketTotals$ | async).shipping"
-                [subtotal]="(basketTotals$ | async).subtotal"
-                [total]="(basketTotals$ | async).total"
-            ></app-order-totals>
-        </div> -->
-    </div>
-</div>
+        <div class="col-4">
+          <app-sale-summary></app-sale-summary>
+        </div>
+     </div>

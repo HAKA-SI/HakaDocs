@@ -9,12 +9,21 @@ import { OrdersComponent } from './orders/orders.component';
 import { TransactionsComponent } from './transactions/transactions.component';
 import { AddSaleComponent } from './add-sale/add-sale.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { SelectCustomerComponent } from './add-sale/select-customer/select-customer.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SelectProductsComponent } from './select-products/select-products.component';
+import { SetProductNoSnModalComponent } from './add-sale/set-product-no-sn-modal/set-product-no-sn-modal.component';
+import { SetProductWithSnModalComponent } from './add-sale/set-product-with-sn-modal/set-product-with-sn-modal.component';
+import { SaleSummaryComponent } from './sale-summary/sale-summary.component';
 
 @NgModule({
-  declarations: [OrdersComponent, TransactionsComponent, AddSaleComponent],
+  declarations: [OrdersComponent, TransactionsComponent, AddSaleComponent, SelectCustomerComponent, SelectProductsComponent, SetProductNoSnModalComponent, SetProductWithSnModalComponent, SaleSummaryComponent],
   imports: [
     CommonModule,
+    
     SalesRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
     Ng2SmartTableModule,
     SharedModule,
     NgxDatatableModule

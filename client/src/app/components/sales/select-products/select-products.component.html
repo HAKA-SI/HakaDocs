@@ -1,0 +1,73 @@
+<div class="mt-3">
+
+    <div class="row col-12">
+        <div class="col-2">
+            <div class="bg-secondary clearfix rounded d-flex align-items-center">
+                <span type="button" (click)="alertInfo()"  class="badge badge-primary float-left my-auto"> <i class="fa fa-minus"></i></span>
+                 <span>&nbsp; sac a main &nbsp;</span> <span class="badge badge-light">10</span>
+              </div>
+        </div>
+      
+    </div>
+
+    <div class="table-responsive">
+        <div *ngIf="subProducts.length>0">
+            <div class="form-group row">
+                <label for="searchText"
+                    class="col-xl-2 col-md-3">{{'actions.search'|translate}}</label>
+                <input type="text" [(ngModel)]="searchText" class="form-control col-xl-4 col-md-3"
+                    id="search" name="search">
+            </div>
+            <table class="table table-condensed">
+                <thead class="fw-bold headerGray">
+                    <tr>
+                        <th  scope="col">{{'products.name'|translate}}</th>
+                        <th scope="col">{{'products.category'|translate}}</th>
+                        <th scope="col">{{'products.unitPrice'|translate}}</th>
+                        <th scope="col">{{'products.quantity'|translate}}</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of subProducts| filter: searchText|paginate: { itemsPerPage: 5, currentPage: page }, let i=index"
+                        [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'50px'}}"
+                         >
+                        <td>
+                            <div class="row">
+                                <div class="col-2">
+                                    <a><img class="" style="max-width: 60px; max-height: 50px;"
+                                            [src]="item.photoUrl || 'assets/images/products/product1.jpg'"
+                                            alt="User Image"></a>
+                                </div>
+                                <div class="col-auto d-flex-column mx-2">
+                                    <b style="font-weight: bold;">{{item.name}}</b> <br>
+                                    <small class="text-muted my-0 py-0">{{item.quantityPerUnite}}
+                                        {{'products.perUnit'|translate}}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>({{item.category}}/{{item.product}})</td>
+                        <td>{{item.unitPrice}}</td>
+                        <td> <b>{{item.quantity}}</b>   </td>
+                        <td>
+                            <button [disabled]="item.quantity<=0" (click)="selectLine(item)" class="btn btn-secondary" > <i class="fa fa-add"></i></button>
+                        </td>
+                     
+                </tbody>
+            </table>
+            <pagination-controls [previousLabel]="'actions.previousLabel'|translate"
+                [nextLabel]="'actions.nextLabel'|translate"
+                (pageChange)="page = $event"></pagination-controls>
+        </div>
+    </div>
+    
+    
+    <div class="float-none d-flex justify-content-between flex-column flex-lg-row mb-5">
+        <button class="btn btn-outline-primary" cdkStepperPrevious>
+            <i class="fa fa-angle-left"></i> Back to address
+        </button>
+        <button  class="btn btn-primary" cdkStepperNext>
+            Go to review <i class="fa fa-angle-right"></i>
+        </button>
+    </div>
+</div>
