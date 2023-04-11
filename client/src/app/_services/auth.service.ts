@@ -70,11 +70,12 @@ export class AuthService {
    
   }
 
-  // loggedIn() {
-  //   const token = localStorage.getItem('token');
-  //   const isExpired = !this.jwtHelper.isTokenExpired(token);
-  //   return isExpired;
-  // }
+  loggedIn() {
+    const tokenFromLocalStorage = localStorage.getItem('token');
+    const token = this.decryptValue(tokenFromLocalStorage);
+    const isExpired = !this.jwtHelper.isTokenExpired(token);
+    return isExpired;
+  }
 
 
   logout(gotoHomePage: boolean = true) {
@@ -84,13 +85,14 @@ export class AuthService {
     // this.presenceService.stopHubConnection();
     // this.dashboardService.stopHubConnection();
     if (gotoHomePage)
-      this.router.navigate(['/auth/login']);
     this.decodedToken = null;
+      this.router.navigate(['/auth/login']);
   }
 
   setCurrentuser(user: User) {
     if (!!user) {
-      user.roles = [];
+      this.decodedToken = this.jwtHelper.decodeToken(user.token);
+       user.roles = [];
       const roles = this.getDecodeToken(user.token).role;
       Array.isArray(roles) ? (user.roles = roles) : user.roles.push(roles);
       const encryptedUser = this.encryptValue(user);

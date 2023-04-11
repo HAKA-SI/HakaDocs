@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { Customer } from '../_models/customer.model';
+import { environment } from 'src/environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrdersService {
-  
-  
 
   private basketSource = new BehaviorSubject<any>({});
   basket$ = this.basketSource.asObservable();
-  constructor() { }
+  private baseUrl = environment.apiUrl+'orders/';
+
+  constructor(private http: HttpClient) { }
 
   getCurrentBasketValue() {
     return this.basketSource.value;
@@ -87,12 +89,17 @@ export class OrdersService {
     this.basketSource.next(cbasket);
   }
 
-  getBasketDetails(){
+  getBasketDetails() {
     const cbasket = this.getCurrentBasketValue();
-    return cbasket.details??null;
+    return cbasket.details ?? null;
   }
+
   resetBasket() {
     this.basketSource.next({});
+  }
+
+  saveOrder(insertUserId,orderModel) {
+    return this.http.post(this.baseUrl+'saveClientOrder/'+insertUserId,orderModel)
   }
 
 

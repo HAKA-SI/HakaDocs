@@ -100,7 +100,7 @@ namespace API.Data
                 context.AddRange(maritalsStatus);
             }
 
-            if(!context.Cities.Any())
+            if (!context.Cities.Any())
             {
                 var cities = new List<City>(){
                 new City{Name="Abidjan",CountryId=1},
@@ -111,9 +111,7 @@ namespace API.Data
                 context.AddRange(cities);
                 await context.SaveChangesAsync();
             }
-
-
-            if(!context.ProductGroups.Any())
+            if (!context.ProductGroups.Any())
             {
                 var groups = new List<ProductGroup>(){
                     new ProductGroup{Name="Physical"},
@@ -122,54 +120,69 @@ namespace API.Data
                 context.ProductGroups.AddRange(groups);
                 await context.SaveChangesAsync();
             }
-
-            if(!context.Districts.Any()){
-                context.Districts.Add(
-                    new District{Name="Abidjan",CityId=1}
-                );
-                await context.SaveChangesAsync();
-            }
-
-             if(!context.Stores.Any()){
-                context.Stores.Add(
-                    new Store{Name="MagTest",DistrictId=1,HaKaDocClientId=1}
-                    
-                );
-                await context.SaveChangesAsync();
-            }
-             if(!context.InventOpTypes.Any())
+            if (!context.Districts.Any())
             {
-              var inventOpTypes = new List<InventOpType>(){
+                context.Districts.Add(
+                    new District { Name = "Abidjan", CityId = 1 }
+                );
+                await context.SaveChangesAsync();
+            }
+            if (!context.Stores.Any())
+            {
+                context.Stores.Add(
+                    new Store { Name = "MagTest", DistrictId = 1, HaKaDocClientId = 1 }
+
+                );
+                await context.SaveChangesAsync();
+            }
+            if (!context.InventOpTypes.Any())
+            {
+                var inventOpTypes = new List<InventOpType>(){
                 new InventOpType{Name="entrée Stock"},
                 new InventOpType{Name="approvisionnement"},
                 new InventOpType{Name="échange Produit"},
                 new InventOpType{Name="vente direct"},
                 new InventOpType{Name="vente en ligne"}
               };
-              context.InventOpTypes.AddRange(inventOpTypes);
-              context.SaveChanges();
+                context.InventOpTypes.AddRange(inventOpTypes);
+                context.SaveChanges();
             }
-
             if (!context.CustomerCodes.Any())
             {
-                var customerCode = new CustomerCode {
+                var customerCode = new CustomerCode
+                {
                     HaKaDocClientId = 1,
                     CodeLevel = 1
                 };
                 context.Add(customerCode);
                 await context.SaveChangesAsync();
-            
-            }
 
-             if (!context.StockHistoryActions.Any())
+            }
+            if (!context.StockHistoryActions.Any())
             {
-              var histories = new List<StockHistoryAction>(){
+                var histories = new List<StockHistoryAction>(){
                 new StockHistoryAction{Name="INPUT"},
                 new StockHistoryAction{Name="OUTPUT"}
               };
-              context.StockHistoryActions.AddRange(histories);
-              context.SaveChanges();
+                context.StockHistoryActions.AddRange(histories);
+                context.SaveChanges();
             }
+
+            if (!context.InvoiceTemplates.Any())
+            {
+                context.InvoiceTemplates.Add(
+                    new InvoiceTemplate
+                    {
+                        HaKaDocClientId = 1,
+                        Content = "invoice content",
+                        Name = "template 1"
+
+                    }
+                );
+                await context.SaveChangesAsync();
+            }
+
+
         }
     }
 }

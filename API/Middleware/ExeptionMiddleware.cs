@@ -44,19 +44,20 @@ namespace API.Middleware
                 var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
                 var json = JsonSerializer.Serialize(response, options);
                 await context.Response.WriteAsync(json);
-                if(_env.IsProduction()){
-                var recipientList = new List<string>(){
-                    "app_errors@haka-si.com"
-                };
-                foreach (var recipient in recipientList)
+                if (_env.IsProduction())
                 {
-                    var mail = new EmailFormDto();
-                    mail.Subject = "HakaDocs Error";
-                    mail.Content = "<h1>" + ex.Message + "</h1><br><h1>" + ex.InnerException + "</h1><br>" + ex.ToString();
-                    mail.ToEmail = recipient;
-                   await SendEmail(mail);
+                    var recipientList = new List<string>(){
+                    "app_errors@haka-si.com"
+                    };
+                    foreach (var recipient in recipientList)
+                    {
+                        var mail = new EmailFormDto();
+                        mail.Subject = "HakaDocs Error";
+                        mail.Content = "<h1>" + ex.Message + "</h1><br><h1>" + ex.InnerException + "</h1><br>" + ex.ToString();
+                        mail.ToEmail = recipient;
+                        await SendEmail(mail);
 
-                }
+                    }
 
                 }
 

@@ -89,6 +89,7 @@ namespace API.Data
     public DbSet<InventOpSubProductSN> InventOpSubProductSNs{ get; set; }
     public DbSet<CustomerCode> CustomerCodes{ get; set; }
     public DbSet<InvoiceOrderLine> InvoiceOrderLines{ get; set; }
+    public DbSet<InvoiceTemplate> InvoiceTemplates{ get; set; }
 
 
     

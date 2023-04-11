@@ -1,13 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { OrdersService } from 'src/app/_services/orders.service';
-import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-sale-other-details',
   templateUrl: './sale-other-details.component.html',
-  styleUrls: ['./sale-other-details.component.scss'],
-  providers: [DatePipe]
+  styleUrls: ['./sale-other-details.component.scss']
 })
 export class SaleOtherDetailsComponent implements OnInit {
   @Input() saleDetailsForm: FormGroup;
@@ -15,10 +13,9 @@ export class SaleOtherDetailsComponent implements OnInit {
     {value:1, text : 'par email'},
     {value:2, text : 'par whatsapp'},
     {value:3, text : 'par sms'}
-  ]
+  ];
 
-  constructor(private ordersService: OrdersService, private datePipe: DatePipe) {
-    
+  constructor(private ordersService: OrdersService) {
   }
 
 
@@ -52,4 +49,7 @@ export class SaleOtherDetailsComponent implements OnInit {
     } else 
     this.saleDetailsForm.get('invoiceSendingType').patchValue([value]);
   }
+
+
+
 }
