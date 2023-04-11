@@ -15,9 +15,10 @@ import { SelectProductsComponent } from './select-products/select-products.compo
 import { SetProductNoSnModalComponent } from './add-sale/set-product-no-sn-modal/set-product-no-sn-modal.component';
 import { SetProductWithSnModalComponent } from './add-sale/set-product-with-sn-modal/set-product-with-sn-modal.component';
 import { SaleSummaryComponent } from './sale-summary/sale-summary.component';
+import { SaleOtherDetailsComponent } from './add-sale/sale-other-details/sale-other-details.component';
 
 @NgModule({
-  declarations: [OrdersComponent, TransactionsComponent, AddSaleComponent, SelectCustomerComponent, SelectProductsComponent, SetProductNoSnModalComponent, SetProductWithSnModalComponent, SaleSummaryComponent],
+  declarations: [OrdersComponent, TransactionsComponent, AddSaleComponent, SelectCustomerComponent, SelectProductsComponent, SetProductNoSnModalComponent, SetProductWithSnModalComponent, SaleSummaryComponent, SaleOtherDetailsComponent],
   imports: [
     CommonModule,
     

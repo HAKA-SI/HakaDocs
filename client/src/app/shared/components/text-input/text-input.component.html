@@ -2,5 +2,5 @@
     <label for="{{label}}" class="col-xl-3 col-md-4"><span *ngIf="required">*</span>{{label|translate}}</label>
     <input  [ngClass]="(controlDir && controlDir.control && controlDir.control.touched) ? !controlDir.control.valid ? 'is-invalid' : 'is-valid' : null"
         [type]="type" (input)="onChange($event.target.value)" (blur)="onTouched()" id="{{label}}" #input
-        class="form-control col-xl-8 col-md-7">
+        class="form-control col-xl-8 col-md-7" min="{{min}}">
 </div>

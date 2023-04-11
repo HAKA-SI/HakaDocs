@@ -7,13 +7,13 @@
         veullez choisir une quantité inferieure à {{subProduct.quantity}}
     </div>
       <form [formGroup]="subProductForm" class="needs-validation user-add" novalidate>
-           <app-text-input formControlName="quantity"  [type]="'number'" [label]="'quantité'"></app-text-input>
-           <app-text-input formControlName="discount" [type]="'number'" [label]="'remise (CFA)'"></app-text-input>
+           <app-text-input formControlName="newqty" [min]="1"  [type]="'number'" [label]="'quantité'"></app-text-input>
+           <app-text-input formControlName="discount" [min]="5" [type]="'number'" [label]="'remise (CFA)'"></app-text-input>
        
       </form>
   </div>
   <hr>
-  <p class=" mx-4">Montant total à percevoir: <b>{{(subProduct.unitPrice*subProductForm.value.quantity)-(subProductForm.value.discount)}}</b></p>
+  <p class=" mx-4">Montant total à percevoir: <b>{{(subProduct.unitPrice*subProductForm.value.newqty)-(subProductForm.value.discount)}}</b></p>
   <div class="modal-footer">
     <button [disabled]="!subProductForm.valid" (click)="save()"  type="button" class="btn btn-primary">{{'actions.save'|translate}}</button>
     <button (click)="closeModal()" class="btn btn-secondary" type="button" data-dismiss="modal"

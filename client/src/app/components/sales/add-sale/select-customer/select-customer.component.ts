@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Customer } from 'src/app/_models/customer.model';
+import { OrdersService } from 'src/app/_services/orders.service';
 import { SharedAnimations } from 'src/app/shared/animations/shared-animations';
 
 @Component({
@@ -9,19 +10,16 @@ import { SharedAnimations } from 'src/app/shared/animations/shared-animations';
   animations: [SharedAnimations]
 })
 export class SelectCustomerComponent implements OnInit {
-@Input() customers:any;
-page: number = 1;
-  searchText:string;
-  constructor() { }
+  @Input() customers: Customer[];
+  page: number = 1;
+  searchText: string;
+  constructor(public ordersService: OrdersService) { }
 
   ngOnInit(): void {
   }
 
   selectLine(item) {
-    this.customers.forEach(element => {
-      element.selected=false;
-    });
-   item.selected=true;
+    this.ordersService.setBasketCustomer(item);
   }
 
 }

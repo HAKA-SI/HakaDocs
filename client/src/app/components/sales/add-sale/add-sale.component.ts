@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
 import { Customer } from 'src/app/_models/customer.model';
 import { User } from 'src/app/_models/user.model';
@@ -8,6 +8,8 @@ import { CustomerService } from 'src/app/_services/customer.service';
 import { ProductsService } from '../../products/products.service';
 import { SubProduct } from 'src/app/_models/subProduct.model';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
+import { OrdersService } from 'src/app/_services/orders.service';
 
 @Component({
   selector: 'app-add-sale',
@@ -15,22 +17,26 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./add-sale.component.scss']
 })
 export class AddSaleComponent implements OnInit {
-  saleForm: FormGroup;
+  saleDetailsForm: FormGroup;
   loggedUser: User;
   customers: Customer[] = [];
   subProducts: SubProduct[] = [];
   physicalProductGroupId = environment.phisicalProductGroupId;
+  basket$: Observable<any>;
+
 
 
   constructor(private fb: FormBuilder, private authService: AuthService, private customerService: CustomerService,
-    private productService: ProductsService) {
+    private productService: ProductsService, private ordersService:OrdersService) {
     this.authService.currentUser$.pipe(take(1)).subscribe((user) => (this.loggedUser = user));
-    this.createSaleForm();
+    this.createSaleDetailsForm();
   }
 
   ngOnInit(): void {
+    this.basket$ = this.ordersService.basket$;
     this.getCustomers();
     this.getSubProducts();
+
 
   }
 
@@ -42,23 +48,16 @@ export class AddSaleComponent implements OnInit {
     this.customerService.getCustomerList(this.loggedUser.haKaDocClientId).subscribe((response: any) => this.customers = response);
   }
 
-  createSaleForm() {
-    this.saleForm = this.fb.group({
-      // addressForm: this.fb.group({
-      //   firstName: [null, Validators.required],
-      //   lastName: [null, Validators.required],
-      //   street: [null, Validators.required],
-      //   city: [null, Validators.required],
-      //   state: [null, Validators.required],
-      //   zipCode: [null, Validators.required],
-      // }),
-      // deliveryForm: this.fb.group({
-      //   deliveryMethod: [null, Validators.required]
-      // }),
-      // paymentForm: this.fb.group({
-      //   nameOnCard: [null, Validators.required]
-      // })
-    })
+  createSaleDetailsForm() {
+    this.saleDetailsForm = this.fb.group({
+      orderDate: [null,Validators.required],
+      orderNum: [''],
+      observation: [''],
+      invoiceSendingType: [null],
+      delivered: [null,Validators.required],
+      paimentType: [null,Validators.required],
+      amountPaid: [null],
+    });
   }
 
 }

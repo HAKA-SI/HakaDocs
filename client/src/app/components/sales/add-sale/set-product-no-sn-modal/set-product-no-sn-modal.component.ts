@@ -12,18 +12,19 @@ import { SharedAnimations } from 'src/app/shared/animations/shared-animations';
 })
 export class SetProductNoSnModalComponent implements OnInit {
   @Output() subProductData: any = new EventEmitter();;
-  editionMode: 'add' | 'edit' = 'add';
-  subProduct: SubProduct;
+  // editionMode: 'add' | 'edit' = 'add';
+  subProduct: any;
   subProductForm: FormGroup;
   quantityExceed: boolean;
 
   constructor(public bsModalRef: BsModalRef, private fb: FormBuilder) {
-    this.createSuvProductForm();
+    
   }
 
 
   ngOnInit(): void {
-    this.subProductForm.controls['quantity'].valueChanges.subscribe(value => {
+    this.createSubProductForm();
+    this.subProductForm.controls['newqty'].valueChanges.subscribe(value => {
       if (!!value && +this.subProduct.quantity < value)
         this.quantityExceed = true;
       else
@@ -35,16 +36,21 @@ export class SetProductNoSnModalComponent implements OnInit {
     this.bsModalRef.hide();
   }
 
-  createSuvProductForm() {
+  createSubProductForm() {
     this.subProductForm = this.fb.group({
-      discount: [0],
-      quantity: [null, Validators.required]
+      discount: [this.subProduct.discount],
+      newqty: [this.subProduct.newqty, [Validators.required,Validators.min(1)]]
     });
   }
 
   save() {
     const formdata = this.subProductForm.value;
     formdata.id = this.subProduct.id;
+    formdata.quantity = formdata.newqty;
+    formdata.unitPrice=this.subProduct.unitPrice;
+    formdata.name=this.subProduct.name;
+    formdata.withSerialNumber=this.subProduct.withSerialNumber;
+    formdata.category=this.subProduct.category;
     this.subProductData.emit(formdata);
     this.bsModalRef.hide();
   }

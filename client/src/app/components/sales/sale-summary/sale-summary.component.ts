@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { OrdersService } from 'src/app/_services/orders.service';
 
 @Component({
   selector: 'app-sale-summary',
@@ -6,10 +8,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./sale-summary.component.scss']
 })
 export class SaleSummaryComponent implements OnInit {
-
-  constructor() { }
+  @Input() saleDetailsForm: FormGroup;
+  constructor(public ordersService:OrdersService) { }
 
   ngOnInit(): void {
   }
 
+  save() {
+    alert('save functions comes soom');
+  }
+  reset() {
+this.ordersService.resetBasket();
+this.saleDetailsForm.reset();
+  }
 }

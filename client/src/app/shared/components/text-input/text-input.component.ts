@@ -12,6 +12,7 @@ export class TextInputComponent implements OnInit, ControlValueAccessor {
   @Input() type = 'text';
   @Input() label: string;
   @Input() required:boolean =true;
+  @Input() min:number;
 
   constructor(@Self() public controlDir: NgControl,) {
     this.controlDir.valueAccessor = this;

@@ -16,15 +16,18 @@ export class AppComponent implements OnInit{
   }
 
   setCurrentuser() {
-    const user: User = JSON.parse(localStorage.getItem('user'));
-    if(!!user) {
+    const userdata = localStorage.getItem('user');
+    
+    if(!!userdata) {
+      const decryptedUser = this.authService.decryptValue(userdata);
+      const user: User = decryptedUser;
       this.authService.setCurrentuser(user);
       this.languageService.initLanguage();
 
     //  this.presenceService.createHubConnection(user);
     } else {
       localStorage.removeItem('user');
-      localStorage.removeItem('token');
+    //  localStorage.removeItem('token');
       this.authService.setCurrentuser(null);
     }
   }

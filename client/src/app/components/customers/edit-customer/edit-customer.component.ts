@@ -18,26 +18,29 @@ export class EditCustomerComponent implements OnInit {
   public customerForm: FormGroup;
   cities: any[] = [];
   loggedUser: User;
-  customer:any;
+  customer: any;
 
   constructor(private authService: AuthService, private formBuilder: FormBuilder, public commonService: CommonService
-    , private toastr: ToastrService, private customerService: CustomerService,private route: ActivatedRoute,private router: Router) {
+    , private toastr: ToastrService, private customerService: CustomerService, private route: ActivatedRoute, private router: Router) {
     this.authService.currentUser$.pipe(take(1)).subscribe((user) => (this.loggedUser = user));
-    this.createCustomerForm();     
+    this.createCustomerForm();
     this.getCities();
   }
 
 
   ngOnInit(): void {
 
-    const  customerId = this.route.snapshot.params['id'];
-    if(!!customerId) {
-      this.customerService.getCustomerById(customerId,this.loggedUser.haKaDocClientId).subscribe((response) => {
-        this.customer =response; 
+    const customerId = this.route.snapshot.params['id'];
+    if (!!customerId) {
+      this.customerService.getCustomerById(customerId, this.loggedUser.haKaDocClientId).subscribe((response) => {
+        
+        this.customer = response;
         this.customerForm.patchValue(this.customer);
-        if(!!this.customer.dateOfBirth)
-        this.customerForm.get('dateOfBirth').patchValue(this.formatDate(this.customer.dateOfBirth as Date));
-      },error => {
+        if (!!this.customer.dateOfBirth)
+          this.customerForm.get('dateOfBirth').patchValue(this.formatDate(this.customer.dateOfBirth as Date));
+          
+
+      }, error => {
         this.toastr.error(error.rror);
         this.router.navigate(['/customers/list-customer']);
       })
@@ -75,7 +78,7 @@ export class EditCustomerComponent implements OnInit {
   private formatDate(date) {
     let newDate = new Date(date);
     return newDate.toJSON().split('T')[0];
-}
+  }
 
 
   getCities() {
@@ -83,7 +86,7 @@ export class EditCustomerComponent implements OnInit {
   }
 
   save() {
-    this.customerService.updateCustomerData(this.customer.id,this.loggedUser.haKaDocClientId,this.customerForm.value).subscribe(() => {
+    this.customerService.updateCustomerData(this.customer.id, this.loggedUser.haKaDocClientId, this.customerForm.value).subscribe(() => {
       this.toastr.success("enregistrement terminé...");
       this.router.navigate(['/customers/list-customer']);
     })

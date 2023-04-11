@@ -11,8 +11,8 @@ namespace API.Entities
       AmountTTC = 0;
       TVA = 0;
       TVAAmount = 0;
-      isReg = false;
-      isNextReg = false;
+      // isReg = false;
+      // isNextReg = false;
       Validated = false;
       Expired = false;
       Cancelled = false;
@@ -32,8 +32,8 @@ namespace API.Entities
     public string OrderLabel { get; set; }
   
     public DateTime OrderDate { get; set; }
-    public DateTime Deadline { get; set; }
-    public DateTime Validity { get; set; }
+    // public DateTime Deadline { get; set; }
+    // public DateTime Validity { get; set; }
     public int? ShippingAddressId { get; set; }
     public Address ShippingAddress { get; set; }
     public int? BillingAddressId { get; set; }
@@ -53,11 +53,13 @@ namespace API.Entities
     public Boolean Validated { get; set; }
     public Boolean Expired { get; set; }
     public Boolean Cancelled { get; set; }
-    public Boolean Overdue { get; set; }
+    public Boolean Overdue { get; set; }//payé plus la valeur attendue
     public Boolean Paid { get; set; }
+    public Boolean FullyPaid { get; set; }
+    public Boolean Delivered { get; set; }
     public Boolean Completed { get; set; }
-    public Boolean isReg { get; set; }
-    public Boolean isNextReg { get; set; }
+    // public Boolean isReg { get; set; }
+    // public Boolean isNextReg { get; set; }
     public DateTime InsertDate { get; set; } = DateTime.Now;
     public int InsertUserId { get; set; }
     public DateTime UpdateDate { get; set; } = DateTime.Now;

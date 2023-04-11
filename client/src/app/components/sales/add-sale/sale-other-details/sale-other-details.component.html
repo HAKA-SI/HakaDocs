@@ -1,0 +1,86 @@
+<div class="row mt-4">
+    <div class="col-12">
+        <form [formGroup]="saleDetailsForm"  novalidate>
+            <app-date-input formControlName="orderDate" [type]="'date'" [label]="'date de la vente'"></app-date-input>
+
+            <app-text-input formControlName="orderNum" [label]="'numméro ordre'"></app-text-input>
+
+            <div class="form-group row">
+                <label for="cityId" class="col-xl-3 col-sm-4 mb-0">type de paiement</label>
+                <div class="col-xl-8 col-sm-7">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="inlineCheckbox1" formControlName="paimentType"
+                            value="1">
+                        <label class="form-check-label" for="inlineCheckbox1">Payé en totalité</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="inlineCheckbox2" value="2"
+                            formControlName="paimentType">
+                        <label class="form-check-label" for="inlineCheckbox2">Payé partiellement</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="inlineCheckbox3" value="3"
+                            formControlName="paimentType">
+                        <label class="form-check-label" for="inlineCheckbox3">à credit</label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <app-text-input formControlName="amountPaid" [type]="'number'" [label]="'montant versé'" [min]="1"
+                *ngIf="+saleDetailsForm.value.paimentType===2"></app-text-input>
+            <div class="form-group row editor-label">
+                <label class="col-xl-3 col-md-4">Observation</label>
+                <textarea formControlName="observation" rows="4" class="col-xl-8 col-md-7"></textarea>
+            </div>
+            <div class="form-group row">
+                <label class="col-xl-3 col-sm-4 mb-0">Livré</label>
+                <div class="col-xl-8 col-sm-7">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="del1" formControlName="delivered"
+                            value="true">
+                        <label class="form-check-label" for="del1">Oui</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="del2" value="false"
+                            formControlName="delivered">
+                        <label class="form-check-label" for="del2">Non</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-xl-3 col-sm-4 mb-0">Envoi de la facture au client</label>
+                <div class="col-xl-8 col-sm-7">
+                    <div class="form-check form-check-inline" *ngFor="let choice of invoiceDeliveryMethods, let i = index">
+                        <input class="form-check-input" type="checkbox" id="inv{{i}}" (change)="onCheckboxChange($event)"  [value]="choice.value" >
+                        <label class="form-check-label" for="inv{{i}}">{{choice.text}}</label>
+                    </div>
+                    <!-- <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox"  id="inv2" [value]="'whatsapp'" formControlName="invoiceSendingType">
+                        <label class="form-check-label" for="inv2">Par whatsapp</label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input"  type="checkbox" id="inv3" [value]="'sms'" formControlName="invoiceSendingType">
+                        <label class="form-check-label" for="inv3">Par SMS</label>
+                    </div> -->
+                     
+                </div>
+            </div>
+
+
+
+        </form>
+        <div class="alert alert-info">
+            {{saleDetailsForm.value|json}}
+        </div>
+    </div>
+
+    <div class="float-none d-flex justify-content-between flex-column flex-lg-row mb-5">
+        <button class="btn btn-outline-primary" cdkStepperPrevious>
+            <i class="fa fa-angle-left"></i> Back to products
+        </button>
+    </div>
+</div>

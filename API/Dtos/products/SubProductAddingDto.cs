@@ -20,7 +20,7 @@ namespace API.Dtos
     public List<IFormFile> OtherPhotoFiles { get; set; }
     public int ReorderLevel { get; set; } 
 
-    public int Quantity { get; set; }
+    // public int Quantity { get; set; }
     public string Note { get; set; }
     public bool VatExempted { get; set; }
 

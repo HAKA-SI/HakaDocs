@@ -6,6 +6,7 @@ import { User } from 'src/app/_models/user.model';
 import { environment } from 'src/environments/environment';
 import { map, tap } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { EncryptStorage } from 'encrypt-storage';
 
 
 @Injectable({
@@ -18,6 +19,7 @@ export class AuthService {
   jwtHelper = new JwtHelperService();
   redirectUrl: string;
   decodedToken: any;
+  encryptStoragge = new EncryptStorage("3bbf2ab9b46f4cb5ad0f7f7330d58576ab137160eba045b4bc1fd7a66011cc4970a4bab5fb9c4e2b8da2e73dbdeffe86");
 
   constructor(
     private http: HttpClient,
@@ -29,9 +31,7 @@ export class AuthService {
     const url = this.baseUrl + "auth/login";
     return this.http.post<User>(url, model).pipe(
       tap((user: User) => {
-        // let user = data.user;
-        // let clients = data.clients;
-        this.setCurrentuser(user);
+          this.setCurrentuser(user);
       })
     );
   }
@@ -48,16 +48,33 @@ export class AuthService {
     return isMatch;
   }
 
+
+  // isLogin(): boolean {
+  //   var response: boolean;
+  //   if (
+  //     this.currentUser$.subscribe((user) => {
+  //       if (user) return (response = true);
+  //       return (response = false);
+  //     })
+  //   )
+  //     return response;
+  // }
+
   isLogin(): boolean {
-    const token = localStorage.getItem('token');
-    return !this.jwtHelper.isTokenExpired(token);
+    const userdata = localStorage.getItem('user');
+    if(!!userdata) {
+      const decryptedUser:User = this.decryptValue(userdata);
+      return !this.jwtHelper.isTokenExpired(decryptedUser.token);
+    }
+    return false;
+   
   }
 
-  loggedIn() {
-    const token = localStorage.getItem('token');
-    const isExpired = !this.jwtHelper.isTokenExpired(token);
-    return isExpired;
-  }
+  // loggedIn() {
+  //   const token = localStorage.getItem('token');
+  //   const isExpired = !this.jwtHelper.isTokenExpired(token);
+  //   return isExpired;
+  // }
 
 
   logout(gotoHomePage: boolean = true) {
@@ -76,8 +93,9 @@ export class AuthService {
       user.roles = [];
       const roles = this.getDecodeToken(user.token).role;
       Array.isArray(roles) ? (user.roles = roles) : user.roles.push(roles);
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('token', JSON.stringify(user.token));
+      const encryptedUser = this.encryptValue(user);
+      localStorage.setItem('user', encryptedUser);
+      this.currentuserSource.next(user);
     }
     this.currentuserSource.next(user);
   }
@@ -113,6 +131,22 @@ export class AuthService {
           }
         })
       );
+  }
+
+  encryptValue(value) {
+    if (!!value) {
+      const encryptedValue = this.encryptStoragge.encryptValue(value);
+      return encryptedValue
+    }
+
+    return null;
+  }
+
+  decryptValue(value) {
+    if (!!value) {
+      const decryptedValue = this.encryptStoragge.decryptValue(value);
+      return decryptedValue;
+    }
   }
 
 }

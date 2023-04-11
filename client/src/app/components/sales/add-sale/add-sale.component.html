@@ -1,21 +1,21 @@
     <div class="row">
-        <div class="col-8">
+        <div class="col-7">
             <app-stepper [linearModeSelected]="false" #appStepper [disabled]="false">
                 <cdk-step [label]="'client'" >
                    <app-select-customer [customers]="customers" ></app-select-customer>
                 </cdk-step>
                 <cdk-step [label]="'choix des produits'">
-                    <app-select-products [subProducts]="subProducts" ></app-select-products>
+                    <app-select-products [subProducts]="subProducts" [loggedUser]="loggedUser"></app-select-products>
                 </cdk-step>
-                <cdk-step [label]="'Review'">
-                    <!-- <app-checkout-review [appStepper]="appStepper"></app-checkout-review> -->
+                <cdk-step [label]="'Autre Details'">
+                    <app-sale-other-details [saleDetailsForm]="saleDetailsForm"></app-sale-other-details>
                 </cdk-step>
-                <cdk-step [label]="'Payment'">
-                    <!-- <app-checkout-payment [checkoutForm]="checkoutForm"></app-checkout-payment> -->
-                </cdk-step>
+                <!-- <cdk-step [label]="'Payment'">
+                    <app-checkout-payment [checkoutForm]="checkoutForm"></app-checkout-payment>
+                </cdk-step> -->
             </app-stepper>
         </div>
-        <div class="col-4">
-          <app-sale-summary></app-sale-summary>
+        <div class="col-5">
+          <app-sale-summary [saleDetailsForm]="saleDetailsForm"></app-sale-summary>
         </div>
      </div>

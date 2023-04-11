@@ -1,1 +1,57 @@
-<p>set-product-with-sn-modal works!</p>
+<div class="table-responsive mt-3">
+
+</div>
+
+<div class="modal-header">
+    <h5 class="modal-title f-w-600" id="exampleModalLabel"><b>{{subProduct.name}}</b></h5>
+    <button type="button" class="close" aria-label="Close" (click)="closeModal()"> <span
+            aria-hidden="true">&times;</span></button>
+</div>
+<div class="modal-body">
+    <div *ngIf="subProductSns.length>0">
+        <div class="form-group row">
+            <label for="searchText" class="col-xl-2 col-md-3">{{'actions.search'|translate}}</label>
+            <input type="text" [(ngModel)]="searchText" class="form-control col-xl-4 col-md-3" id="search"
+                name="search">
+        </div>
+        <table class="table table-condensed">
+            <thead class="fw-bold headerGray">
+                <tr>
+                    <th scope="col">Numero de serie</th>
+                    <th scope="col">Remise</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of subProductSns| filter: searchText|paginate: { itemsPerPage: 5, currentPage: page }let i=index"
+                    [@animate]="{value:'*',params:{delay: (i*100)+'ms', y:'50px'}}">
+
+                    <td>
+                        <div class="custom-control custom-checkbox">
+                            <input (click)="selectIem(item)" [(ngModel)]="item.selected" type="checkbox"
+                                class="custom-control-input" [id]="item.sn" name="c{{item.id}}">
+                            <label class="custom-control-label" [for]="item.sn">{{item.sn}}</label>
+                        </div>
+                    </td>
+                    <td>
+                        <input (input)="calculateTotal()" [disabled]="!item.selected"
+                            class="form-control  form-control-sm" type="number" [name]="item.id"
+                            [(ngModel)]="item.discount">
+                    </td>
+                <tr>
+                    <td colspan="2">
+                         <p class=" mx-4">Montant total à percevoir: <b>{{totalAmount - totalDiscount}}</b></p>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <pagination-controls [previousLabel]="'actions.previousLabel'|translate"
+            [nextLabel]="'actions.nextLabel'|translate" (pageChange)="page = $event"></pagination-controls>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button (click)="save()" [disabled]="totalAmount<=0" type="button" class="btn btn-primary">{{'actions.save'|translate}}</button>
+    <button (click)="closeModal()" class="btn btn-secondary" type="button"
+        data-dismiss="modal">{{'actions.close'|translate}}</button>
+</div>

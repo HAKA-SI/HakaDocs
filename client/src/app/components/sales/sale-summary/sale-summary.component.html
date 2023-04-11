@@ -1,73 +1,51 @@
 <!-- Container-fluid starts-->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Recap de la commande</h5>
-                </div>
-                <div class="card-body">
-                    <table class="table">
-                        <tr>
-                            <td>Client</td>
-                            <td>:</td>
-                            <td><b class="cut text-truncate">momo momo momo momo momo momo momo momo momo</b></td>
-                        </tr>
-                        <tr>
-                            <td>Montant</td>
-                            <td>:</td>
-                            <td><b class="text-wrap">240000</b></td>
-                        </tr>
-                        <tr>
-                            <td>Remise</td>
-                            <td>:</td>
-                            <td ><b class="text-wrap">10000</b></td>
-                        </tr>
-                    </table>
-                    <table class="table">
-                        <thead class="fw-bold headerGray">
-                            <tr>
-                            <th scope="col">Produit</th>
-                            <th scope="col">Quantité</th>
-                            <th scope="col">Remise</th>
-                            <th scope="col">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>produw 12</td>
-                                <td>10</td>
-                                <td>0</td>
-                                <td>20 000</td>
-                            </tr>
-                            <tr>
-                                <td>produw 12</td>
-                                <td>10</td>
-                                <td>0</td>
-                                <td>20 000</td>
-                            </tr>
-                            <tr>
-                                <td>produw 12</td>
-                                <td>10</td>
-                                <td>0</td>
-                                <td>20 000</td>
-                            </tr>
-                            <tr>
-                                <td>produw 12</td>
-                                <td>10</td>
-                                <td>0</td>
-                                <td>20 000</td>
-                            </tr>
-                            <tr>
-                                <td>produw 12</td>
-                                <td>10</td>
-                                <td>0</td>
-                                <td>20 000</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+
+<div class="card" *ngIf="(ordersService.basket$|async) as basket">
+    <div class="card-header">
+        <h5>Recap de la commande</h5>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <tr>
+                <td>Client</td>
+                <td>:</td>
+                <td><b class="cut text-truncate">{{basket?.customer?.lastName}} {{basket?.customer?.firstName}}</b></td>
+            </tr>
+            <tr>
+                <td>Montant</td>
+                <td>:</td>
+                <td><b >{{basket?.total}}</b></td>
+            </tr>
+            <tr>
+                <td>Remise</td>
+                <td>:</td>
+                <td ><b *ngIf="basket?.subTotal">{{basket?.subTotal - basket?.total}}</b></td>
+            </tr>
+        </table>
+        <table class="table">
+            <thead class="fw-bold headerGray">
+                <tr>
+                <th scope="col">Produit</th>
+                <th scope="col">Quantité</th>
+                <th scope="col">Remise</th>
+                <th scope="col">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let prod of basket?.products">
+                    <td>{{prod.name}}</td>
+                    <td>{{prod.quantity}}</td>
+                    <td>{{prod.discount}}</td>
+                    <td>{{prod.total}}</td>
+                </tr>
+             
+            </tbody>
+        </table>
+
+        <div class="text-center">
+            <button  (click)="reset()" type="button" class="btn btn-warnig">reset</button>
+            <button  (click)="save()" [disabled]="!saleDetailsForm.valid || !basket?.customer || !basket?.products" type="button" class="btn btn-primary">{{'create-customer.save'|translate}}</button>
         </div>
     </div>
+</div>
     <!-- Container-fluid Ends-->
