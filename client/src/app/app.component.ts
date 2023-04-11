@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { User } from './_models/user.model';
 import { LanguageService } from './core/services/language.service';
 import { BackgroundService } from './_services/background.service';
+import { InactivityService } from './_services/inactivity.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,8 @@ import { BackgroundService } from './_services/background.service';
 })
 export class AppComponent implements OnInit{
 
-  constructor(private authService : AuthService, private languageService: LanguageService, private backgroundService: BackgroundService) {}
+  constructor(private authService : AuthService, private languageService: LanguageService
+    , private backgroundService: BackgroundService, private inactivityService:InactivityService) {}
   ngOnInit(): void {
     this.setCurrentuser();
     this.backgroundService.startChecking();
