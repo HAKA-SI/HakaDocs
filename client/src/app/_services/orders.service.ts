@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Customer } from '../_models/customer.model';
 import { environment } from 'src/environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { PhysicalBasket } from '../_models/physical.basket.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,18 +12,30 @@ export class OrdersService {
 
   private basketSource = new BehaviorSubject<any>({});
   basket$ = this.basketSource.asObservable();
-  private baseUrl = environment.apiUrl+'orders/';
+  private baseUrl = environment.apiUrl + 'Orders/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    //ecriture du basket dans le localStorage 
+   
+  }
 
   getCurrentBasketValue() {
     return this.basketSource.value;
   }
 
+  setBasket(basket) {
+    this.basketSource.next(basket);
+  }
+
   setBasketCustomer(customer: Customer) {
-    let curentBasketValue: any = this.getCurrentBasketValue();
-    curentBasketValue.customer = customer;
+    let curentBasketValue = this.getCurrentBasketValue();
+    if (!!curentBasketValue && !!curentBasketValue.customer) curentBasketValue.customer = customer;
+    else curentBasketValue.customer = this.generateNewCustomer(customer);
     this.basketSource.next(curentBasketValue);
+  }
+
+  generateNewCustomer(customer): Customer {
+    return { ...customer };
   }
 
   calculateTotal() {
@@ -84,22 +97,24 @@ export class OrdersService {
   }
 
   setBasketDetails(selectedValue: any) {
-    const cbasket = this.getCurrentBasketValue();
+    let cbasket = this.getCurrentBasketValue();
+    cbasket.details = {};
     cbasket.details = selectedValue;
-    this.basketSource.next(cbasket);
+   
   }
 
   getBasketDetails() {
     const cbasket = this.getCurrentBasketValue();
-    return cbasket.details ?? null;
+    if (!!cbasket) return cbasket.details;
+    return null;
   }
 
   resetBasket() {
-    this.basketSource.next({});
+    this.basketSource.next(null);
   }
 
-  saveOrder(insertUserId,orderModel) {
-    return this.http.post(this.baseUrl+'saveClientOrder/'+insertUserId,orderModel)
+  saveOrder(hakaDoclientId, orderModel) {
+    return this.http.post(this.baseUrl + 'SaveClientOrder/' + hakaDoclientId, orderModel)
   }
 
 

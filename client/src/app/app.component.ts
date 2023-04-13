@@ -4,6 +4,7 @@ import { User } from './_models/user.model';
 import { LanguageService } from './core/services/language.service';
 import { BackgroundService } from './_services/background.service';
 import { InactivityService } from './_services/inactivity.service';
+import { OrdersService } from './_services/orders.service';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +13,19 @@ import { InactivityService } from './_services/inactivity.service';
 })
 export class AppComponent implements OnInit{
 
-  constructor(private authService : AuthService, private languageService: LanguageService
+  constructor(private authService : AuthService, private languageService: LanguageService, private ordersService: OrdersService
     , private backgroundService: BackgroundService, private inactivityService:InactivityService) {}
   ngOnInit(): void {
     this.setCurrentuser();
     this.backgroundService.startChecking();
+  this.setSetPhysicalBasket();
+  }
+
+  setSetPhysicalBasket() {
+       const physicalBasket =JSON.parse(localStorage.getItem('physicalBasket'));
+       if(!!physicalBasket) this.ordersService.setBasket(physicalBasket);
+       else this.ordersService.setBasket({});
+
   }
 
   setCurrentuser() {

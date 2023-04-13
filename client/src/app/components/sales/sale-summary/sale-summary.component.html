@@ -14,12 +14,12 @@
             <tr>
                 <td>Montant</td>
                 <td>:</td>
-                <td><b >{{basket?.total}}</b></td>
+                <td><b >{{basket?.total|currency:'F CFA':'symbol':'1.0-0':'fr'}}</b></td>
             </tr>
             <tr>
                 <td>Remise</td>
                 <td>:</td>
-                <td ><b *ngIf="basket?.subTotal">{{basket?.subTotal - basket?.total}}</b></td>
+                <td ><b *ngIf="basket?.subTotal">{{(basket?.subTotal - basket?.total)|currency:'F CFA':'symbol':'1.0-0':'fr'}}</b></td>
             </tr>
         </table>
         <table class="table">
@@ -35,8 +35,8 @@
                 <tr *ngFor="let prod of basket?.products">
                     <td>{{prod.name}}</td>
                     <td>{{prod.quantity}}</td>
-                    <td>{{prod.discount}}</td>
-                    <td>{{prod.total}}</td>
+                    <td>{{prod.discount|currency:'F CFA':'symbol':'1.0-0':'fr'}}</td>
+                    <td>{{prod.total|currency:'F CFA':'symbol':'1.0-0':'fr'}}</td>
                 </tr>
              
             </tbody>
@@ -48,4 +48,6 @@
         </div>
     </div>
 </div>
+
+
     <!-- Container-fluid Ends-->

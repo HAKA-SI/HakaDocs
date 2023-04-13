@@ -1,4 +1,5 @@
 import { Photo } from "./photo.model";
+import { SubProductSN } from "./subProductSN.model";
 
         export interface SubProduct {
         name: string;
@@ -19,5 +20,6 @@ import { Photo } from "./photo.model";
         photos: Photo[];
         withSerialNumber:boolean;
         id:number;
+        subProductSNs:SubProductSN[]
         }
 

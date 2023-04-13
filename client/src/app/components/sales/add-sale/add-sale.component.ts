@@ -28,16 +28,27 @@ export class AddSaleComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private authService: AuthService, private customerService: CustomerService,
     private productService: ProductsService, private ordersService:OrdersService) {
+
+      this.ordersService.basket$.subscribe((basket) => {
+        localStorage.setItem('physicalBasket', JSON.stringify(basket));
+        
+      });
+
+    // this.setBasketFromLocalStorage();
     this.authService.currentUser$.pipe(take(1)).subscribe((user) => (this.loggedUser = user));
     this.createSaleDetailsForm();
+  }
+
+
+  setBasketFromLocalStorage() {
+    throw new Error('Method not implemented.');
   }
 
   ngOnInit(): void {
     this.basket$ = this.ordersService.basket$;
     this.getCustomers();
     this.getSubProducts();
-
-
+    
   }
 
   getSubProducts() {

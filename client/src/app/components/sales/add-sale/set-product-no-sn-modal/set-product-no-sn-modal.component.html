@@ -13,7 +13,7 @@
       </form>
   </div>
   <hr>
-  <p class=" mx-4">Montant total à percevoir: <b>{{(subProduct.unitPrice*subProductForm.value.newqty)-(subProductForm.value.discount)}}</b></p>
+  <p class=" mx-4">Montant total à percevoir: <b>{{((subProduct.unitPrice*subProductForm.value.newqty)-(subProductForm.value.discount))|currency:'F CFA':'symbol':'1.0-0':'fr'}}</b></p>
   <div class="modal-footer">
     <button [disabled]="!subProductForm.valid" (click)="save()"  type="button" class="btn btn-primary">{{'actions.save'|translate}}</button>
     <button (click)="closeModal()" class="btn btn-secondary" type="button" data-dismiss="modal"

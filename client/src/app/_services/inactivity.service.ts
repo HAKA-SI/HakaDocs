@@ -19,7 +19,7 @@ export class InactivityService {
     clearTimeout(this.timeout);
     this.timeout = setTimeout(() => {
       if(this.authService.isLogin())
-       alert('L\'utilisateur est inactif depuis une #) minutes.');
+       alert('L\'utilisateur est inactif depuis une 10 minutes.');
     }, 1800000); // 1 heure en millisecondes
   }
 }

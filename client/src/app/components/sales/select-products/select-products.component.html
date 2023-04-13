@@ -47,7 +47,7 @@
                             </div>
                         </td>
                         <td>({{item.category}}/{{item.product}})</td>
-                        <td>{{item.unitPrice}}</td>
+                        <td>{{item.unitPrice|currency:'F CFA':'symbol':'1.0-0':'fr'}}</td>
                         <td> <b>{{item.quantity}}</b>   </td>
                         <td>
                             <button [disabled]="item.quantity<=0" (click)="selectLine(item)" class="btn btn-secondary" >

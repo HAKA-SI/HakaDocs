@@ -30,6 +30,11 @@ export class SaleOtherDetailsComponent implements OnInit {
         this.saleDetailsForm.get('amountPaid').addValidators(Validators.required);
       else
         this.saleDetailsForm.get('amountPaid').clearValidators();
+      
+      
+        this.saleDetailsForm.get('amountPaid').updateValueAndValidity();
+
+      
     });
 
     this.saleDetailsForm.valueChanges.subscribe(selectedValue => {

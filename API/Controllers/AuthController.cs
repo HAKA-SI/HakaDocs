@@ -107,6 +107,7 @@ namespace API.Controllers
             // return user;
             return new UserDto {
                 Username = user.UserName,
+                Id  = user.Id,
                 Token = await _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(ph => ph.IsMain)?.Url,
                 FullName = user.FirstName + " "+user.LastName,
