@@ -11,7 +11,7 @@ import { SharedAnimations } from 'src/app/shared/animations/shared-animations';
   animations: [SharedAnimations]
 })
 export class SetProductNoSnModalComponent implements OnInit {
-  @Output() subProductData: any = new EventEmitter();;
+  @Output() subProductData: any = new EventEmitter();
   // editionMode: 'add' | 'edit' = 'add';
   subProduct: any;
   subProductForm: FormGroup;
@@ -46,7 +46,7 @@ export class SetProductNoSnModalComponent implements OnInit {
   save() {
     const formdata = this.subProductForm.value;
     formdata.id = this.subProduct.id;
-    formdata.quantity = formdata.newqty;
+    // formdata.quantity = formdata.newqty;
     formdata.unitPrice=this.subProduct.unitPrice;
     formdata.name=this.subProduct.name;
     formdata.withSerialNumber=this.subProduct.withSerialNumber;

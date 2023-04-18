@@ -16,7 +16,7 @@ export class OrdersService {
 
   constructor(private http: HttpClient) {
     //ecriture du basket dans le localStorage 
-   
+
   }
 
   getCurrentBasketValue() {
@@ -47,10 +47,10 @@ export class OrdersService {
         if (element.withSerialNumber) {
           element.subTotal = element.subProductSNs.reduce((a, b) => (b.quantity * element.unitPrice) + a, 0);
           element.discount = element.subProductSNs.reduce((a, b) => b.discount + a, 0);
-          element.quantity = element.subProductSNs.length;
+          element.newqty = element.subProductSNs.length;
           element.total = element.subTotal - element.discount;
         } else {
-          element.subTotal = element.quantity * element.unitPrice;
+          element.subTotal = element.newqty * element.unitPrice;
           element.total = element.subTotal - element.discount;
         }
       });
@@ -100,7 +100,7 @@ export class OrdersService {
     let cbasket = this.getCurrentBasketValue();
     cbasket.details = {};
     cbasket.details = selectedValue;
-   
+
   }
 
   getBasketDetails() {
@@ -110,7 +110,7 @@ export class OrdersService {
   }
 
   resetBasket() {
-    this.basketSource.next(null);
+    this.basketSource.next({});
   }
 
   saveOrder(hakaDoclientId, orderModel) {

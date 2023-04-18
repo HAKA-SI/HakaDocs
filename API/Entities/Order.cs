@@ -20,9 +20,7 @@ namespace API.Entities
       Paid = false;
       Completed = false;
       InsertDate = DateTime.Now;
-      InsertUserId = 1;
       UpdateDate = DateTime.Now;
-      UpdateUserId = 1;
     }
 
     public int Id { get; set; }
@@ -44,6 +42,7 @@ namespace API.Entities
     public decimal TVA { get; set; }
     public decimal TVAAmount { get; set; }
     public decimal AmountTTC { get; set; }
+    public decimal AmountPaid { get; set; }
     public int CustomerId { get; set; }
     public Customer Customer { get; set; }
     // public int? FatherId { get; set; }

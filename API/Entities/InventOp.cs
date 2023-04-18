@@ -16,12 +16,16 @@ namespace API.Entities
 
         public  AppUser FromEmployee { get; set; }
         public  Store FromStore { get; set; }
+        public int? OrderId { get; set; }
+        public Order Order { get; set; }
         public  InventOpType InventOpType { get; set; }
         public  AppUser ToEmployee { get; set; }
          public  AppUser InsertUser { get; set; }
         public  Store ToStore { get; set; }
         public int? SubProductId { get; set; }
         public SubProduct SubProduct { get; set; }
+        public int? CustomerId { get; set; }
+        public Customer Customer { get; set; }
         public int? Quantity { get; set; }
         public StockHistory StockHistory { get; set; }
         public ICollection<InventOpSubProductSN> InventOpSubProductSNs { get; set; }

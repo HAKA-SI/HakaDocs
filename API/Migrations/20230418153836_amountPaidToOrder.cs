@@ -4,22 +4,23 @@
 
 namespace API.Migrations
 {
-    public partial class addingNameToInvoiceTemplate : Migration
+    public partial class amountPaidToOrder : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Name",
-                table: "InvoiceTemplates",
-                type: "nvarchar(max)",
-                nullable: true);
+            migrationBuilder.AddColumn<int>(
+                name: "AmountPaid",
+                table: "Orders",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Name",
-                table: "InvoiceTemplates");
+                name: "AmountPaid",
+                table: "Orders");
         }
     }
 }

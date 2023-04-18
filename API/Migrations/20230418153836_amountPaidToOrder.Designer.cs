@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230110160406_addingHakaDocClientIdToProduct")]
-    partial class addingHakaDocClientIdToProduct
+    [Migration("20230418153836_amountPaidToOrder")]
+    partial class amountPaidToOrder
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -101,8 +101,14 @@ namespace API.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("CityId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("CodeValidated")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -168,6 +174,12 @@ namespace API.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("ValidationCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ValidationDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -334,12 +346,27 @@ namespace API.Migrations
                     b.Property<int>("HaKaDocClientId")
                         .HasColumnType("int");
 
+                    b.Property<int>("InsertUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ProductGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("UpdateUserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("HaKaDocClientId");
+
+                    b.HasIndex("InsertUserId");
+
+                    b.HasIndex("ProductGroupId");
+
+                    b.HasIndex("UpdateUserId");
 
                     b.ToTable("Categories");
                 });
@@ -481,6 +508,9 @@ namespace API.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("CustomerCode")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("datetime2");
 
@@ -565,6 +595,27 @@ namespace API.Migrations
                     b.HasIndex("MaritalStatusId");
 
                     b.ToTable("Customers");
+                });
+
+            modelBuilder.Entity("API.Entities.CustomerCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CodeLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HaKaDocClientId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HaKaDocClientId");
+
+                    b.ToTable("CustomerCodes");
                 });
 
             modelBuilder.Entity("API.Entities.DeadLine", b =>
@@ -696,7 +747,7 @@ namespace API.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("District");
+                    b.ToTable("Districts");
                 });
 
             modelBuilder.Entity("API.Entities.Doc", b =>
@@ -1276,9 +1327,6 @@ namespace API.Migrations
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrderLineId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Overdue")
                         .HasColumnType("bit");
 
@@ -1297,11 +1345,74 @@ namespace API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("OrderLineId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("API.Entities.InvoiceOrderLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderLineId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("OrderLineId");
+
+                    b.ToTable("InvoiceOrderLines");
+                });
+
+            modelBuilder.Entity("API.Entities.InvoiceTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("HaKaDocClientId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HaKaDocClientId");
+
+                    b.ToTable("InvoiceTemplates");
                 });
 
             modelBuilder.Entity("API.Entities.MaritalStatus", b =>
@@ -1427,6 +1538,9 @@ namespace API.Migrations
                     b.Property<decimal>("AmountHT")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("AmountPaid")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("AmountTTC")
                         .HasColumnType("decimal(18,2)");
 
@@ -1442,13 +1556,16 @@ namespace API.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Deadline")
-                        .HasColumnType("datetime2");
+                    b.Property<bool>("Delivered")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("DiscountAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("Expired")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FullyPaid")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("InsertDate")
@@ -1494,15 +1611,6 @@ namespace API.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("Validated")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("Validity")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("isNextReg")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("isReg")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -1612,10 +1720,10 @@ namespace API.Migrations
                     b.Property<decimal>("ProductFee")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Qty")
                         .HasColumnType("int");
 
-                    b.Property<int>("Qty")
+                    b.Property<int>("SubProductId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TVA")
@@ -1648,7 +1756,7 @@ namespace API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("SubProductId");
 
                     b.ToTable("OrderLines");
                 });
@@ -1834,6 +1942,41 @@ namespace API.Migrations
                     b.ToTable("OrderLineRegFees");
                 });
 
+            modelBuilder.Entity("API.Entities.OrderLineSubProductSN", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("DiscountAmout")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderLineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubProductSNId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderLineId");
+
+                    b.HasIndex("SubProductSNId");
+
+                    b.ToTable("OrderLineSubProductSNs");
+                });
+
             modelBuilder.Entity("API.Entities.OrderType", b =>
                 {
                     b.Property<int>("Id")
@@ -1977,6 +2120,9 @@ namespace API.Migrations
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("InsertUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -1986,13 +2132,20 @@ namespace API.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("UpdateUserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("HaKaDocClientId");
 
+                    b.HasIndex("InsertUserId");
+
                     b.HasIndex("TypeId");
+
+                    b.HasIndex("UpdateUserId");
 
                     b.ToTable("Products");
                 });
@@ -2164,7 +2317,8 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("InventOpId");
+                    b.HasIndex("InventOpId")
+                        .IsUnique();
 
                     b.HasIndex("StockHistoryActionId");
 
@@ -2258,6 +2412,29 @@ namespace API.Migrations
                     b.HasIndex("ToStoreId");
 
                     b.ToTable("StockMvts");
+                });
+
+            modelBuilder.Entity("API.Entities.StockMvtInventOp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("InventOpId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StockMvtId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InventOpId");
+
+                    b.HasIndex("StockMvtId");
+
+                    b.ToTable("StockMvtInventOps");
                 });
 
             modelBuilder.Entity("API.Entities.Store", b =>
@@ -2380,6 +2557,9 @@ namespace API.Migrations
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("InsertUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -2413,6 +2593,12 @@ namespace API.Migrations
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("UpdateUserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("VatExempted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("WithSerialNumber")
                         .HasColumnType("bit");
 
@@ -2422,9 +2608,13 @@ namespace API.Migrations
 
                     b.HasIndex("HaKaDocClientId");
 
+                    b.HasIndex("InsertUserId");
+
                     b.HasIndex("ProductId");
 
                     b.HasIndex("TypeId");
+
+                    b.HasIndex("UpdateUserId");
 
                     b.ToTable("SubProducts");
                 });
@@ -2463,6 +2653,15 @@ namespace API.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("CanBeDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("HaKaDocClientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("InsertUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -2478,11 +2677,20 @@ namespace API.Migrations
                     b.Property<int>("SubProductId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("UpdateUserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("HaKaDocClientId");
+
+                    b.HasIndex("InsertUserId");
 
                     b.HasIndex("StoreId");
 
                     b.HasIndex("SubProductId");
+
+                    b.HasIndex("UpdateUserId");
 
                     b.ToTable("SubProductSNs");
                 });
@@ -2706,7 +2914,27 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API.Entities.AppUser", "InsertUser")
+                        .WithMany()
+                        .HasForeignKey("InsertUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.ProductGroup", "ProductGroup")
+                        .WithMany()
+                        .HasForeignKey("ProductGroupId");
+
+                    b.HasOne("API.Entities.AppUser", "UpdateUser")
+                        .WithMany()
+                        .HasForeignKey("UpdateUserId");
+
                     b.Navigation("HaKaDocClient");
+
+                    b.Navigation("InsertUser");
+
+                    b.Navigation("ProductGroup");
+
+                    b.Navigation("UpdateUser");
                 });
 
             modelBuilder.Entity("API.Entities.Cheque", b =>
@@ -2803,6 +3031,17 @@ namespace API.Migrations
                     b.Navigation("InsertUser");
 
                     b.Navigation("MaritalSatus");
+                });
+
+            modelBuilder.Entity("API.Entities.CustomerCode", b =>
+                {
+                    b.HasOne("API.Entities.HaKaDocClient", "HaKaDocClient")
+                        .WithMany()
+                        .HasForeignKey("HaKaDocClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("HaKaDocClient");
                 });
 
             modelBuilder.Entity("API.Entities.DeadLine", b =>
@@ -3105,7 +3344,7 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.InventOpSubProductSN", b =>
                 {
                     b.HasOne("API.Entities.InventOp", "InventOp")
-                        .WithMany()
+                        .WithMany("InventOpSubProductSNs")
                         .HasForeignKey("InventOpId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -3133,10 +3372,6 @@ namespace API.Migrations
                         .WithMany()
                         .HasForeignKey("OrderId");
 
-                    b.HasOne("API.Entities.OrderLine", "OrderLine")
-                        .WithMany()
-                        .HasForeignKey("OrderLineId");
-
                     b.HasOne("API.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -3145,9 +3380,37 @@ namespace API.Migrations
 
                     b.Navigation("Order");
 
-                    b.Navigation("OrderLine");
-
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("API.Entities.InvoiceOrderLine", b =>
+                {
+                    b.HasOne("API.Entities.Invoice", "Invoice")
+                        .WithMany()
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.OrderLine", "OrderLine")
+                        .WithMany()
+                        .HasForeignKey("OrderLineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("OrderLine");
+                });
+
+            modelBuilder.Entity("API.Entities.InvoiceTemplate", b =>
+                {
+                    b.HasOne("API.Entities.HaKaDocClient", "HaKaDocClient")
+                        .WithMany()
+                        .HasForeignKey("HaKaDocClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("HaKaDocClient");
                 });
 
             modelBuilder.Entity("API.Entities.Menu", b =>
@@ -3240,9 +3503,9 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Entities.Product", "Product")
+                    b.HasOne("API.Entities.SubProduct", "SubProduct")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("SubProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3250,7 +3513,7 @@ namespace API.Migrations
 
                     b.Navigation("Order");
 
-                    b.Navigation("Product");
+                    b.Navigation("SubProduct");
                 });
 
             modelBuilder.Entity("API.Entities.OrderLineDeadline", b =>
@@ -3359,6 +3622,25 @@ namespace API.Migrations
                     b.Navigation("RegFee");
                 });
 
+            modelBuilder.Entity("API.Entities.OrderLineSubProductSN", b =>
+                {
+                    b.HasOne("API.Entities.OrderLine", "OrderLine")
+                        .WithMany()
+                        .HasForeignKey("OrderLineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.SubProductSN", "SubProductSN")
+                        .WithMany()
+                        .HasForeignKey("SubProductSNId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderLine");
+
+                    b.Navigation("SubProductSN");
+                });
+
             modelBuilder.Entity("API.Entities.Periodicity", b =>
                 {
                     b.HasOne("API.Entities.HaKaDocClient", "HaKaDocClient")
@@ -3376,7 +3658,7 @@ namespace API.Migrations
                         .WithMany("Photos")
                         .HasForeignKey("CustomerId");
 
-                    b.HasOne("API.Entities.SubProduct", null)
+                    b.HasOne("API.Entities.SubProduct", "SubProduct")
                         .WithMany("Photos")
                         .HasForeignKey("SubProductId");
 
@@ -3384,13 +3666,15 @@ namespace API.Migrations
                         .WithMany("Photos")
                         .HasForeignKey("UserId");
 
+                    b.Navigation("SubProduct");
+
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("API.Entities.Product", b =>
                 {
                     b.HasOne("API.Entities.Category", "Category")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("API.Entities.HaKaDocClient", "HaKaDocClient")
@@ -3399,15 +3683,29 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API.Entities.AppUser", "InsertUser")
+                        .WithMany()
+                        .HasForeignKey("InsertUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("API.Entities.Type", "Type")
                         .WithMany()
                         .HasForeignKey("TypeId");
+
+                    b.HasOne("API.Entities.AppUser", "UpdateUser")
+                        .WithMany()
+                        .HasForeignKey("UpdateUserId");
 
                     b.Navigation("Category");
 
                     b.Navigation("HaKaDocClient");
 
+                    b.Navigation("InsertUser");
+
                     b.Navigation("Type");
+
+                    b.Navigation("UpdateUser");
                 });
 
             modelBuilder.Entity("API.Entities.ProductType", b =>
@@ -3450,8 +3748,8 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.StockHistory", b =>
                 {
                     b.HasOne("API.Entities.InventOp", "InventOp")
-                        .WithMany()
-                        .HasForeignKey("InventOpId")
+                        .WithOne("StockHistory")
+                        .HasForeignKey("API.Entities.StockHistory", "InventOpId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3533,6 +3831,25 @@ namespace API.Migrations
                     b.Navigation("ToStore");
                 });
 
+            modelBuilder.Entity("API.Entities.StockMvtInventOp", b =>
+                {
+                    b.HasOne("API.Entities.InventOp", "InventOp")
+                        .WithMany("StockMvtInventOps")
+                        .HasForeignKey("InventOpId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.StockMvt", "StockMvt")
+                        .WithMany()
+                        .HasForeignKey("StockMvtId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("InventOp");
+
+                    b.Navigation("StockMvt");
+                });
+
             modelBuilder.Entity("API.Entities.Store", b =>
                 {
                     b.HasOne("API.Entities.District", "District")
@@ -3610,6 +3927,12 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API.Entities.AppUser", "InsertUser")
+                        .WithMany()
+                        .HasForeignKey("InsertUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("API.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -3620,13 +3943,21 @@ namespace API.Migrations
                         .WithMany()
                         .HasForeignKey("TypeId");
 
+                    b.HasOne("API.Entities.AppUser", "UpdateUser")
+                        .WithMany()
+                        .HasForeignKey("UpdateUserId");
+
                     b.Navigation("Category");
 
                     b.Navigation("HaKaDocClient");
 
+                    b.Navigation("InsertUser");
+
                     b.Navigation("Product");
 
                     b.Navigation("Type");
+
+                    b.Navigation("UpdateUser");
                 });
 
             modelBuilder.Entity("API.Entities.SubProductFeature", b =>
@@ -3650,6 +3981,18 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Entities.SubProductSN", b =>
                 {
+                    b.HasOne("API.Entities.HaKaDocClient", "HaKaDocClient")
+                        .WithMany()
+                        .HasForeignKey("HaKaDocClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.AppUser", "InsertUser")
+                        .WithMany()
+                        .HasForeignKey("InsertUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("API.Entities.Store", "Store")
                         .WithMany()
                         .HasForeignKey("StoreId")
@@ -3662,9 +4005,19 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API.Entities.AppUser", "UpdateUser")
+                        .WithMany()
+                        .HasForeignKey("UpdateUserId");
+
+                    b.Navigation("HaKaDocClient");
+
+                    b.Navigation("InsertUser");
+
                     b.Navigation("Store");
 
                     b.Navigation("SubProduct");
+
+                    b.Navigation("UpdateUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -3723,6 +4076,11 @@ namespace API.Migrations
                     b.Navigation("UserRoles");
                 });
 
+            modelBuilder.Entity("API.Entities.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
             modelBuilder.Entity("API.Entities.Customer", b =>
                 {
                     b.Navigation("Photos");
@@ -3731,6 +4089,15 @@ namespace API.Migrations
             modelBuilder.Entity("API.Entities.Group", b =>
                 {
                     b.Navigation("Connections");
+                });
+
+            modelBuilder.Entity("API.Entities.InventOp", b =>
+                {
+                    b.Navigation("InventOpSubProductSNs");
+
+                    b.Navigation("StockHistory");
+
+                    b.Navigation("StockMvtInventOps");
                 });
 
             modelBuilder.Entity("API.Entities.SubProduct", b =>

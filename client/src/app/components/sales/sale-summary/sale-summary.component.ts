@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 import { PhysicalBasket } from 'src/app/_models/physical.basket.model';
 import { User } from 'src/app/_models/user.model';
 import { OrdersService } from 'src/app/_services/orders.service';
@@ -13,6 +14,8 @@ import { ConfirmService } from 'src/app/core/services/confirm.service';
 export class SaleSummaryComponent implements OnInit {
   @Input() saleDetailsForm: FormGroup;
   @Input() loggedUser:User;
+  @Output() orderSaved: any = new EventEmitter();
+  
   constructor(public ordersService: OrdersService, private confirmService: ConfirmService) { }
 
   ngOnInit(): void {
@@ -22,7 +25,7 @@ export class SaleSummaryComponent implements OnInit {
     let basket = this.ordersService.getCurrentBasketValue();
     basket.details.delivered =JSON.parse(basket.details.delivered.toString());
     basket.customerId = basket.customer.id;
-    basket.insertUserId = this.loggedUser.id;
+    // basket.insertUserId = this.loggedUser.id;
     basket.details.paimentType =JSON.parse(basket.details.paimentType.toString());
    for (let index = 0; index < basket.details.invoiceSendingType.length; index++) {
      basket.details.invoiceSendingType[index]=JSON.parse(basket.details.invoiceSendingType[index]);
@@ -36,9 +39,8 @@ export class SaleSummaryComponent implements OnInit {
     .subscribe(result => {
       if (result) {
         this.ordersService.saveOrder(this.loggedUser.haKaDocClientId, basket).subscribe(() => {
-     
-          // this.toastr.success("suppression éffectuée....");
-          console.log("suppression éffectuée....");
+          this.saleDetailsForm.reset();
+          this.orderSaved.emit(true);
         }, error => {
           // this.toastr.error(error.message);
           console.log(error);

@@ -342,7 +342,7 @@ namespace API.Controllers
             var loggeduserId = User.GetUserId();
             if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
 
-            int stockEntryTypeId = _config.GetValue<int>("AppSettings:stockEntryTypeId");
+            int stockEntryTypeId = _config.GetValue<int>("AppSettings:inventOpType:stockEntryTypeId");
             int in_stockEntryActionId = _config.GetValue<int>("AppSettings:inStockEntryHistoryId");
             var dataContext = _unitOfWork.GetDataContext();
             bool done = false;
@@ -477,7 +477,7 @@ namespace API.Controllers
         {
             var loggeduserId = User.GetUserId();
             if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
-            int stockEntryTypeId = _config.GetValue<int>("AppSettings:stockEntryTypeId");
+            int stockEntryTypeId = _config.GetValue<int>("AppSettings:inventOpType:stockEntryTypeId");
             int in_stockEntryActionId = _config.GetValue<int>("AppSettings:inStockEntryHistoryId");
             var dataContext = _unitOfWork.GetDataContext();
             // var createdIds = await _uow.ProductRepository.CreateSubProductsSN(insertUserId, model, stockEntryTypeId, in_stockEntryActionId);

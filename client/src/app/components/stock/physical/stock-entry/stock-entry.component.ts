@@ -20,15 +20,15 @@ export class StockEntryComponent implements OnInit {
   subProductWithoutSns: SubProduct[] = [];
   physicalProductGroupId = environment.phisicalProductGroupId;
   loggedUser: User;
-  stores:Store[]=[];
-  showStoreSelection:boolean=true;
-  
+  stores: Store[] = [];
+  showStoreSelection: boolean = true;
 
 
-  constructor(private authService: AuthService,private router:Router, private productService: ProductsService, private storeService:StoresService) {
+
+  constructor(private authService: AuthService, private router: Router, private productService: ProductsService, private storeService: StoresService) {
     this.authService.currentUser$.pipe(take(1)).subscribe((user) => (this.loggedUser = user));
     this.router.routeReuseStrategy.shouldReuseRoute = () => false
-   }
+  }
 
   ngOnInit(): void {
     this.getSubProducts();
@@ -36,8 +36,8 @@ export class StockEntryComponent implements OnInit {
   }
 
   getStores() {
-    this.storeService.storeList(this.loggedUser.haKaDocClientId).subscribe((response:Store[]) =>{
-      this.stores=response;
+    this.storeService.storeList(this.loggedUser.haKaDocClientId).subscribe((response: Store[]) => {
+      this.stores = response;
     });
   }
 
@@ -52,10 +52,10 @@ export class StockEntryComponent implements OnInit {
     });
   }
 
-  reload(event){
+  reload(event) {
     this.router.navigateByUrl('/stock/physical/stock-entry', { skipLocationChange: true }).then(() => {
       this.router.navigate(['/stock/physical/stock-entry']);
-  }); 
+    });
   }
 
 }

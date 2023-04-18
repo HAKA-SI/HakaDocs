@@ -12,7 +12,7 @@ namespace API.Entities
       Expired = false;
       OverDue = false;
       Cancelled = false;
-      Active = false;
+      Active = true;
       Completed = false;
       InsertDate = DateTime.Now;
       InsertUserId = 1;
@@ -24,8 +24,8 @@ namespace API.Entities
     public int OrderId { get; set; }
     public Order Order { get; set; }
     public string OrderLineLabel { get; set; }
-    public int ProductId { get; set; }
-    public Product Product { get; set; }
+    public int SubProductId { get; set; }
+    public SubProduct SubProduct { get; set; }
     public decimal ProductFee { get; set; }
     public int Qty { get; set; }
     public decimal UnitPrice { get; set; }

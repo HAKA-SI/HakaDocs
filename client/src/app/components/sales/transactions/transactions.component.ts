@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { transactionsDB } from 'src/app/shared/tables/transactions';
 
+
+
 @Component({
   selector: 'app-transactions',
   templateUrl: './transactions.component.html',

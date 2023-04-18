@@ -147,8 +147,10 @@ export class AddProductComponent implements OnInit {
     this.productService.createSubProduct(this.loggedUser.haKaDocClientId,this.physicalGroupId, formData).subscribe(
       (product: any) => {
         this.mainFile = null;
+        const exenaure = this.subProductForm.value.valExempted;
         this.toastr.success("enregistrement terminée...");
         this.resetForm();
+        this.subProductForm.patchValue({ valExempted: exenaure });
       },
       (error) => {
         console.log(error);

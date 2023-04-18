@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230411143443_invoiceTemplate")]
-    partial class invoiceTemplate
+    [Migration("20230418155023_202304181550")]
+    partial class _202304181550
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1402,6 +1402,9 @@ namespace API.Migrations
                     b.Property<DateTime>("InsertDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("UpdateDate")
                         .HasColumnType("datetime2");
 
@@ -1533,6 +1536,9 @@ namespace API.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<decimal>("AmountHT")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("AmountPaid")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("AmountTTC")
@@ -1714,10 +1720,10 @@ namespace API.Migrations
                     b.Property<decimal>("ProductFee")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Qty")
                         .HasColumnType("int");
 
-                    b.Property<int>("Qty")
+                    b.Property<int>("SubProductId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TVA")
@@ -1750,7 +1756,7 @@ namespace API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("SubProductId");
 
                     b.ToTable("OrderLines");
                 });
@@ -1934,6 +1940,41 @@ namespace API.Migrations
                     b.HasIndex("RegFeeId");
 
                     b.ToTable("OrderLineRegFees");
+                });
+
+            modelBuilder.Entity("API.Entities.OrderLineSubProductSN", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("DiscountAmout")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderLineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubProductSNId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderLineId");
+
+                    b.HasIndex("SubProductSNId");
+
+                    b.ToTable("OrderLineSubProductSNs");
                 });
 
             modelBuilder.Entity("API.Entities.OrderType", b =>
@@ -3462,9 +3503,9 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Entities.Product", "Product")
+                    b.HasOne("API.Entities.SubProduct", "SubProduct")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("SubProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3472,7 +3513,7 @@ namespace API.Migrations
 
                     b.Navigation("Order");
 
-                    b.Navigation("Product");
+                    b.Navigation("SubProduct");
                 });
 
             modelBuilder.Entity("API.Entities.OrderLineDeadline", b =>
@@ -3579,6 +3620,25 @@ namespace API.Migrations
                     b.Navigation("OrderLine");
 
                     b.Navigation("RegFee");
+                });
+
+            modelBuilder.Entity("API.Entities.OrderLineSubProductSN", b =>
+                {
+                    b.HasOne("API.Entities.OrderLine", "OrderLine")
+                        .WithMany()
+                        .HasForeignKey("OrderLineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.SubProductSN", "SubProductSN")
+                        .WithMany()
+                        .HasForeignKey("SubProductSNId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderLine");
+
+                    b.Navigation("SubProductSN");
                 });
 
             modelBuilder.Entity("API.Entities.Periodicity", b =>

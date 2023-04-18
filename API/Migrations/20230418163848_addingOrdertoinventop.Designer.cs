@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230303230027_addind_validationCode_to_appUser")]
-    partial class addind_validationCode_to_appUser
+    [Migration("20230418163848_addingOrdertoinventop")]
+    partial class addingOrdertoinventop
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -101,8 +101,14 @@ namespace API.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("CityId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("CodeValidated")
+                        .HasColumnType("bit");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -171,6 +177,9 @@ namespace API.Migrations
 
                     b.Property<string>("ValidationCode")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ValidationDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1180,6 +1189,9 @@ namespace API.Migrations
                     b.Property<bool>("Active")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FormNum")
                         .HasColumnType("nvarchar(max)");
 
@@ -1201,6 +1213,9 @@ namespace API.Migrations
                     b.Property<DateTime>("OpDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("Quantity")
                         .HasColumnType("int");
 
@@ -1221,6 +1236,8 @@ namespace API.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerId");
+
                     b.HasIndex("FromEmployeeId");
 
                     b.HasIndex("FromStoreId");
@@ -1228,6 +1245,8 @@ namespace API.Migrations
                     b.HasIndex("InsertUserId");
 
                     b.HasIndex("InventOpTypeId");
+
+                    b.HasIndex("OrderId");
 
                     b.HasIndex("SubProductId");
 
@@ -1318,9 +1337,6 @@ namespace API.Migrations
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrderLineId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Overdue")
                         .HasColumnType("bit");
 
@@ -1339,11 +1355,74 @@ namespace API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("OrderLineId");
-
                     b.HasIndex("UserId");
 
                     b.ToTable("Invoices");
+                });
+
+            modelBuilder.Entity("API.Entities.InvoiceOrderLine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("InvoiceId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderLineId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("InvoiceId");
+
+                    b.HasIndex("OrderLineId");
+
+                    b.ToTable("InvoiceOrderLines");
+                });
+
+            modelBuilder.Entity("API.Entities.InvoiceTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("HaKaDocClientId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HaKaDocClientId");
+
+                    b.ToTable("InvoiceTemplates");
                 });
 
             modelBuilder.Entity("API.Entities.MaritalStatus", b =>
@@ -1469,6 +1548,9 @@ namespace API.Migrations
                     b.Property<decimal>("AmountHT")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<decimal>("AmountTTC")
                         .HasColumnType("decimal(18,2)");
 
@@ -1484,13 +1566,16 @@ namespace API.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Deadline")
-                        .HasColumnType("datetime2");
+                    b.Property<bool>("Delivered")
+                        .HasColumnType("bit");
 
                     b.Property<decimal>("DiscountAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("Expired")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FullyPaid")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("InsertDate")
@@ -1536,15 +1621,6 @@ namespace API.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("Validated")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("Validity")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("isNextReg")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("isReg")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
@@ -1654,10 +1730,10 @@ namespace API.Migrations
                     b.Property<decimal>("ProductFee")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductId")
+                    b.Property<int>("Qty")
                         .HasColumnType("int");
 
-                    b.Property<int>("Qty")
+                    b.Property<int>("SubProductId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TVA")
@@ -1690,7 +1766,7 @@ namespace API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("SubProductId");
 
                     b.ToTable("OrderLines");
                 });
@@ -1874,6 +1950,41 @@ namespace API.Migrations
                     b.HasIndex("RegFeeId");
 
                     b.ToTable("OrderLineRegFees");
+                });
+
+            modelBuilder.Entity("API.Entities.OrderLineSubProductSN", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("DiscountAmout")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("InsertDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderLineId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubProductSNId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderLineId");
+
+                    b.HasIndex("SubProductSNId");
+
+                    b.ToTable("OrderLineSubProductSNs");
                 });
 
             modelBuilder.Entity("API.Entities.OrderType", b =>
@@ -2494,6 +2605,9 @@ namespace API.Migrations
 
                     b.Property<int?>("UpdateUserId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("VatExempted")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("WithSerialNumber")
                         .HasColumnType("bit");
@@ -3194,6 +3308,10 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Entities.InventOp", b =>
                 {
+                    b.HasOne("API.Entities.Customer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId");
+
                     b.HasOne("API.Entities.AppUser", "FromEmployee")
                         .WithMany()
                         .HasForeignKey("FromEmployeeId");
@@ -3210,6 +3328,10 @@ namespace API.Migrations
                         .WithMany()
                         .HasForeignKey("InventOpTypeId");
 
+                    b.HasOne("API.Entities.Order", "Order")
+                        .WithMany()
+                        .HasForeignKey("OrderId");
+
                     b.HasOne("API.Entities.SubProduct", "SubProduct")
                         .WithMany()
                         .HasForeignKey("SubProductId");
@@ -3222,6 +3344,8 @@ namespace API.Migrations
                         .WithMany()
                         .HasForeignKey("ToStoreId");
 
+                    b.Navigation("Customer");
+
                     b.Navigation("FromEmployee");
 
                     b.Navigation("FromStore");
@@ -3229,6 +3353,8 @@ namespace API.Migrations
                     b.Navigation("InsertUser");
 
                     b.Navigation("InventOpType");
+
+                    b.Navigation("Order");
 
                     b.Navigation("SubProduct");
 
@@ -3268,10 +3394,6 @@ namespace API.Migrations
                         .WithMany()
                         .HasForeignKey("OrderId");
 
-                    b.HasOne("API.Entities.OrderLine", "OrderLine")
-                        .WithMany()
-                        .HasForeignKey("OrderLineId");
-
                     b.HasOne("API.Entities.AppUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -3280,9 +3402,37 @@ namespace API.Migrations
 
                     b.Navigation("Order");
 
-                    b.Navigation("OrderLine");
-
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("API.Entities.InvoiceOrderLine", b =>
+                {
+                    b.HasOne("API.Entities.Invoice", "Invoice")
+                        .WithMany()
+                        .HasForeignKey("InvoiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.OrderLine", "OrderLine")
+                        .WithMany()
+                        .HasForeignKey("OrderLineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Invoice");
+
+                    b.Navigation("OrderLine");
+                });
+
+            modelBuilder.Entity("API.Entities.InvoiceTemplate", b =>
+                {
+                    b.HasOne("API.Entities.HaKaDocClient", "HaKaDocClient")
+                        .WithMany()
+                        .HasForeignKey("HaKaDocClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("HaKaDocClient");
                 });
 
             modelBuilder.Entity("API.Entities.Menu", b =>
@@ -3375,9 +3525,9 @@ namespace API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Entities.Product", "Product")
+                    b.HasOne("API.Entities.SubProduct", "SubProduct")
                         .WithMany()
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("SubProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -3385,7 +3535,7 @@ namespace API.Migrations
 
                     b.Navigation("Order");
 
-                    b.Navigation("Product");
+                    b.Navigation("SubProduct");
                 });
 
             modelBuilder.Entity("API.Entities.OrderLineDeadline", b =>
@@ -3492,6 +3642,25 @@ namespace API.Migrations
                     b.Navigation("OrderLine");
 
                     b.Navigation("RegFee");
+                });
+
+            modelBuilder.Entity("API.Entities.OrderLineSubProductSN", b =>
+                {
+                    b.HasOne("API.Entities.OrderLine", "OrderLine")
+                        .WithMany()
+                        .HasForeignKey("OrderLineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("API.Entities.SubProductSN", "SubProductSN")
+                        .WithMany()
+                        .HasForeignKey("SubProductSNId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OrderLine");
+
+                    b.Navigation("SubProductSN");
                 });
 
             modelBuilder.Entity("API.Entities.Periodicity", b =>

@@ -182,6 +182,15 @@ namespace API.Data
                 await context.SaveChangesAsync();
             }
 
+            if (!context.OrderTypes.Any())
+            {
+                context.OrderTypes.AddRange(
+                   new OrderType { Name = "Vente directe" },
+                   new OrderType { Name = "Vente en ligne" }
+                );
+                await context.SaveChangesAsync();
+            }
+
 
         }
     }

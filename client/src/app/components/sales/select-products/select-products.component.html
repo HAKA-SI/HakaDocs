@@ -4,7 +4,7 @@
         <div class="col-2" *ngFor="let item of basket?.products">
             <div class="bg-secondary clearfix rounded d-flex align-items-center" >
                 <span type="button" (click)="removeProduct(item.id)"  class="mx-1 badge badge-primary float-left my-auto"> <i class="fa fa-minus"></i></span>
-                 <span class="text-truncate">{{item.name}}</span> <span class="badge badge-light mx-1">{{item.quantity}}</span>
+                 <span class="text-truncate">{{item.name}}</span> <span class="badge badge-light mx-1">{{item.newqty}}</span>
               </div>
         </div>
       
