@@ -17,31 +17,7 @@
           <option *ngFor="let item of subproducts" [value]="item.id">{{item.name}}</option>
         </select>
       </div>
-      
-    <!-- <div class="change-photo-btn">
-      <div><i class="feather-upload"></i>
-        <p>Choisir l'image principale du produit *</p>
-      </div>
-      <input type="file" class="upload" accept='image/*' id="imgFile" (change)="mainImgResult($event)">
-      <span class="file-upload-text"></span>
-    </div>
-    <div class="row mb-1" *ngIf="mainPhotoUrl">
-      <img [src]="mainPhotoUrl" class="img-thumbnail" alt="..."
-        style="max-width: 100px; max-height: 100px;">
-    </div>
-    <div class="change-photo-btn">
-      <div><i class="feather-upload"></i>
-        <p>Choisir les autres images</p>
-      </div>
-      <input type="file" class="upload" accept='image/*' id="atherFiles" multiple="multiple"
-        (change)="getOtherFilesResult($event)">
-      <span class="file-upload-text"></span>
-    </div>
-    <div class="avatar-group" *ngIf="otherFilesUrl">
-      <div class="avatar" *ngFor="let url of otherFilesUrl">
-        <img [src]="url" class="avatar-img rounded-circle border border-white">
-      </div>
-    </div> -->
+     
     <div class="form-group row editor-label">
         <label class="col-xl-3 col-md-4">{{'products.observation'|translate}}</label>
         <textarea formControlName="note" rows="4" class="col-xl-8 col-md-7"></textarea>

@@ -94,7 +94,7 @@ namespace API.Data
 
         public async Task<StockHistory> StoreSubProductHistory(int storeId, int subProductId)
         {
-           return await _context.StockHistories.FirstOrDefaultAsync(a => a.StoreId == storeId && a.SubProductId == subProductId);
+           return await _context.StockHistories.Where(a => a.StoreId == storeId && a.SubProductId == subProductId).OrderByDescending(a => a.Id).FirstOrDefaultAsync();
         }
 
         public async Task<StoreProduct> StoreProduct(int storeId, int subProductId)

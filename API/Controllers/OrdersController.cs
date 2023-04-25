@@ -9,6 +9,8 @@ using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Controllers
 {
@@ -17,13 +19,15 @@ namespace API.Controllers
     public class OrdersController : BaseApiController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IConfiguration _config;
         private readonly IMapper _mapper;
 
 
-        public OrdersController(IUnitOfWork unitOfWork, IMapper mapper)
+        public OrdersController(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration config)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _config = config;
         }
 
         [HttpPost("SaveClientOrder/{hakaDocClientId}")]
@@ -42,7 +46,7 @@ namespace API.Controllers
                     //2. enregistrement de stockMvt
                     //3. enregistrement de orderline
                     //4. enregistrement de inventOp
-                    
+
 
 
 
@@ -78,19 +82,32 @@ namespace API.Controllers
                     {
                         order.Paid = true;
                         order.FullyPaid = false;
-                        order.AmountPaid =Convert.ToDecimal(model.Details.AmountPaid);
+                        order.AmountPaid = Convert.ToDecimal(model.Details.AmountPaid);
                     }
                     else
                     {
-                        order.FullyPaid=false;
-                        order.Paid=false;
+                        order.FullyPaid = false;
+                        order.Paid = false;
                         order.AmountPaid = 0;
                     }
-
-
                     context.Add(order);
+
+                    // enregistrement de StockMvt
+                    int stockEntryTypeId = _config.GetValue<int>("AppSettings:inventOpType:PhysicalInventOpType");
+                    var stockmvt = new StockMvt
+                    {
+                        InventOpTypeId = stockEntryTypeId,
+                        CustomerId = model.CustomerId,
+                        RefNum = model.Details.OrderNum,
+                        Note = model.Details.Observation,
+                        MvtDate = model.Details.OrderDate,
+                        InsertUserId = loggeduserId
+                    };
+
+                    context.StockMvts.Add(stockmvt);
                     await context.SaveChangesAsync();
 
+                    var productList = await context.SubProducts.Where(a => model.Products.Select(p => p.Id).Contains(a.Id)).ToListAsync();
                     foreach (var item in model.Products)
                     {
                         var orderLine = new OrderLine
@@ -114,18 +131,69 @@ namespace API.Controllers
 
                         };
                         context.Add(orderLine);
+
+                        var currentProd = productList.FirstOrDefault(a => a.Id == item.Id);
+                        var currentStore = await context.StoreProducts.FirstOrDefaultAsync(a => a.SubProductId == item.Id);
+                        // enregistrement inventOp
+                        InventOp inv = new InventOp
+                        {
+                            InsertUserId = stockmvt.InsertUserId,
+                            InventOpTypeId = stockmvt.InventOpTypeId,
+                            OpDate = stockmvt.MvtDate,
+                            FromStoreId = currentStore.StoreId,
+                            CustomerId = model.CustomerId,
+                            FormNum = stockmvt.RefNum,
+                            SubProductId = item.Id,
+                            Quantity = item.Newqty,
+                            OrderId = order.Id
+                        };
+                        context.Add(inv);
                         await context.SaveChangesAsync();
+
+                        // enregistrement InventOpStockMvts
+                        context.StockMvtInventOps.Add(new StockMvtInventOp{ InventOpId =inv.Id, StockMvtId = stockmvt.Id });
+
+
+                        //mise a jour de la quantité dans le store product
+                        currentStore.Quantity -= item.Newqty;
+                        context.StoreProducts.Update(currentStore);
+
+                        //mise a jour de la quantitê dans SubProduct
+                        var subproduct = await _unitOfWork.ProductRepository.GetSubProduct(item.Id);
+                        subproduct.Quantity -= item.Newqty;
+                        context.Update(subproduct);
+                        await context.SaveChangesAsync();
+
+                        //enregistrement StockHistory
+                        int in_stockEntryActionId = _config.GetValue<int>("AppSettings:outStockEntryHistoryId");
+                        StockHistory h = new StockHistory
+                        {
+                            OpDate = stockmvt.MvtDate,
+                            UserId = loggeduserId,
+                            InventOpId = inv.Id,
+                            StockHistoryActionId = in_stockEntryActionId,
+                            StoreId = currentStore.StoreId,
+                            SubProductId = item.Id
+                        };
+                        StockHistory history = await _unitOfWork.ProductRepository.StoreSubProductHistory(currentStore.StoreId, item.Id);
+                        h.OldQty = history.NewQty;
+                        h.NewQty = (history.NewQty - item.Newqty);
+                        h.Delta = (h.NewQty - h.OldQty);
+
+                        context.Add(h);
+                        // await _unitOfWork.Complete();
+
+                        // await context.SaveChangesAsync();
                         if (item.WithSerialNumber)
                         {
                             foreach (var subProd in item.SubProductSNs)
                             {
-                                context.OrderLineSubProductSNs.Add(
-                                    new OrderLineSubProductSN { SubProductSNId = subProd.Id, OrderLineId = orderLine.Id, DiscountAmout = subProd.Discount }
-                                );
+                                //enregistrement orderLine
+                                context.OrderLineSubProductSNs.Add(new OrderLineSubProductSN { SubProductSNId = subProd.Id, OrderLineId = orderLine.Id, DiscountAmout = subProd.Discount });
+                                // orderlineSubProductsSns
+                                context.InventOpSubProductSNs.Add(new InventOpSubProductSN { InventOpId = inv.Id, SubProductSNId = subProd.Id });
                             }
-                            // storeid doit etre egal a null
                             await context.SaveChangesAsync();
-                            // orderlineSubProductsSns
                         }
                     }
                     done = true;

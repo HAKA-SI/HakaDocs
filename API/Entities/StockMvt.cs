@@ -17,6 +17,8 @@ namespace API.Entities
         public  InventOpType InventOpType { get; set; }
         public  AppUser ToEmployee { get; set; }
         public  Store ToStore { get; set; }
+        public int? CustomerId { get; set; }
+        public Customer Custmer { get; set; }
         public int InsertUserId { get; set; }
         public AppUser InsertUser { get; set; }
     }
