@@ -14,6 +14,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
+using WhatsappBusiness.CloudApi.Configurations;
+using WhatsappBusiness.CloudApi.Extensions;
 
 namespace API.Extensions
 {
@@ -21,6 +23,17 @@ namespace API.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
+
+            WhatsAppBusinessCloudApiConfig whatsAppConfig = new WhatsAppBusinessCloudApiConfig();
+            whatsAppConfig.WhatsAppBusinessPhoneNumberId ="118469731225091";
+            //  builder.Configuration.GetSection("WhatsAppBusinessCloudApiConfiguration")["WhatsAppBusinessPhoneNumberId"];
+            whatsAppConfig.WhatsAppBusinessAccountId ="116280854779357";
+            //  builder.Configuration.GetSection("WhatsAppBusinessCloudApiConfiguration")["WhatsAppBusinessAccountId"];
+            whatsAppConfig.WhatsAppBusinessId = "254028866994762";
+            // builder.Configuration.GetSection("WhatsAppBusinessCloudApiConfiguration")["WhatsAppBusinessId"];
+            whatsAppConfig.AccessToken ="EAADnCbRhQkoBAM6wZBGZCy1f7KwXLZCWfKb0IDDeoJvsSYRdvTfREvHcm02QeILDHSSvJg1tCDSmrZBv0jMoye6NKIFsnUnwyIa5h4qcWW5DLOlzc6SPwVtuBeCFDKwzDPGAsHBMmyqcZByQABHM6naG82WhUiKqsZCsClowTA064n9atljpxdni58psijDLRqI2AgRh1pAQZDZD";
+            //  builder.Configuration.GetSection("WhatsAppBusinessCloudApiConfiguration")["AccessToken"];
+            services.AddWhatsAppBusinessCloudApiService(whatsAppConfig);
 
             services.AddSingleton<PresenceTracker>();
             services.Configure<CloudinarySettings>(config.GetSection("CloudinarySettings"));

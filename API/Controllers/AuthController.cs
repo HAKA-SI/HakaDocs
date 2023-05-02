@@ -14,12 +14,14 @@ using API.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using API.Errors;
 using Microsoft.EntityFrameworkCore;
+using WhatsappBusiness.CloudApi.Interfaces;
+using WhatsappBusiness.CloudApi.Messages.Requests;
 
 namespace API.Controllers
 {
-    public class AuthController :BaseApiController
+    public class AuthController : BaseApiController
     {
-               private readonly DataContext _context;
+        private readonly DataContext _context;
 
         private readonly ITokenService _tokenService;
 
@@ -30,6 +32,7 @@ namespace API.Controllers
         private readonly UserManager<AppUser> _userManager;
 
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IWhatsAppBusinessClient _whatsAppBusinessClient;
 
         public AuthController(
             UserManager<AppUser> userManager,
@@ -39,6 +42,7 @@ namespace API.Controllers
             IMapper mapper,
             IConfiguration config,
             IEmailSender emailSender
+            , IWhatsAppBusinessClient whatsAppBusinessClient
         )
         {
             _signInManager = signInManager;
@@ -48,44 +52,45 @@ namespace API.Controllers
             _tokenService = tokenService;
             _context = context;
             _emailSender = emailSender;
+            _whatsAppBusinessClient = whatsAppBusinessClient;
         }
 
-        
-
-    //    [HttpPost("register")]
-    //     public async Task<ActionResult> Register(RegisterDto registerDto)
-    //     {
-    //         string password =  _config["Password"] ;
-    //         if (await CheckEmailExistAsync(registerDto.Email).Result.Value)
-    //         {
-    //             return new BadRequestObjectResult(new ApiValidationErrorResponse{Errors = new []{"email dejà utilisé..."}});
-    //         }
-
-    //         var user = new AppUser
-    //         {
-    //             Email = registerDto.Email,
-    //             UserName = registerDto.Email,
-    //             PhoneNumber=registerDto.PhoneNumber,
-                
-    //         };
-
-    //         var result = await _userManager.CreateAsync(user, password);
-
-    //         if (!result.Succeeded) return BadRequest(new ApiResponse(400));
-    //         //envoi du lien de confirmation
-    //         var email_to_send=new EmailFormDto{
-    //                 Subject="Confirmation de compte",
-    //                 ToEmail=registerDto.Email,
-    //                 Content="<h3> veuillez confirmez vontre compte en cliquznt sur le lien suivant"
-    //             };
-
-    //         SendEmail(email_to_send);
-    //         return Ok();
-
-    //      }
 
 
-    
+        //    [HttpPost("register")]
+        //     public async Task<ActionResult> Register(RegisterDto registerDto)
+        //     {
+        //         string password =  _config["Password"] ;
+        //         if (await CheckEmailExistAsync(registerDto.Email).Result.Value)
+        //         {
+        //             return new BadRequestObjectResult(new ApiValidationErrorResponse{Errors = new []{"email dejà utilisé..."}});
+        //         }
+
+        //         var user = new AppUser
+        //         {
+        //             Email = registerDto.Email,
+        //             UserName = registerDto.Email,
+        //             PhoneNumber=registerDto.PhoneNumber,
+
+        //         };
+
+        //         var result = await _userManager.CreateAsync(user, password);
+
+        //         if (!result.Succeeded) return BadRequest(new ApiResponse(400));
+        //         //envoi du lien de confirmation
+        //         var email_to_send=new EmailFormDto{
+        //                 Subject="Confirmation de compte",
+        //                 ToEmail=registerDto.Email,
+        //                 Content="<h3> veuillez confirmez vontre compte en cliquznt sur le lien suivant"
+        //             };
+
+        //         SendEmail(email_to_send);
+        //         return Ok();
+
+        //      }
+
+
+
 
         [AllowAnonymous]
         [HttpPost("login")]
@@ -105,20 +110,44 @@ namespace API.Controllers
             if (!result.Succeeded) return Unauthorized();
 
             // return user;
-            return new UserDto {
+            return new UserDto
+            {
                 Username = user.UserName,
-                Id  = user.Id,
+                Id = user.Id,
                 Token = await _tokenService.CreateToken(user),
                 PhotoUrl = user.Photos.FirstOrDefault(ph => ph.IsMain)?.Url,
-                FullName = user.FirstName + " "+user.LastName,
+                FullName = user.FirstName + " " + user.LastName,
                 HaKaDocClientId = user.HaKaDocClientId,
                 Gender = user.Gender
             };
         }
 
-        
 
-    
+        [AllowAnonymous]
+        [HttpGet("WhatsappTest")]
+        public async Task<ActionResult> WhatsappTest()
+        {
+            // TextMessageRequest textMessageRequest = new TextMessageRequest();
+            // textMessageRequest.To = "2250707390636";
+            // textMessageRequest.Text = new WhatsAppText();
+            // textMessageRequest.Text.Body = "Message Body";
+            // textMessageRequest.Text.PreviewUrl = false;
+            // var results = await _whatsAppBusinessClient.SendTextMessageAsync(textMessageRequest);
+
+            TextTemplateMessageRequest textTemplateMessage = new TextTemplateMessageRequest();
+            textTemplateMessage.To = "2250711620318";
+            textTemplateMessage.Template = new TextMessageTemplate();
+            textTemplateMessage.Template.Name = "hello_world";
+            textTemplateMessage.Template.Language = new TextMessageLanguage();
+            textTemplateMessage.Template.Language.Code = "en_US";
+
+            var results = await _whatsAppBusinessClient.SendTextMessageTemplateAsync(textTemplateMessage);
+            return Ok();
+        }
+
+
+
+
 
         // private async Task<List<ClientForListDto>> GetClientsTokens()
         // {
@@ -168,5 +197,7 @@ namespace API.Controllers
             await _emailSender.SendEmailAsync(mail.ToEmail, mail.Subject, mail.Content);
 
         }
+
+
     }
 }
