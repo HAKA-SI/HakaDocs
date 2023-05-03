@@ -11,7 +11,8 @@ import { SharedAnimations } from 'src/app/shared/animations/shared-animations';
 })
 export class SetProductWithSnModalComponent implements OnInit {
   subProduct: any;
-  clientId: any;
+  clientId: number;
+  storeId: any;
   subProductSns = [];
   page: number = 1;
   searchText: string;
@@ -26,7 +27,7 @@ export class SetProductWithSnModalComponent implements OnInit {
   }
 
   getSubProductSns() {
-    this.productsService.subProductSNBySubProductId(this.clientId, this.subProduct.id).subscribe((response: any) => {
+    this.productsService.storeSubProductSNBySubProductId(this.storeId,this.clientId, this.subProduct.id).subscribe((response: any) => {
       response.forEach(element => {
         if(!!this.subProduct.subProductSNs) {
           const elementFromBasket = this.subProduct.subProductSNs.find(a => a.id ===element.id);

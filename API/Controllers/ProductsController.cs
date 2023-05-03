@@ -126,15 +126,17 @@ namespace API.Controllers
         [HttpPut("EditProduct/{productId}/{hakaDocClientId}/{categoryId}/{productName}")]
         public async Task<ActionResult> EditProduct(int productId, int hakaDocClientId, int categoryId, string productName)
         {
+
             var loggeduserId = User.GetUserId();
             if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
 
             Product productFromDb = await _unitOfWork.ProductRepository.GetProductWithDetails(productId);
             productFromDb.Name = productName;
+            productFromDb.CategoryId = categoryId;
             productFromDb.UpdateUserId = loggeduserId;
             _unitOfWork.Update(productFromDb);
             if (!(await _unitOfWork.Complete())) return BadRequest("impossible d'ajouter ce produit");
-            return Ok(_mapper.Map<ProductWithDetailDto>(productFromDb));
+            return Ok(_mapper.Map<ProductWithDetailDto>(await _unitOfWork.ProductRepository.GetProductWithDetails(productId)));
         }
 
 
@@ -235,6 +237,13 @@ namespace API.Controllers
         public async Task<ActionResult> SubProductList(int productGroupId, int hakaDocClientId)
         {
             var subProductsFromDb = await _unitOfWork.ProductRepository.GetSubProducts(hakaDocClientId, productGroupId);
+            return Ok(_mapper.Map<List<SubProductListDto>>(subProductsFromDb));
+        }
+
+        [HttpGet("StoreSubProductList/{storeId}/{productGroupId}/{hakaDocClientId}")]
+        public async Task<ActionResult> StoreSubProductList(int storeId, int productGroupId, int hakaDocClientId)
+        {
+            var subProductsFromDb = await _unitOfWork.ProductRepository.GetStoreSubProducts(storeId, hakaDocClientId, productGroupId);
             return Ok(_mapper.Map<List<SubProductListDto>>(subProductsFromDb));
         }
 
@@ -339,6 +348,11 @@ namespace API.Controllers
         [HttpPost("CreateSubProductsSN/{hakaDocClientId}")]
         public async Task<ActionResult> CreateSubProductsSN(int hakaDocClientId, ProductSNAddingDto model)
         {
+            /* The above code is a C# method that handles the creation of a new stock entry. It first
+            checks if the logged-in user has permission to perform the action, and returns an
+            unauthorized response if not. It then initializes some variables and begins a database
+            transaction. */
+
             var loggeduserId = User.GetUserId();
             if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
 
@@ -359,6 +373,8 @@ namespace API.Controllers
                     // insertion StockMvtInventOps
                     // insertion InventOpSubProductSNs
 
+                    //enregistrement stockMvt
+
                     var stockmvt = new StockMvt
                     {
                         InventOpTypeId = stockEntryTypeId,
@@ -368,11 +384,11 @@ namespace API.Controllers
                         MvtDate = model.MvtDate,
                         InsertUserId = loggeduserId
                     };
-
-                    //insertion dans stock mvt
                     _unitOfWork.Add(stockmvt);
                     await _unitOfWork.Complete();
 
+
+                    //enregistrement inventOp
                     InventOp inv = new InventOp
                     {
                         InsertUserId = stockmvt.InsertUserId,
@@ -387,6 +403,7 @@ namespace API.Controllers
                     _unitOfWork.Add(inv);
                     await _unitOfWork.Complete();
 
+                    //enregistrement stockMvtInventOp
                     var stockMvtInventOp = new StockMvtInventOp
                     {
                         InventOpId = inv.Id,
@@ -394,20 +411,20 @@ namespace API.Controllers
                     };
                     _unitOfWork.Add(stockMvtInventOp);
 
-                    StoreProduct storeProduct = await _unitOfWork.ProductRepository.StoreProduct(model.StoreId, model.SubProductId);
-                    if (storeProduct == null)
-                    {
-                        storeProduct = new StoreProduct
-                        {
-                            StoreId = model.StoreId,
-                            SubProductId = model.SubProductId,
-                            Quantity = model.sns.Count()
-                        };
-                        _unitOfWork.Add(storeProduct);
-                    }
-                    else
-                        storeProduct.Quantity += model.sns.Count();
-
+                    // StoreProduct storeProduct = await _unitOfWork.ProductRepository.StoreProduct(model.StoreId, model.SubProductId);
+                    // if (storeProduct == null)
+                    // {
+                    //     storeProduct = new StoreProduct
+                    //     {
+                    //         StoreId = model.StoreId,
+                    //         SubProductId = model.SubProductId,
+                    //         Quantity = model.sns.Count()
+                    //     };
+                    //     _unitOfWork.Add(storeProduct);
+                    // }
+                    // else
+                    //     storeProduct.Quantity += model.sns.Count();
+                    //mise a jour de la quantité dans SubProductSN
                     var subproduct = await _unitOfWork.ProductRepository.GetSubProduct(model.SubProductId);
                     subproduct.Quantity += model.sns.Count();
                     _unitOfWork.Update(subproduct);
@@ -438,7 +455,7 @@ namespace API.Controllers
 
                     foreach (var item in model.sns)
                     {
-                        //
+                        //enregistrement du SubProductSN
                         var prod = new SubProductSN
                         {
                             StoreId = model.StoreId,
@@ -449,6 +466,15 @@ namespace API.Controllers
                         };
                         _unitOfWork.Add(prod);
                         await _unitOfWork.Complete();
+
+                        //enregistrement du StoreProduct
+                        var storeProduct = new StoreProduct
+                        {
+                            SubProductSNId = prod.Id,
+                            StoreId = model.StoreId,
+                            Quantity = 1
+                        };
+                        _unitOfWork.Add(storeProduct);
 
                         InventOpSubProductSN inventProd = new InventOpSubProductSN
                         {
@@ -483,10 +509,8 @@ namespace API.Controllers
             // var createdIds = await _uow.ProductRepository.CreateSubProductsSN(insertUserId, model, stockEntryTypeId, in_stockEntryActionId);
 
             bool done = false;
-
-
             using (var identityContextTransaction = dataContext.Database.BeginTransaction())
-
+            {
                 try
                 {
                     //insertion dans stockMvt (une ligne)
@@ -510,7 +534,6 @@ namespace API.Controllers
                     _unitOfWork.Add(stockmvt);
                     await _unitOfWork.Complete();
 
-
                     //InventOp
                     var inventOp = new InventOp
                     {
@@ -525,11 +548,13 @@ namespace API.Controllers
                     _unitOfWork.Add(inventOp);
                     await _unitOfWork.Complete();
 
-                    //Mise a jour des quantité
+                    //Mise a jour des quantité SubProduct
                     var subproduct = await _unitOfWork.ProductRepository.GetSubProduct(model.SubProductId);
                     subproduct.Quantity += Convert.ToInt32(model.Quantity);
                     _unitOfWork.Update(subproduct);
 
+
+                    //Mise a jour des quantité StoreProduct
                     StoreProduct storeProduct = await _unitOfWork.ProductRepository.StoreProduct(model.StoreId, model.SubProductId);
                     if (storeProduct == null)
                     {
@@ -547,7 +572,7 @@ namespace API.Controllers
                     await _unitOfWork.Complete();
 
 
-                    //stockMvtInventOp
+                    //insertion dans stockMvtInventOp
                     var stockMvtInventOp = new StockMvtInventOp
                     {
                         InventOpId = inventOp.Id,
@@ -556,7 +581,7 @@ namespace API.Controllers
                     _unitOfWork.Add(stockMvtInventOp);
                     await _unitOfWork.Complete();
 
-                    //stockHistory
+                    //insertion dans stockHistory
                     StockHistory h = new StockHistory
                     {
                         OpDate = stockmvt.MvtDate,
@@ -581,34 +606,14 @@ namespace API.Controllers
                     }
                     _unitOfWork.Add(h);
                     await _unitOfWork.Complete();
-
-                    // foreach (var item in model.sns)
-                    // {
-                    //     //
-                    //     var prod = new SubProductSN
-                    //     {
-                    //         StoreId = model.StoreId,
-                    //         SubProductId = model.SubProductId,
-                    //         SN = item
-                    //     };
-                    //     _unitOfWork.Add(prod);
-                    //     await _unitOfWork.Complete();
-
-                    //     InventOpSubProductSN inventProd = new InventOpSubProductSN
-                    //     {
-                    //         InventOpId = inventOp.Id,
-                    //         SubProductSNId = prod.Id
-                    //     };
-                    //     _unitOfWork.Add(inventProd);
-                    //     await _unitOfWork.Complete();
-                    // }
                     identityContextTransaction.Commit();
                     done = true;
                 }
-                catch (System.Exception ex)
+                catch (System.Exception)
                 {
                     identityContextTransaction.Rollback();
                 }
+            }
 
             if (done == true) return Ok();
             return BadRequest("impossible d'enregistrer l'entrée en stock");
@@ -622,6 +627,17 @@ namespace API.Controllers
             if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
 
             List<SubProductSN> subProductSNsFromDb = await _unitOfWork.ProductRepository.GetSubProductSnBySubProductId(subProductId);
+
+            return Ok(_mapper.Map<List<SubProductSnListDto>>(subProductSNsFromDb));
+        }
+
+        [HttpGet("StoreSubProductSnBySubProductId/{storeId}/{hakaDocClientId}/{subProductId}")]
+        public async Task<ActionResult> SubProductSnBySubProductId(int storeId,int hakaDocClientId, int subProductId)
+        {
+            var loggeduserId = User.GetUserId();
+            if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
+
+            List<SubProductSN> subProductSNsFromDb = await _unitOfWork.ProductRepository.GetStoreSubProductSnBySubProductId(storeId,subProductId);
 
             return Ok(_mapper.Map<List<SubProductSnListDto>>(subProductSNsFromDb));
         }
@@ -656,7 +672,7 @@ namespace API.Controllers
                     subProduct.Quantity--;
                     _unitOfWork.Update(subProduct);
 
-                    StoreProduct storeProd = await _unitOfWork.ProductRepository.StoreProduct(subProductSn.StoreId, subProduct.Id);
+                    StoreProduct storeProd = await _unitOfWork.ProductRepository.StoreProduct(Convert.ToInt32(subProductSn.StoreId), subProduct.Id);
                     storeProd.Quantity--;
                     _unitOfWork.Update(storeProd);
 
@@ -706,8 +722,8 @@ namespace API.Controllers
                     subProduct.Quantity = subProduct.Quantity - Convert.ToInt32(inv.Quantity);
                     _unitOfWork.Update(subProduct);
 
-                    StoreProduct storeProd = await _unitOfWork.ProductRepository.StoreProduct(Convert.ToInt32(inv.ToStoreId),subProduct.Id);
-                    storeProd.Quantity=storeProd.Quantity-Convert.ToInt32(inv.Quantity);
+                    StoreProduct storeProd = await _unitOfWork.ProductRepository.StoreProduct(Convert.ToInt32(inv.ToStoreId), subProduct.Id);
+                    storeProd.Quantity = storeProd.Quantity - Convert.ToInt32(inv.Quantity);
                     _unitOfWork.Update(storeProd);
 
                     await _unitOfWork.Complete();

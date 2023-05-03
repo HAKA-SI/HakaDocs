@@ -3,7 +3,7 @@ namespace API.Entities
     public class SubProductSN : BaseEntityWithName
     {
         public Store Store { get; set; }
-        public int StoreId { get; set; }
+        public int? StoreId { get; set; }
         public int SubProductId { get; set; }
         public SubProduct SubProduct { get; set; }
         public string SN { get; set; }

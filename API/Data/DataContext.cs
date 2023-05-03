@@ -91,6 +91,8 @@ namespace API.Data
     public DbSet<InvoiceOrderLine> InvoiceOrderLines{ get; set; }
     public DbSet<InvoiceTemplate> InvoiceTemplates{ get; set; }
     public DbSet<OrderLineSubProductSN> OrderLineSubProductSNs{ get; set; }
+    public DbSet<NotificationType> NotificationTypes{ get; set; }
+    public DbSet<Notification> Notifications{ get; set; }
 
 
     
@@ -183,6 +185,7 @@ namespace API.Data
            builder.Entity<SubProductSN>().HasQueryFilter(p => p.Active);
            builder.Entity<InventOp>().HasQueryFilter(p => p.Active);
            builder.Entity<InventOpSubProductSN>().HasQueryFilter(p => p.Active);
+           builder.Entity<StoreProduct>().HasQueryFilter(p => p.Active);
     }
 }
 

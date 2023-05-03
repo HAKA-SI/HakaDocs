@@ -9,6 +9,7 @@ import { PhysicalBasket } from '../_models/physical.basket.model';
   providedIn: 'root'
 })
 export class OrdersService {
+  
 
   private basketSource = new BehaviorSubject<any>({});
   basket$ = this.basketSource.asObservable();
@@ -33,6 +34,13 @@ export class OrdersService {
     else curentBasketValue.customer = this.generateNewCustomer(customer);
     this.basketSource.next(curentBasketValue);
   }
+
+  setStoreId(id: number) {
+    let curentBasketValue = this.getCurrentBasketValue();
+    curentBasketValue.storeId= id;
+    this.basketSource.next(curentBasketValue);
+  }
+
 
   generateNewCustomer(customer): Customer {
     return { ...customer };
@@ -91,7 +99,6 @@ export class OrdersService {
     const idx = cbasket.products.findIndex(a => a.id === id);
     if (cbasket.products.length === 1) cbasket.products = [];
     else cbasket.products.splice(idx, 1);
-    console.log(cbasket.products);
     this.basketSource.next(cbasket);
     this.calculateTotal();
   }
@@ -116,6 +123,8 @@ export class OrdersService {
   saveOrder(hakaDoclientId, orderModel) {
     return this.http.post(this.baseUrl + 'SaveClientOrder/' + hakaDoclientId, orderModel)
   }
+
+  
 
 
 }

@@ -130,33 +130,37 @@ namespace API.Controllers
                             UpdateUserId = loggeduserId
 
                         };
-                        context.Add(orderLine);
+                        context.OrderLines.Add(orderLine);
 
                         var currentProd = productList.FirstOrDefault(a => a.Id == item.Id);
                         var currentStore = await context.StoreProducts.FirstOrDefaultAsync(a => a.SubProductId == item.Id);
+
                         // enregistrement inventOp
                         InventOp inv = new InventOp
                         {
                             InsertUserId = stockmvt.InsertUserId,
                             InventOpTypeId = stockmvt.InventOpTypeId,
                             OpDate = stockmvt.MvtDate,
-                            FromStoreId = currentStore.StoreId,
+                            FromStoreId = model.StoreId,
                             CustomerId = model.CustomerId,
                             FormNum = stockmvt.RefNum,
                             SubProductId = item.Id,
                             Quantity = item.Newqty,
                             OrderId = order.Id
                         };
-                        context.Add(inv);
+                        context.InventOps.Add(inv);
                         await context.SaveChangesAsync();
 
                         // enregistrement InventOpStockMvts
-                        context.StockMvtInventOps.Add(new StockMvtInventOp{ InventOpId =inv.Id, StockMvtId = stockmvt.Id });
+                        context.StockMvtInventOps.Add(new StockMvtInventOp { InventOpId = inv.Id, StockMvtId = stockmvt.Id });
 
 
-                        //mise a jour de la quantité dans le store product
-                        currentStore.Quantity -= item.Newqty;
-                        context.StoreProducts.Update(currentStore);
+                        //mise a jour de la quantité dans le store product seulement lorsque le produit n'a pas de sn
+                        if (currentStore != null)
+                        {
+                            currentStore.Quantity -= item.Newqty;
+                            context.StoreProducts.Update(currentStore);
+                        }
 
                         //mise a jour de la quantitê dans SubProduct
                         var subproduct = await _unitOfWork.ProductRepository.GetSubProduct(item.Id);
@@ -172,18 +176,17 @@ namespace API.Controllers
                             UserId = loggeduserId,
                             InventOpId = inv.Id,
                             StockHistoryActionId = in_stockEntryActionId,
-                            StoreId = currentStore.StoreId,
+                            StoreId = model.StoreId,
                             SubProductId = item.Id
                         };
-                        StockHistory history = await _unitOfWork.ProductRepository.StoreSubProductHistory(currentStore.StoreId, item.Id);
+                        StockHistory history = await _unitOfWork.ProductRepository.StoreSubProductHistory(model.StoreId, item.Id);
                         h.OldQty = history.NewQty;
                         h.NewQty = (history.NewQty - item.Newqty);
                         h.Delta = (h.NewQty - h.OldQty);
 
                         context.Add(h);
-                        // await _unitOfWork.Complete();
+                        await context.SaveChangesAsync();
 
-                        // await context.SaveChangesAsync();
                         if (item.WithSerialNumber)
                         {
                             foreach (var subProd in item.SubProductSNs)
@@ -191,13 +194,24 @@ namespace API.Controllers
                                 //enregistrement orderLine
                                 context.OrderLineSubProductSNs.Add(new OrderLineSubProductSN { SubProductSNId = subProd.Id, OrderLineId = orderLine.Id, DiscountAmout = subProd.Discount });
                                 // orderlineSubProductsSns
-                                context.InventOpSubProductSNs.Add(new InventOpSubProductSN { InventOpId = inv.Id, SubProductSNId = subProd.Id });
+                               context.InventOpSubProductSNs.Add(new InventOpSubProductSN { InventOpId = inv.Id, SubProductSNId = subProd.Id });
+                                //updating SubProductSN
+                                var subPorductSN = await context.SubProductSNs.FirstOrDefaultAsync(a => a.Id == subProd.Id);
+                                subPorductSN.StoreId = null;
+                                context.Update(subPorductSN);
+                                //delete storeProductLine
+                                var storeProductFromDb = await context.StoreProducts.FirstOrDefaultAsync(a => a.SubProductSNId == subProd.Id);
+                                if (storeProductFromDb != null)
+                                {
+                                    storeProductFromDb.Active=false;
+                                }
+                                await context.SaveChangesAsync();
                             }
-                            await context.SaveChangesAsync();
                         }
                     }
                     done = true;
                     transaction.Commit();
+                  Task.Run(async () => await _unitOfWork.ProductRepository.SendStockNotification(model.Products.Select(a => a.Id).ToList(), hakaDocClientId));
                 }
                 catch (System.Exception)
                 {

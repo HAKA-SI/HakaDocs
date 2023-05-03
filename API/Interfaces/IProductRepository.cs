@@ -17,15 +17,18 @@ namespace API.Interfaces
         // Task<List<Product>> GetProducts(int hakaDocClientId);
         Task<List<Product>> GetProductsWithDetails(int hakaDocClientId,int productGroupId);
         Task<List<SubProduct>> GetSubProducts(int haKaDocClientId,int productGroupId);
+        Task<List<SubProduct>> GetStoreSubProducts(int storeId,int haKaDocClientId,int productGroupId);
         Task<SubProduct> GetSubProduct(int subProductId);
         Task<List<SubProduct>> GetSubProductWithSNs(int hakaDocClientId, int productGroupId);
         Task<List<SubProduct>> GetSubProductWithoutSNs(int hakaDocClientId, int productGroupId);
         Task<StockHistory> StoreSubProductHistory(int storeId, int subProductId);
         Task<StoreProduct> StoreProduct(int storeId, int subProductId);
         Task<List<SubProductSN>> GetSubProductSnBySubProductId(int subProductId);
+        Task<List<SubProductSN>> GetStoreSubProductSnBySubProductId(int storeId,int subProductId);
         Task<List<SubProductSN>> getInventOpSubProductSNs(int inventOpId, int subProductId);
         Task<SubProductSN> GetSubProductSN(int subproductId);
         // Task<InventOpSubProductSN> InventOpSubProductSN(int inventOpId, int subPorductSNId);
         Task<InventOp> GetInventOpById(int inventOpId);
+        Task SendStockNotification(List<int> subproductIds, int hakaDocClientId);
     }
 }

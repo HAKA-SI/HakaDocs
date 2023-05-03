@@ -2,18 +2,23 @@
 using System.Threading.Tasks;
 using API.Entities;
 using API.Interfaces;
+using API.SignalR;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 
 namespace API.Data
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly DataContext _context;
-
+        private readonly IConfiguration _config;
         private readonly IEmailSender _sender;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IHubContext<StockAlertHub> _stockHubContext;
+
 
 
         private readonly IMapper _mapper;
@@ -22,13 +27,17 @@ namespace API.Data
             DataContext context,
             IMapper mapper,
             IEmailSender sender,
-              SignInManager<AppUser> signInManager
+              SignInManager<AppUser> signInManager,
+               IHubContext<StockAlertHub> stockHubContext,
+               IConfiguration config
         )
         {
             _mapper = mapper;
             _context = context;
+            _config = config;
             _sender = sender;
-            _signInManager=signInManager;
+            _stockHubContext = stockHubContext;
+            _signInManager = signInManager;
         }
 
         public IUserRepository UserRepository =>
@@ -37,7 +46,7 @@ namespace API.Data
         public ICommRepository CommRepository => new CommRepository(_sender);
         public IAuthRepository AuthRepository => new AuthRepository(_signInManager);
         public ICustomerRepository CustomerRepository => new CustomerRepository(_context);
-        public IProductRepository ProductRepository => new ProductRepository(_context);
+        public IProductRepository ProductRepository => new ProductRepository(_context,_config,_stockHubContext);
         public IStoreRepository StoreRepository => new StoreRepository(_context);
 
 

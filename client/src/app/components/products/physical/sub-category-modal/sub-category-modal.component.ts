@@ -69,7 +69,8 @@ export class SubCategoryModalComponent implements OnInit {
   }
 
   editSubCategory() {
-    const formData = this.subCategoryForm.value;
+    const formData = this.subCategoryForm.value; 
+    
    this.productService.editProduct(this.hakaDocClientId,this.product.id,formData.categoryId,formData.name).subscribe((product) => {
     this.subCategoryModel.emit(product);
           this.toastr.success("modification enregistrée...");

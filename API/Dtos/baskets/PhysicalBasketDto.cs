@@ -11,6 +11,7 @@ namespace API.Dtos
         // public int InsertUserId { get; set; }
         public int Total { get; set; }
         public int SubTotal { get; set; }
+        public int StoreId { get; set; }
         public int TotalHT { get; set; } = 0;
 
         public PhysicalBasketDetails Details { get; set; }

@@ -24,6 +24,8 @@ namespace API.Helpers
            CreateMap<Product,ProductForListDto>();
            CreateMap<Product,ProductWithDetailDto>()
             .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+           CreateMap<Notification,NotificationDto>()
+            .ForMember(dest => dest.NotificationType, opt => opt.MapFrom(src => src.NotificationType.Name));
            CreateMap<MemberUpdateDto,AppUser>();
            CreateMap<RegisterDto,AppUser>();
            CreateMap<AccountCreationDto,AppUser>();

@@ -37,7 +37,6 @@ export class SubCategoryComponent implements OnInit {
   }
 
   showModal(editionMode: 'add' | 'edit', product: any | null) {
-    console.log(editionMode);
 
     const config: ModalOptions = {
       class: 'modal-dialog-centered',
@@ -50,7 +49,7 @@ export class SubCategoryComponent implements OnInit {
     this.bsModalRef = this.modalService.show(SubCategoryModalComponent, config);
     this.bsModalRef.content.subCategoryModel.subscribe(
       (product: any) => {
-        if (editionMode = 'add') {
+        if (editionMode === 'add') {
           this.products.unshift(product);
         } else {
           const idx = this.products.findIndex(a => a.id === product.id);
@@ -62,7 +61,6 @@ export class SubCategoryComponent implements OnInit {
 
   async getProducts() {
    this.products = await this.productService.getProductsWithDetailsList(this.loggedUser.haKaDocClientId,this.physicalGroupId).toPromise();
-    console.log('list des produits :', this.products);
     
   }
 

@@ -53,6 +53,7 @@ namespace API
                 endpoints.MapFallbackToController("Index", "Fallback");
                 endpoints.MapHub<PresenceHub>("hubs/presence");
                 endpoints.MapHub<DashboardHub>("hubs/dashboard");
+                endpoints.MapHub<DashboardHub>("hubs/StockAlert");
                 // endpoints.MapHub<MessageHub>("hubs/message");
             });
         }

@@ -71,7 +71,7 @@ export class AddProductComponent implements OnInit {
       })
     }
     this.getSubCategories();
-    console.log(this.editionMode);
+  
     
   }
 

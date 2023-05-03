@@ -22,6 +22,7 @@ export class SelectProductsComponent implements OnInit {
   // @Input() loggedUser: User;
   @Input() physicalProductGroupId: number;
   @Input() subProducts: SubProduct[] = [];
+  @Input() storeId: number;
   @Input() loggedUser: User;
   bsModalRef: BsModalRef;
   selectedProducts: any[] = [];
@@ -60,7 +61,8 @@ export class SelectProductsComponent implements OnInit {
       class: 'modal-dialog-centered',
       initialState: {
         subProduct,
-        clientId: this.loggedUser.haKaDocClientId
+        clientId: this.loggedUser.haKaDocClientId,
+        storeId:this.storeId
       },
     };
     this.bsModalRef = this.modalService.show(SetProductWithSnModalComponent, config);

@@ -65,6 +65,10 @@ export class ProductsService {
     return this.http.get(this.baseUrl+"SubProductList/"+productGroupId+'/'+clientId)
   }
 
+  getStoreSubProducts(storeId,productGroupId,clientId:number){
+    return this.http.get(this.baseUrl+"StoreSubProductList/"+storeId+"/"+productGroupId+'/'+clientId)
+  }
+
   getSubProduct(subPorductId,clientId:number){
     return this.http.get(this.baseUrl+"SubProduct/"+subPorductId+'/'+clientId)
   }
@@ -79,6 +83,9 @@ export class ProductsService {
 
   subProductSNBySubProductId(clientId:number,subPorductId:number) {
     return this.http.get(this.baseUrl+"SubProductSnBySubProductId/"+clientId+'/'+subPorductId)
+  }
+  storeSubProductSNBySubProductId(storeId:number,clientId:number,subPorductId:number) {
+    return this.http.get(this.baseUrl+"StoreSubProductSnBySubProductId/"+storeId+"/"+clientId+'/'+subPorductId)
   }
 
   inventOpSubProductSNs(clientId,inventOpId:number,subProductId:number){

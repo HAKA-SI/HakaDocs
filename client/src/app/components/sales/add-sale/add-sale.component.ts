@@ -12,6 +12,8 @@ import { Observable } from 'rxjs';
 import { OrdersService } from 'src/app/_services/orders.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { StoresService } from '../../stores/stores.service';
+import { Store } from 'src/app/_models/store.model';
 
 @Component({
   selector: 'app-add-sale',
@@ -22,13 +24,16 @@ export class AddSaleComponent implements OnInit {
   saleDetailsForm: FormGroup;
   loggedUser: User;
   customers: Customer[] = [];
+  stores: Store[] = [];
   subProducts: SubProduct[] = [];
   physicalProductGroupId = environment.phisicalProductGroupId;
   basket$: Observable<any>;
+  storeId:number;
 
 
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private customerService: CustomerService,
+
+  constructor(private fb: FormBuilder, private authService: AuthService, private customerService: CustomerService, private storeService: StoresService,
     private productService: ProductsService, private ordersService: OrdersService, private toastr: ToastrService, private router: Router) {
 
     this.ordersService.basket$.subscribe((basket) => {
@@ -42,19 +47,30 @@ export class AddSaleComponent implements OnInit {
   }
 
 
-  setBasketFromLocalStorage() {
-    throw new Error('Method not implemented.');
-  }
+  
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.basket$ = this.ordersService.basket$;
-    this.getCustomers();
-    this.getSubProducts();
+    try {
+      this.stores = await this.storeService.storeList(this.loggedUser.haKaDocClientId).toPromise();
+      if(this.stores.length===1) {
+        this.storeId = this.stores[0].id;
+        this.getCustomers();
+        this.getSubProducts(this.stores[0].id);
+        
+        this.ordersService.setStoreId(this.stores[0].id);
+      }
+
+    } catch (error) {
+      
+    }
+   
+   
 
   }
 
-  getSubProducts() {
-    this.productService.getSubProducts(this.loggedUser.haKaDocClientId, this.physicalProductGroupId).subscribe((response: SubProduct[]) => this.subProducts = response);
+  getSubProducts(storeId:number) {
+    this.productService.getStoreSubProducts(storeId,this.loggedUser.haKaDocClientId, this.physicalProductGroupId).subscribe((response: SubProduct[]) => this.subProducts = response);
   }
 
   getCustomers() {

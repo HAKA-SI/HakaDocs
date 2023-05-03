@@ -191,6 +191,14 @@ namespace API.Data
                 await context.SaveChangesAsync();
             }
 
+            if (!context.NotificationTypes.Any())
+            {
+                context.NotificationTypes.AddRange(
+                new NotificationType { Name = "Alerte stock" }
+                );
+                await context.SaveChangesAsync();
+            }
+
 
         }
     }

@@ -1,21 +1,20 @@
-    <div class="row">
-        <div class="col-7">
-            <app-stepper [linearModeSelected]="false" #appStepper [disabled]="false">
-                <cdk-step [label]="'client'" >
-                   <app-select-customer [customers]="customers" ></app-select-customer>
-                </cdk-step>
-                <cdk-step [label]="'choix des produits'">
-                    <app-select-products [subProducts]="subProducts" [loggedUser]="loggedUser"></app-select-products>
-                </cdk-step>
-                <cdk-step [label]="'Autre Details'">
-                    <app-sale-other-details [saleDetailsForm]="saleDetailsForm"></app-sale-other-details>
-                </cdk-step>
-                <!-- <cdk-step [label]="'Payment'">
-                    <app-checkout-payment [checkoutForm]="checkoutForm"></app-checkout-payment>
-                </cdk-step> -->
-            </app-stepper>
-        </div>
-        <div class="col-5">
-          <app-sale-summary (orderSaved)="orderSaveCompleted($event)" [saleDetailsForm]="saleDetailsForm" [loggedUser]="loggedUser"></app-sale-summary>
-        </div>
-     </div>
+<div class="row">
+
+    <div class="col-7">
+        <app-stepper [linearModeSelected]="false" #appStepper [disabled]="false">
+            <cdk-step [label]="'client'">
+                <app-select-customer [customers]="customers"></app-select-customer>
+            </cdk-step>
+            <cdk-step [label]="'choix des produits'">
+                <app-select-products [storeId]="storeId" [subProducts]="subProducts" [loggedUser]="loggedUser"></app-select-products>
+            </cdk-step>
+            <cdk-step [label]="'Autre Details'">
+                <app-sale-other-details [saleDetailsForm]="saleDetailsForm"></app-sale-other-details>
+            </cdk-step>
+        </app-stepper>
+    </div>
+    <div class="col-5">
+        <app-sale-summary (orderSaved)="orderSaveCompleted($event)" [saleDetailsForm]="saleDetailsForm"
+            [loggedUser]="loggedUser"></app-sale-summary>
+    </div>
+</div>
