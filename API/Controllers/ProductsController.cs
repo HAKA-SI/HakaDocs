@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Extensions;
@@ -23,16 +21,14 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
         private readonly IConfiguration _config;
-        private readonly StockAlertService _alert;
 
 
-        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService, IConfiguration config, StockAlertService alert)
+        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService, IConfiguration config)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _config = config;
             _photoService = photoService;
-            _alert = alert;
         }
 
 
@@ -247,7 +243,6 @@ namespace API.Controllers
         public async Task<ActionResult> StoreSubProductList(int storeId, int productGroupId, int hakaDocClientId)
         {
             var subProductsFromDb = await _unitOfWork.ProductRepository.GetStoreSubProducts(storeId, hakaDocClientId, productGroupId);
-             Task.Run(async() => await _alert.SendStockNotification(subProductsFromDb.Select(a => a.Id).ToList(), hakaDocClientId));
             //  await _alert.SendStockNotification(subProductsFromDb.Select(a => a.Id).ToList(), hakaDocClientId);
             return Ok(_mapper.Map<List<SubProductListDto>>(subProductsFromDb));
         }

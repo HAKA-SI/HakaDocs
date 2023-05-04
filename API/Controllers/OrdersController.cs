@@ -7,6 +7,7 @@ using API.Entities;
 using API.Extensions;
 using API.Helpers;
 using API.Interfaces;
+using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
@@ -21,13 +22,17 @@ namespace API.Controllers
         private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _config;
         private readonly IMapper _mapper;
+        private readonly StockAlertService _stockAlertService;
 
 
-        public OrdersController(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration config)
+
+        public OrdersController(IUnitOfWork unitOfWork, IMapper mapper, IConfiguration config, StockAlertService stockAlertService)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _config = config;
+            _stockAlertService = stockAlertService;
+
         }
 
         [HttpPost("SaveClientOrder/{hakaDocClientId}")]
@@ -194,7 +199,7 @@ namespace API.Controllers
                                 //enregistrement orderLine
                                 context.OrderLineSubProductSNs.Add(new OrderLineSubProductSN { SubProductSNId = subProd.Id, OrderLineId = orderLine.Id, DiscountAmout = subProd.Discount });
                                 // orderlineSubProductsSns
-                               context.InventOpSubProductSNs.Add(new InventOpSubProductSN { InventOpId = inv.Id, SubProductSNId = subProd.Id });
+                                context.InventOpSubProductSNs.Add(new InventOpSubProductSN { InventOpId = inv.Id, SubProductSNId = subProd.Id });
                                 //updating SubProductSN
                                 var subPorductSN = await context.SubProductSNs.FirstOrDefaultAsync(a => a.Id == subProd.Id);
                                 subPorductSN.StoreId = null;
@@ -203,7 +208,7 @@ namespace API.Controllers
                                 var storeProductFromDb = await context.StoreProducts.FirstOrDefaultAsync(a => a.SubProductSNId == subProd.Id);
                                 if (storeProductFromDb != null)
                                 {
-                                    storeProductFromDb.Active=false;
+                                    storeProductFromDb.Active = false;
                                 }
                                 await context.SaveChangesAsync();
                             }
@@ -211,7 +216,9 @@ namespace API.Controllers
                     }
                     done = true;
                     transaction.Commit();
-                //   Task.Run(async () => await _unitOfWork.ProductRepository.SendStockNotification(model.Products.Select(a => a.Id).ToList(), hakaDocClientId));
+                    Task.Run(async () => await _stockAlertService.SendStockNotification(model.Products.Select(a => a.Id).ToList(), hakaDocClientId));
+
+                    //   Task.Run(async () => await _unitOfWork.ProductRepository.SendStockNotification(model.Products.Select(a => a.Id).ToList(), hakaDocClientId));
                 }
                 catch (System.Exception)
                 {
