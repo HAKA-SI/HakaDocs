@@ -41,14 +41,16 @@ namespace API.Extensions
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IPhotoService, PhotoService>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<StockAlertService>();
             services.AddScoped<LogUserActivity>();
             //   services.AddHostedService<Worker>();
             //   services.AddHostedService<TestWorker>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(options =>
             {
+            
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
-            });
+            },ServiceLifetime.Transient);
 
             services.AddSingleton<IConnectionMultiplexer>(c =>
             {

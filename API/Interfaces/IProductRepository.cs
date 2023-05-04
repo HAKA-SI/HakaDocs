@@ -29,6 +29,5 @@ namespace API.Interfaces
         Task<SubProductSN> GetSubProductSN(int subproductId);
         // Task<InventOpSubProductSN> InventOpSubProductSN(int inventOpId, int subPorductSNId);
         Task<InventOp> GetInventOpById(int inventOpId);
-        Task SendStockNotification(List<int> subproductIds, int hakaDocClientId);
     }
 }

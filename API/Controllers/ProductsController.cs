@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using API.Dtos;
 using Microsoft.Extensions.Configuration;
+using API.Services;
 
 namespace API.Controllers
 {
@@ -22,14 +23,16 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
         private readonly IConfiguration _config;
+        private readonly StockAlertService _alert;
 
 
-        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService, IConfiguration config)
+        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService, IConfiguration config, StockAlertService alert)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _config = config;
             _photoService = photoService;
+            _alert = alert;
         }
 
 
@@ -244,6 +247,8 @@ namespace API.Controllers
         public async Task<ActionResult> StoreSubProductList(int storeId, int productGroupId, int hakaDocClientId)
         {
             var subProductsFromDb = await _unitOfWork.ProductRepository.GetStoreSubProducts(storeId, hakaDocClientId, productGroupId);
+             Task.Run(async() => await _alert.SendStockNotification(subProductsFromDb.Select(a => a.Id).ToList(), hakaDocClientId));
+            //  await _alert.SendStockNotification(subProductsFromDb.Select(a => a.Id).ToList(), hakaDocClientId);
             return Ok(_mapper.Map<List<SubProductListDto>>(subProductsFromDb));
         }
 
@@ -632,12 +637,12 @@ namespace API.Controllers
         }
 
         [HttpGet("StoreSubProductSnBySubProductId/{storeId}/{hakaDocClientId}/{subProductId}")]
-        public async Task<ActionResult> SubProductSnBySubProductId(int storeId,int hakaDocClientId, int subProductId)
+        public async Task<ActionResult> SubProductSnBySubProductId(int storeId, int hakaDocClientId, int subProductId)
         {
             var loggeduserId = User.GetUserId();
             if (!(await _unitOfWork.AuthRepository.CanDoAction(loggeduserId, hakaDocClientId))) return Unauthorized();
 
-            List<SubProductSN> subProductSNsFromDb = await _unitOfWork.ProductRepository.GetStoreSubProductSnBySubProductId(storeId,subProductId);
+            List<SubProductSN> subProductSNsFromDb = await _unitOfWork.ProductRepository.GetStoreSubProductSnBySubProductId(storeId, subProductId);
 
             return Ok(_mapper.Map<List<SubProductSnListDto>>(subProductSNsFromDb));
         }

@@ -46,7 +46,7 @@ namespace API.Data
         public ICommRepository CommRepository => new CommRepository(_sender);
         public IAuthRepository AuthRepository => new AuthRepository(_signInManager);
         public ICustomerRepository CustomerRepository => new CustomerRepository(_context);
-        public IProductRepository ProductRepository => new ProductRepository(_context,_config,_stockHubContext);
+        public IProductRepository ProductRepository => new ProductRepository(_context);
         public IStoreRepository StoreRepository => new StoreRepository(_context);
 
 

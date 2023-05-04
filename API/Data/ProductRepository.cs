@@ -17,13 +17,9 @@ namespace API.Data
     public class ProductRepository : IProductRepository
     {
         private readonly DataContext _context;
-        private readonly IConfiguration _config;
-        private readonly IHubContext<StockAlertHub> _stockHubContext;
-        public ProductRepository(DataContext context, IConfiguration config, IHubContext<StockAlertHub> stockHubContext)
+        public ProductRepository(DataContext context)
         {
             _context = context;
-            _config = config;
-            _stockHubContext = stockHubContext;
         }
 
 
@@ -145,42 +141,7 @@ namespace API.Data
                                              .FirstOrDefaultAsync(a => a.Id == inventOpId);
         }
 
-        public async Task SendStockNotification(List<int> subproductIds, int hakaDocClientId)
-        {
-
-            /* This code is responsible for saving and sending a stock alert notification to all users of a specific
-            client when the quantity of a subproduct reaches its reorder level. */
-
-
-            int notifificationTypeId = _config.GetValue<int>("AppSettings:notificationType:stockAlertTypeId");
-
-            var clientUsers = await _context.Users.Where(a => a.HaKaDocClientId == hakaDocClientId).ToListAsync();
-            foreach (var item in subproductIds)
-            {
-                var subProduct = await _context.SubProducts.Include(a => a.Product).FirstOrDefaultAsync(a => a.Id == item);
-                if (subProduct.Quantity <= subProduct.ReorderLevel)//critical stock reched
-                {
-                    var content = "<b>Alerte stock:</b> Vous avez atteint votre stock critique pour <b>" + subProduct.Name + "(" + subProduct.Product.Name + ")";
-                    int totalNotifications = 0;
-                    foreach (var clientUser in clientUsers)
-                    {
-                        _context.Notifications.Add(
-                            new Notification { Content = content, RecipientId = clientUser.Id, NotificationTypeId = notifificationTypeId }
-                        );
-                        totalNotifications++;
-                    }
-                    if (totalNotifications > 0)
-                    {
-                        await _context.SaveChangesAsync();
-                        var userIds = clientUsers.Select(a => a.Id).ToList().ConvertAll(ident => ident.ToString());
-                        var notifications = await _context.Notifications.Include(a => a.Recipient).Where(a => a.Recipient.HaKaDocClientId == hakaDocClientId).ToListAsync();
-                        await _stockHubContext.Clients.All.SendAsync("StockAlert", userIds, notifications);
-                    }
-                }
-
-            }
-        }
-
+       
         public async Task<List<SubProduct>> GetStoreSubProducts(int storeId, int haKaDocClientId, int productGroupId)
         {
 
