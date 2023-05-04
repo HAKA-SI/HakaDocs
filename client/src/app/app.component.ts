@@ -5,6 +5,7 @@ import { LanguageService } from './core/services/language.service';
 import { BackgroundService } from './_services/background.service';
 import { InactivityService } from './_services/inactivity.service';
 import { OrdersService } from './_services/orders.service';
+import { ApiNotificationService } from './_services/api-notification.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,9 @@ import { OrdersService } from './_services/orders.service';
 export class AppComponent implements OnInit{
 
   constructor(private authService : AuthService, private languageService: LanguageService, private ordersService: OrdersService
-    , private backgroundService: BackgroundService, private inactivityService:InactivityService) {}
+    , private backgroundService: BackgroundService, private inactivityService:InactivityService,
+    private apiNotificationService: ApiNotificationService
+    ) {}
   ngOnInit(): void {
     this.setCurrentuser();
     this.backgroundService.startChecking();
@@ -35,6 +38,7 @@ export class AppComponent implements OnInit{
       const decryptedUser = this.authService.decryptValue(userdata);
       const user: User = decryptedUser;
       this.authService.setCurrentuser(user);
+      this.apiNotificationService.createHubConnection(user);
       this.languageService.initLanguage();
 
     //  this.presenceService.createHubConnection(user);

@@ -48,6 +48,7 @@ namespace API.Data
         public ICustomerRepository CustomerRepository => new CustomerRepository(_context);
         public IProductRepository ProductRepository => new ProductRepository(_context);
         public IStoreRepository StoreRepository => new StoreRepository(_context);
+        public INotificationRepository NotificationRepository => new NotificationRepository(_context);
 
 
         public void Add<T>(T entity) where T : class

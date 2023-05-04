@@ -31,6 +31,7 @@
     "@swimlane/ngx-datatable": "^16.0.3",
     "angular-count-to": "0.0.3",
     "animate.css": "^4.1.1",
+    "@microsoft/signalr": "^3.1.8",
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
     "chartist": "^0.11.4",

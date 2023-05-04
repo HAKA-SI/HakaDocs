@@ -13,6 +13,7 @@ namespace API.Interfaces
         ICustomerRepository CustomerRepository { get; }
         IProductRepository ProductRepository { get; }
         IStoreRepository StoreRepository { get; }
+        INotificationRepository NotificationRepository { get; }
         void Add<T>(T entity) where T : class;
         void Update<T>(T entity) where T : class;
         void Delete<T>(T entity) where T : class;
