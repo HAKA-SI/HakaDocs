@@ -1,10 +1,12 @@
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
 import { AuthService } from '../../../_services/auth.service';
 import { User } from 'src/app/_models/user.model';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { NavService } from '../../service/nav.service';
 import { LanguageService } from 'src/app/core/services/language.service';
+import { Observable } from 'rxjs';
+import { ApiNotification } from 'src/app/_models/notification.model';
+import { ApiNotificationService } from 'src/app/_services/api-notification.service';
 
 @Component({
   selector: 'app-header',
@@ -15,18 +17,24 @@ export class HeaderComponent implements OnInit {
   public right_sidebar: boolean = false;
   public open: boolean = false;
   public openNav: boolean = false;
-  public isOpenMobile : boolean;
-  connectedUser : User;
+  public isOpenMobile: boolean;
+  connectedUser: User;
   currLang: any;
   languages = [];
   langStoreValue: string;
+  notifService: Observable<ApiNotification[]>;
+  totalUnread = 0;
 
   @Output() rightSidebarEvent = new EventEmitter<boolean>();
 
   constructor(public navServices: NavService, private authService: AuthService,
-    toastr: ToastrService,private languageService: LanguageService) {
-    this.authService.currentUser$.subscribe((user) => this.connectedUser=user);
-    this.languageService.currentLanguage.subscribe((lang) => this.langStoreValue=lang);
+    toastr: ToastrService, private languageService: LanguageService,
+    private apiNotifService: ApiNotificationService
+  ) {
+    this.notifService = this.apiNotifService.notificationThread$;
+    this.notifService.subscribe((notifications) => this.totalUnread = notifications.filter(a =>!a.read).length);
+    this.authService.currentUser$.subscribe((user) => this.connectedUser = user);
+    this.languageService.currentLanguage.subscribe((lang) => this.langStoreValue = lang);
 
   }
 
@@ -44,12 +52,12 @@ export class HeaderComponent implements OnInit {
   }
 
 
-  ngOnInit() { 
+  ngOnInit() {
     this.getSupportedLanguages();
-   }
+  }
 
   logout() {
-   this.authService.logout();
+    this.authService.logout();
   }
 
   setLanguage(language) {
@@ -63,7 +71,7 @@ export class HeaderComponent implements OnInit {
     this.getList();
   }
 
-  
+
   getList() {
     this.languages = [];
     const list = this.languageService.getAvailableLanguages();

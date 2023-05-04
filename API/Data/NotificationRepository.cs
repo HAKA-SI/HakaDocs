@@ -18,7 +18,9 @@ namespace API.Data
 
         public async Task<List<Notification>> UserNotificationTread(int userId)
         {
-           return await _context.Notifications.Where(a => a.RecipientId==userId).ToListAsync();
+            return await _context.Notifications.Include(a => a.NotificationType)
+                                                 .OrderByDescending(a => a.InsertDate)
+                                                 .Where(a => a.RecipientId == userId).ToListAsync();
         }
     }
 }

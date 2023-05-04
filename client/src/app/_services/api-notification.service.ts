@@ -4,6 +4,7 @@ import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user.model';
+import { ApiNotification } from '../_models/notification.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ApiNotificationService {
 
   private hubUrl = environment.hubUrl;
   private hubConnection: HubConnection;
-  private notificationThreadSource = new BehaviorSubject<Notification[]>([]);
+  private notificationThreadSource = new BehaviorSubject<ApiNotification[]>([]);
   notificationThread$ = this.notificationThreadSource.asObservable();
 
   constructor(private http: HttpClient) { }

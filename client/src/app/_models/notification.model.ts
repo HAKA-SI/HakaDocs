@@ -1,4 +1,4 @@
-export interface Notification{
+export interface ApiNotification{
     id: number;
     insertDate: Date;
     content: string;
@@ -6,4 +6,10 @@ export interface Notification{
     read?: boolean;
     deleted?: boolean;
     notificationTypeId:number;
+    notificationType : NotificationType
+}
+
+export interface NotificationType{
+    id:number;
+    name:string;
 }

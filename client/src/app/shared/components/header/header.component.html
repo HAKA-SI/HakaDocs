@@ -44,45 +44,25 @@
                         <li><a data-lng="fr"><i class="flag-icon flag-icon-fr"></i> French</a></li> -->
                     </ul>
                 </li>
-                <li class="onhover-dropdown">
-                    <span class="badge badge-pill badge-primary pull-right notification-badge">3</span>
+                <li class="onhover-dropdown" *ngIf="(notifService|async) as notifications">
+                    <span class="badge badge-pill badge-primary pull-right notification-badge">{{totalUnread}}</span>
                     <app-feather-icons [icon]="'bell'"></app-feather-icons><span class="dot"></span>
                     <ul class="notification-dropdown onhover-show-div">
-                        <li>Notification <span class="badge badge-pill badge-primary pull-right">3</span></li>
-                        <li>
+                        <!-- <li>Notification <span class="badge badge-pill badge-primary pull-right">3</span></li> -->
+                        <li *ngFor="let notif of (notifications| slice:0:3)">
                             <div class="media">
                                 <div class="media-body">
-                                    <h6 class="mt-0"><span>
+                                    <h6 class="mt-0 text-monospace"><span>
                                             <app-feather-icons class="shopping-color" [icon]="'shopping-bag'">
                                             </app-feather-icons>
-                                        </span>Your order ready for Ship..!
+                                        </span>{{notif.notificationType.name}}
                                     </h6>
-                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetuer.</p>
+                                    <p class="mb-0" [innerHTML]="notif.content"></p>
+                                    <p class="text-muted text-right" style="font-size: smaller;">{{notif.insertDate|date:'medium'}}</p>
                                 </div>
                             </div>
                         </li>
-                        <li>
-                            <div class="media">
-                                <div class="media-body">
-                                    <h6 class="mt-0 txt-success"><span>
-                                            <app-feather-icons class="download-color font-success" [icon]="'download'">
-                                            </app-feather-icons>
-                                        </span>Download Complete</h6>
-                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetuer.</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="media">
-                                <div class="media-body">
-                                    <h6 class="mt-0 txt-danger"><span>
-                                            <app-feather-icons class="alert-color font-danger" [icon]="'alert-circle'">
-                                            </app-feather-icons>
-                                        </span>250 MB trash files</h6>
-                                    <p class="mb-0">Lorem ipsum dolor sit amet, consectetuer.</p>
-                                </div>
-                            </div>
-                        </li>
+                        
                         <li class="txt-dark"><a href="javascript:void(0)">All</a> notification</li>
                     </ul>
                 </li>
