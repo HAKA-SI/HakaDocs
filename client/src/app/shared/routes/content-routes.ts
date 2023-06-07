@@ -100,5 +100,12 @@ export const content: Routes = [
     data: {
       breadcrumb: "Invoice"
     }
+  },
+  {
+    path: 'notifications',
+    loadChildren: () => import('../../components/notifications/notifications.module').then(m => m.NotificationsModule),
+    data: {
+      breadcrumb: "Notifications"
+    }
   }
 ];

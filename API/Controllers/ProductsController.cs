@@ -9,6 +9,8 @@ using AutoMapper;
 using API.Dtos;
 using Microsoft.Extensions.Configuration;
 using API.Services;
+using Microsoft.AspNetCore.SignalR;
+using API.SignalR;
 
 namespace API.Controllers
 {
@@ -21,14 +23,18 @@ namespace API.Controllers
         private readonly IMapper _mapper;
         private readonly IPhotoService _photoService;
         private readonly IConfiguration _config;
+        private readonly IHubContext<StockAlertHub> _stockHubContext;
 
 
-        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService, IConfiguration config)
+
+        public ProductsController(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService, IConfiguration config,  IHubContext<StockAlertHub> stockHubContext)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _config = config;
             _photoService = photoService;
+            _stockHubContext = stockHubContext;
+
         }
 
 
@@ -243,7 +249,6 @@ namespace API.Controllers
         public async Task<ActionResult> StoreSubProductList(int storeId, int productGroupId, int hakaDocClientId)
         {
             var subProductsFromDb = await _unitOfWork.ProductRepository.GetStoreSubProducts(storeId, hakaDocClientId, productGroupId);
-            //  await _alert.SendStockNotification(subProductsFromDb.Select(a => a.Id).ToList(), hakaDocClientId);
             return Ok(_mapper.Map<List<SubProductListDto>>(subProductsFromDb));
         }
 

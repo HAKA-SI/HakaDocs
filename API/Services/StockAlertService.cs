@@ -30,7 +30,6 @@ namespace API.Services
             // _context = context;
             _config = config;
             _logger = logger;
-            _serviceProvider = serviceProvider;
             _stockHubContext = stockHubContext;
         }
 
@@ -68,15 +67,15 @@ namespace API.Services
                             if (totalNotifications > 0)
                             {
                                 await dbContext.SaveChangesAsync();
-                                var userIds = clientUsers.Select(a => a.Id).ToList().ConvertAll(ident => ident.ToString());
-                                var notifications = await dbContext.Notifications.Include(a => a.Recipient).Where(a => a.Recipient.HaKaDocClientId == hakaDocClientId).ToListAsync();
-                                // await _stockHubContext.Clients.All.SendAsync("StockAlert", userIds, notifications);
+                                // var userIds = clientUsers.Select(a => a.Id).ToList();
+                                // List<Notification> notifications = await dbContext.Notifications.Include(a => a.NotificationType).Where(a => userIds.Contains(a.RecipientId)).ToListAsync();
+                                // var userIdsToString = userIds.ConvertAll(a => a.ToString());
+                                // // await _stockHubContext.Clients.Users(userIdsToString).SendAsync("StockAlertsReceived", notifications);
+                                // await _stockHubContext.Clients.All.SendAsync("StockAlertsReceived", notifications);
                             }
                         }
 
                     }
-                    
-
 
                 }
                 catch (System.Exception ex)
@@ -86,6 +85,8 @@ namespace API.Services
                     throw;
 
                 }
+
+
 
             }
         }

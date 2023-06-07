@@ -5,6 +5,7 @@ namespace API.Interfaces
 {
     public interface IUserRepository
     {
-         Task<AppUser> GetUserByIdAsync(int id);
+        Task<List<AppUser>> GetClientUsers(int hakaDocClientId);
+        Task<AppUser> GetUserByIdAsync(int id);
     }
 }

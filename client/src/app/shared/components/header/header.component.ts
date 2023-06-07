@@ -7,6 +7,7 @@ import { LanguageService } from 'src/app/core/services/language.service';
 import { Observable } from 'rxjs';
 import { ApiNotification } from 'src/app/_models/notification.model';
 import { ApiNotificationService } from 'src/app/_services/api-notification.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -29,7 +30,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(public navServices: NavService, private authService: AuthService,
     toastr: ToastrService, private languageService: LanguageService,
-    private apiNotifService: ApiNotificationService
+    private apiNotifService: ApiNotificationService, private router:Router
   ) {
     this.notifService = this.apiNotifService.notificationThread$;
     this.notifService.subscribe((notifications) => this.totalUnread = notifications.filter(a =>!a.read).length);
@@ -81,6 +82,10 @@ export class HeaderComponent implements OnInit {
         this.languages = [...this.languages, elt];
       }
     }
+  }
+
+  go_to_list_notifations() {
+    this.router.navigateByUrl('/notifications/list-notification');
   }
 
 }

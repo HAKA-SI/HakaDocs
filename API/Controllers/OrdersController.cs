@@ -217,8 +217,6 @@ namespace API.Controllers
                     done = true;
                     transaction.Commit();
                     Task.Run(async () => await _stockAlertService.SendStockNotification(model.Products.Select(a => a.Id).ToList(), hakaDocClientId));
-
-                    //   Task.Run(async () => await _unitOfWork.ProductRepository.SendStockNotification(model.Products.Select(a => a.Id).ToList(), hakaDocClientId));
                 }
                 catch (System.Exception)
                 {

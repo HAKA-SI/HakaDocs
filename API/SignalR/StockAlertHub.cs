@@ -6,6 +6,8 @@ using API.Entities;
 using API.Interfaces;
 using API.Extensions;
 using Microsoft.Extensions.Logging;
+using System.Linq;
+
 
 namespace API.SignalR
 {
@@ -15,12 +17,13 @@ namespace API.SignalR
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<StockAlertHub> _logger;
 
-        public StockAlertHub(IUnitOfWork unitOfWork,ILogger<StockAlertHub> logger)
+        public StockAlertHub(IUnitOfWork unitOfWork, ILogger<StockAlertHub> logger)
         {
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
+       
         public override async Task OnConnectedAsync()
         {
             // var httpContext = Context.GetHttpContext();
@@ -41,10 +44,14 @@ namespace API.SignalR
             // await base.OnDisconnectedAsync(exception);
         }
 
-
-        public async Task SendNotifications(List<string> userIds, List<Notification> notifications)
+        public async Task StockAlertToAllClientUsers(int hakaDocClientId)
         {
-            await Clients.Users(userIds).SendAsync("StockAlertsReceived", notifications);
+              _logger.LogInformation("StockAlertToAllClientUsers called with hakaDocClientId={hakaDocClientId}", hakaDocClientId);
+            // List<AppUser> clientUsers = await _unitOfWork.UserRepository.GetClientUsers(hakaDocClientId);
+            // List<int> userIds = clientUsers.Select(a => a.Id).ToList();
+            // List<Notification> notifications =await _unitOfWork.NotificationRepository.AllClientUsersNotifications(userIds);
+            // var userIdsToString = userIds.ConvertAll(a =>a.ToString());
+            // await Clients.All.SendAsync("StockAlertsReceived",notifications);
         }
 
     }

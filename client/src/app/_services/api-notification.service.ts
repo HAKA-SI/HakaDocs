@@ -29,8 +29,15 @@ export class ApiNotificationService {
     this.hubConnection.start().catch((error) => console.log(error));
 
     this.hubConnection.on("NotificationsThread", notifications => {
+      
      this.notificationThreadSource.next(notifications);
     })
+
+    this.hubConnection.on("StockAlertsReceived", (notifications:ApiNotification[]) => {
+     console.log("notifications received");
+     
+      this.notificationThreadSource.next(notifications.filter(a => a.recipientId ===user.id));
+     })
 
   }
 

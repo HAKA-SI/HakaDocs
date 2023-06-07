@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using API.Entities;
 using API.Interfaces;
@@ -14,6 +15,11 @@ namespace API.Data
         {
             _mapper = mapper;
             _context = context;
+        }
+
+        public async Task<List<AppUser>> GetClientUsers(int hakaDocClientId)
+        {
+            return await _context.Users.Where(a => a.HaKaDocClientId == hakaDocClientId).ToListAsync();
         }
 
         public async Task<AppUser> GetUserByIdAsync(int id)

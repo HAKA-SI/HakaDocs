@@ -8,6 +8,7 @@ namespace API.Interfaces
 {
     public interface INotificationRepository
     {
+       Task<List<Notification>> AllClientUsersNotifications(List<int> userIds);
         Task<List<Notification>> UserNotificationTread(int userId);
     }
 }
