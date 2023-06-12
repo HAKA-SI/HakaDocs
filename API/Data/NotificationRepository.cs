@@ -31,6 +31,7 @@ namespace API.Data
             {
                if(item.RecipientId!=userId) break;
                 item.Deleted = true;
+                item.DateDeleted = DateTime.Now;
                 t++;
             }
 

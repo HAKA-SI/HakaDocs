@@ -14,6 +14,7 @@ namespace API.Entities
         public Boolean Read { get; set; } = false;
         public Boolean Deleted { get; set; } = false;
          public DateTime? DateRead { get; set; }
+         public DateTime? DateDeleted { get; set; }
          public NotificationType NotificationType { get; set; }
          public int NotificationTypeId { get; set; }
         
