@@ -52,7 +52,8 @@
                         <li *ngFor="let notif of (notifications| slice:0:3)">
                             <div class="media">
                                 <div class="media-body">
-                                    <h6 class="mt-0 text-monospace"><span>
+                                    <h6 class="mt-0 text-monospace">
+                                        <span>
                                             <app-feather-icons class="shopping-color" [icon]="'shopping-bag'">
                                             </app-feather-icons>
                                         </span>{{notif.notificationType.name}}
@@ -63,7 +64,7 @@
                             </div>
                         </li>
                         
-                        <li class="txt-dark"><a  [routerLink]="'/notifications/list-notification'">All</a> notification</li>
+                        <li class="txt-dark" ><a  [routerLink]="'/notifications/list-notification'">All notifications</a> </li>
                     </ul>
                 </li>
                 <li><a>

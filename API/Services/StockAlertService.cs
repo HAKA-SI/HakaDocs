@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
@@ -11,13 +9,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+
 namespace API.Services
 {
     public class StockAlertService
     {
         // private readonly DataContext _context;
-        private readonly IConfiguration _config;
         private readonly ILogger<StockAlertService> _logger;
+        private readonly IConfiguration _config;
         private readonly IServiceProvider _serviceProvider;
         private readonly IHubContext<StockAlertHub> _stockHubContext;
 
@@ -46,7 +45,8 @@ namespace API.Services
                     client when the quantity of a subproduct reaches its reorder level. */
 
 
-                    int notifificationTypeId = _config.GetValue<int>("AppSettings:notificationType:stockAlertTypeId");
+                    // int notifificationTypeId = _config.GetValue<int>("AppSettings:notificationType:stockAlertTypeId");
+                    int notifificationTypeId =1;
 
                     var clientUsers = await dbContext.Users.Where(a => a.HaKaDocClientId == hakaDocClientId).ToListAsync();
                     foreach (var item in subproductIds)
@@ -89,6 +89,7 @@ namespace API.Services
 
 
             }
+  
         }
     }
 }

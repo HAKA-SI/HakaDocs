@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { NotificationsRoutingModule } from './notifications-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ListNotificationComponent } from './list-notification/list-notification.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -13,6 +14,7 @@ import { ListNotificationComponent } from './list-notification/list-notification
   imports: [
     CommonModule,
     SharedModule,
+    FormsModule,
     NotificationsRoutingModule
   ]
 })

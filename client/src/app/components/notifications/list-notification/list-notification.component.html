@@ -1,1 +1,44 @@
-<p>list-notification works!</p>
+<!-- <ul *ngFor="let notification of (apiNotificationService.notificationThread$|json)">
+    <li>{{notification.content}}</li>
+</ul> -->
+
+<div *ngIf="notifications.length>0">
+    <div class="row my-2 pl-2">
+        <button type="button" class="btn btn-primary btn-sm mr-3" (click)="markAsReaded()" [disabled]="selectedIds.length===0">marquer comme
+            lu</button>
+        <button type="button" class="btn btn-danger btn-sm mr-3" (click)="deleteNotifications()" [disabled]="selectedIds.length===0">supprimer</button>
+    </div>
+
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Type</th>
+                <th scope="col">Date</th>
+                <th scope="col">Contenu</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let notification of notifications; let i=index"
+            [ngClass]="{ '': notification.read, 'table-danger': !notification.read }"
+            >
+                <td scope="row">
+                    <div class="form-check form-check-inline">
+                        <input mdbCheckbox class="form-check-input" type="checkbox" id="inlineCheckbox2"
+                            (click)="selectNotificication(notification.id)" [(ngModel)]="notification.isSelected" />
+                    </div>
+                </td>
+                <td>{{notification.notificationType.name}}</td>
+                <td>
+                    <p class="text-muted text-right" style="font-size: smaller;">
+                        {{notification.insertDate|date:'medium'}}</p>
+
+                </td>
+                <td>
+                    <p [innerHTML]="notification.content"></p>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

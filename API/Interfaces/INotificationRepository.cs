@@ -10,5 +10,7 @@ namespace API.Interfaces
     {
        Task<List<Notification>> AllClientUsersNotifications(List<int> userIds);
         Task<List<Notification>> UserNotificationTread(int userId);
+        Task<bool> DeleteUserNotifications(int userId,List<int> notificationIds);
+        Task<bool> MarkNotificationsAsRead(int userId, List<int> ids);
     }
 }

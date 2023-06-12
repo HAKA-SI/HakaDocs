@@ -63,6 +63,8 @@ namespace API.Entities
     public int InsertUserId { get; set; }
     public DateTime UpdateDate { get; set; } = DateTime.Now;
     public int UpdateUserId { get; set; }
+
+    public Boolean StockChecked { get; set; } 
     
     }
 }

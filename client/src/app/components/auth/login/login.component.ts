@@ -3,6 +3,7 @@ import { AuthService } from '../../../_services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ApiNotificationService } from 'src/app/_services/api-notification.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent implements OnInit {
   public registerForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService,
-    private toastr: ToastrService, private router: Router) {
+    private toastr: ToastrService, private router: Router, private apiNotificationService : ApiNotificationService) {
     this.createLoginForm();
   }
 
@@ -54,7 +55,9 @@ export class LoginComponent implements OnInit {
   login() {
     this.authService.login(this.loginForm.value).subscribe(
       (response) => {
+        this.apiNotificationService.startPolling();
         this.router.navigateByUrl('/dashboard');
+        
       },
       (error) => {
         this.toastr.error('login ou mot de passe incorrect');

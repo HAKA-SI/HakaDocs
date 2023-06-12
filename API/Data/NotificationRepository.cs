@@ -20,19 +20,66 @@ namespace API.Data
         {
              return await _context.Notifications.Include(a => a.NotificationType)
                                                  .OrderByDescending(a => a.InsertDate)
-                                                 .Where(a =>userIds.Contains(a.RecipientId)).ToListAsync();
+                                                 .Where(a =>userIds.Contains(a.RecipientId) && a.Deleted==false).ToListAsync();
         }
 
-        // public async List<Notification> AllClientUserNotificationTread(int hakaDocClientId)
-        // {
-        //     var userIds = await _context.Users.Where( )
-        // }
+        public async Task<bool> DeleteUserNotifications(int userId, List<int> notificationIds)
+        {
+            var notifications = await _context.Notifications.Where(a => notificationIds.Contains(a.Id)).ToListAsync();
+            int t=0;
+            foreach (var item in notifications)
+            {
+               if(item.RecipientId!=userId) break;
+                item.Deleted = true;
+                t++;
+            }
+
+            if(t==0) return true;
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (System.Exception)
+            {
+                
+                return false;
+            }
+        }
+
+        public async Task<bool> MarkNotificationsAsRead(int userId, List<int> ids)
+        {
+            var notifications = await _context.Notifications.Where(a => ids.Contains(a.Id)).ToListAsync();
+            int t=0;
+            foreach (var item in notifications)
+            {
+               if(item.RecipientId!=userId) break;
+                item.Read = true;
+                item.DateRead = DateTime.Now;
+                t++;
+            }
+
+            if(t==0) return true;
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (System.Exception)
+            {
+                
+                return false;
+            }
+        }
 
         public async Task<List<Notification>> UserNotificationTread(int userId)
         {
             return await _context.Notifications.Include(a => a.NotificationType)
                                                  .OrderByDescending(a => a.InsertDate)
-                                                 .Where(a => a.RecipientId == userId).ToListAsync();
+                                                 .Where(a => a.RecipientId == userId && a.Deleted==false).ToListAsync();
         }
+
+
+        
     }
 }
