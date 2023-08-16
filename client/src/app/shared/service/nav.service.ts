@@ -91,27 +91,27 @@ export class NavService {
 				{ path: '/sales/transactions', title: 'Transactions', type: 'link' },
 			]
 		},
-		{
-			title: 'Coupons', icon: 'tag', type: 'sub', active: false, children: [
-				{ path: '/coupons/list-coupons', title: 'List Coupons', type: 'link' },
-				{ path: '/coupons/create-coupons', title: 'Create Coupons', type: 'link' },
-			]
-		},
-		{
-			title: 'Pages', icon: 'clipboard', type: 'sub', active: false, children: [
-				{ path: '/pages/list-page', title: 'List Page', type: 'link' },
-				{ path: '/pages/create-page', title: 'Create Page', type: 'link' },
-			]
-		},
-		{
-			title: 'Media', path: '/media', icon: 'camera', type: 'link', active: false
-		},
-		{
-			title: 'Menus', icon: 'align-left', type: 'sub', active: false, children: [
-				{ path: '/menus/list-menu', title: 'Menu Lists', type: 'link' },
-				{ path: '/menus/create-menu', title: 'Create Menu', type: 'link' },
-			]
-		},
+		// {
+		// 	title: 'Coupons', icon: 'tag', type: 'sub', active: false, children: [
+		// 		{ path: '/coupons/list-coupons', title: 'List Coupons', type: 'link' },
+		// 		{ path: '/coupons/create-coupons', title: 'Create Coupons', type: 'link' },
+		// 	]
+		// },
+		// {
+		// 	title: 'Pages', icon: 'clipboard', type: 'sub', active: false, children: [
+		// 		{ path: '/pages/list-page', title: 'List Page', type: 'link' },
+		// 		{ path: '/pages/create-page', title: 'Create Page', type: 'link' },
+		// 	]
+		// },
+		// {
+		// 	title: 'Media', path: '/media', icon: 'camera', type: 'link', active: false
+		// },
+		// {
+		// 	title: 'Menus', icon: 'align-left', type: 'sub', active: false, children: [
+		// 		{ path: '/menus/list-menu', title: 'Menu Lists', type: 'link' },
+		// 		{ path: '/menus/create-menu', title: 'Create Menu', type: 'link' },
+		// 	]
+		// },
 		{
 			title: 'Customers', icon: 'users', type: 'sub', active: false, children: [
 				{ path: '/customers/list-customer', title: 'Customer List', type: 'link' },
@@ -131,12 +131,12 @@ export class NavService {
 			]
 		},
 		
-		{
-			title: 'Vendors', icon: 'users', type: 'sub', active: false, children: [
-				{ path: '/vendors/list-vendors', title: 'Vendor List', type: 'link' },
-				{ path: '/vendors/create-vendors', title: 'Create Vendor', type: 'link' },
-			]
-		},
+		// {
+		// 	title: 'Vendors', icon: 'users', type: 'sub', active: false, children: [
+		// 		{ path: '/vendors/list-vendors', title: 'Vendor List', type: 'link' },
+		// 		{ path: '/vendors/create-vendors', title: 'Create Vendor', type: 'link' },
+		// 	]
+		// },
 		{
 			title: 'Localization', icon: 'chrome', type: 'sub', children: [
 				{ path: '/localization/translations', title: 'Translations', type: 'link' },
@@ -152,12 +152,12 @@ export class NavService {
 				{ path: '/settings/profile', title: 'Profile', type: 'link' },
 			]
 		},
-		{
-			title: 'Invoice', path: '/invoice', icon: 'archive', type: 'link', active: false
-		},
-		{
-			title: 'Login',path: '/auth/login', icon: 'log-in', type: 'link', active: false
-		},
+		// {
+		// 	title: 'Invoice', path: '/invoice', icon: 'archive', type: 'link', active: false
+		// },
+		// {
+		// 	title: 'Login',path: '/auth/login', icon: 'log-in', type: 'link', active: false
+		// },
 		
 	]
 	// Array

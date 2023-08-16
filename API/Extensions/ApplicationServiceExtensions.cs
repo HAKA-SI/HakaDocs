@@ -48,8 +48,7 @@ namespace API.Extensions
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             services.AddDbContext<DataContext>(options =>
             {
-            
-                options.UseSqlServer(config.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(config.GetConnectionString("ShopConnection"));
             },ServiceLifetime.Transient);
 
             services.AddSingleton<IConnectionMultiplexer>(c =>

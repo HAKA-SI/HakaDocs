@@ -19,6 +19,7 @@ using WhatsappBusiness.CloudApi.Messages.Requests;
 
 namespace API.Controllers
 {
+    [AllowAnonymous]
     public class AuthController : BaseApiController
     {
         private readonly DataContext _context;
@@ -54,6 +55,16 @@ namespace API.Controllers
             _emailSender = emailSender;
             _whatsAppBusinessClient = whatsAppBusinessClient;
         }
+        [Authorize]
+        [HttpPost("webhook")]
+        public ActionResult WhatsappWebHook(string token)
+        {
+            string challenge = HttpContext.Request.Query["challenge"];
+
+            // Renvoyez le défi en tant que réponse pour la validation
+            return Ok();
+        }
+
 
 
 

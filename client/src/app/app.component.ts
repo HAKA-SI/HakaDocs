@@ -38,7 +38,7 @@ export class AppComponent implements OnInit{
       const decryptedUser = this.authService.decryptValue(userdata);
       const user: User = decryptedUser;
       this.authService.setCurrentuser(user);
-      this.apiNotificationService.startPolling();
+     // this.apiNotificationService.startPolling();
       this.languageService.initLanguage();
 
     //  this.presenceService.createHubConnection(user);

@@ -12,7 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private toastr: ToastrService, private router: Router) {}
+  constructor( private router: Router) {}
 
   intercept(
     request: HttpRequest<unknown>,
@@ -32,14 +32,14 @@ export class ErrorInterceptor implements HttpInterceptor {
                 }
                 throw modalStateErrors.flat();
               } else if(typeof(error.error)==='object'){
-                this.toastr.error(error.statusText,error.status);
+                // this.toastr.error(error.statusText,error.status);
               }
               else {
-                this.toastr.error(error.error,error.status);
+                // this.toastr.error(error.error,error.status);
               }
               break;
               case  401:
-                this.toastr.error(error.statusText,error.status);
+                // this.toastr.error(error.statusText,error.status);
                 break;
               case  404:
                this.router.navigateByUrl('not-found')
@@ -49,7 +49,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                 this.router.navigateByUrl('server-error',navigationsExtras);
                 break;
                 default:
-                this.toastr.error('something unexpected went wrong');
+                // this.toastr.error('something unexpected went wrong');
                 console.log(error.error)
                   break;
           }

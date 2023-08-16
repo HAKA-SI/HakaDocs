@@ -53,7 +53,7 @@ export class ApiNotificationService {
 
   startPolling(): void {
     //  interval(60000) // Récupère les notifications toutes les minutes
-    timer(0, 60000)// la fonction est declenchée à t0 et s'execute chaque minute
+    timer(0, 5000)// la fonction est declenchée à t0 et s'execute chaque minute
       .pipe(
         switchMap(() => this.http.get<any>(this.apiUrl + 'NotificationThread'))
       )
